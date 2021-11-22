@@ -14,10 +14,18 @@
     <script src="THREE.MeshLine.js"></script>
     <script>
       var bombactive = false;
+      var tir = true;
+      let nbBalle = 5;
       /* Permet de tirer */
       AFRAME.registerComponent('click-to-shoot', {
         init: function () {
-          document.body.addEventListener('mousedown', () => { this.el.emit('shoot'); });
+          while(tir == true){
+            document.body.addEventListener('mousedown', () => { this.el.emit('shoot'); });
+            nbBalle=nbBalle-1
+            if(nbBalle<0){
+              tir=false;
+            }
+          }
         }
       }); 
 
@@ -103,8 +111,9 @@
                   
                   if (!document.getElementById('tinterrupteur').getAttribute('visible')){
                     if (--timer < 0) {
-                      document.getElementById("BombeDialogue").style.display = "block";
                       document.querySelector('a-scene').exitVR();
+                      document.getElementById("BombeDialogue").style.display = "block";
+                      
 
                   }
                 }
@@ -153,6 +162,24 @@
         }
       }
     });
+      AFRAME.registerComponent('collision', {
+
+      tick: function() {
+        function abs(val) {
+          return (val < 0) ? -val : val;
+        }
+        let pos = this.el.getAttribute("position");
+        
+        let posSphere = document.getElementById("boxTp").getAttribute("position");
+  
+        if (abs(pos.x-posSphere.x) < 0.7 ) {
+          if(abs(pos.z-posSphere.z) < 0.7) {
+            this.el.setAttribute('position', { x: -2.76, y: 1.6, z:-2.1 });
+            let audio = document.querySelector("#sonTeleportation").play();
+          }
+        }
+      }
+    });
 
         
      
@@ -164,7 +191,7 @@
           var el = this.el;
         
           el.addEventListener('hit', () => {
-            document.getElementById("finishDialog").style.display = "block";
+           // document.getElementById("finishDialog").style.display = "block";
           });
   
           el.addEventListener('die', () => {
@@ -248,6 +275,7 @@
         <a-asset-item id="cyclops" src="assets/cyclops/scene.gltf"></a-asset-item>
         <a-asset-item id="bomb" src="assets/atomic_bomb/scene.gltf"></a-asset-item>
         <audio id="sonArme" src="assets/pistol.mp3" preload="auto"></audio>
+        <audio id="sonTeleportation" src="assets/teleport2.mp3" preload="auto"></audio>
         <audio id="musique" src="assets/critical-tension-drama-tension-suspense-music-brulik-entertainment.mp3"></audio>
         <a-asset-item id="human" src="assets/super_human/scene.gltf"></a-asset-item>
       </a-assets>
@@ -297,7 +325,7 @@
     <a-entity id="player" player listener movement-controls="constrainToNavMesh: true" position="0 1.6 0"
     animation__teleportx="property: object3D.position.x; to: 0; dur: 10; easing: linear; startEvents: teleport"                
     animation__teleportz="property: object3D.position.z; to: 1; dur: 10; easing: linear; startEvents: teleport"    
-    trackball trackballfinish>
+    trackball trackballfinish collision>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls 
       id="camera" camera="userHeight: 1.6" listener>
@@ -316,8 +344,11 @@
       
     </a-entity>
 
-    <a-box material="color: black; opacity: 0.2; transparent: true" position="-27 0.5 11" emit-when-colliding="target: #player; event: teleport; distance: 1"></a-box>
-      
+    <a-circle id="boxTp" material="color: black; opacity: 0.5; transparent: true" position="-27 1.2 11"></a-circle>
+    <a-entity position="-27 2.4 11" geometry="primitive: box; width: 0.9; height: 0.2; depth: 0.05" material="color: #5A3314">
+      <a-entity text="value: Portail de teleportation" position="0.15 0 0.025"></a-entity>
+    </a-entity>
+
       <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
       </a-entity>
 
@@ -333,50 +364,13 @@
     animation="property: position; to: -22.5 0 23.962; loop: false; dur: 35000"
     look-at="#player" target="healthPoints: 3" hit-handler>
 
-      <a-box shoot-ennemy shooter position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="315 -180 0" ></a-box>
+      <a-box shoot-ennemy shooter position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="340 -180 0" ></a-box>
     </a-entity>
+
     <a-entity gltf-model="#cyclops" animation-mixer id="cyclops2" scale="0.2 0.2 0.2" position="-24 0 17.5"  hit-handler>
       <a-box  position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="315 -180 0" ></a-box>
     </a-entity>
-    
-   
-   <!--
-      <a-entity gltf-model="#dragon" id="dragon" scale="1 1 1 " position="-24 0 0.5" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon2" scale="1 1 1 " position="-21.7 0 -15.2" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon3" scale="1 1 1 " position="-6.2 0 -24.2" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon4" scale="1 1 1 " position="0 0 -24.2" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon5" scale="1 1 1 " position="2.8 0 -3" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon6" scale="1 1 1 " position="-8.7 0 -3" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon7" scale="1 1 1 " position="-10.8 0 12" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon8" scale="1 1 1 " position="-2.8 0 12" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon9" scale="1 1 1 " position="12.3 0 16.3" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon10" scale="1 1 1 " position="24.7 0 19"  animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon11" scale="1 1 1 " position="15.1 0 5.9" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon12" scale="1 1 1 " position="12 0 -15" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon13" scale="1 1 1 " position="6.3 0 -9.3" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon14" scale="1 1 1 " position="-11.8 0 -9.3" animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity>
-      <a-entity gltf-model="#dragon" id="dragon15" scale="1 1 1 " position="24.4 0 -24.5"  animation-mixer look-at="#player" target="healthPoints: 3" hit-handler>
-      </a-entity> -->
-
-      <!-- <a-entity id="fin" gltf-model="#fini" scale="0.0075 0.0075 0.0075" position="20 0 -21" rotation="0 90 0" change-color-on-click=''>
-      </a-entity> -->
-
-      <!-- <a-box id="tourelle" position="-24 1.5 11.4" shoot-ennemy shooter rotation="0 180 0"></a-box> -->
-      
+  
       <!-- Maze -->
       <a-entity mazify> </a-entity>
 
@@ -385,7 +379,8 @@
     </a-scene>
     
   
-      <div id="time2" style="display: block;">0</div>
+      <div id="time2" style="display: block;"></div>
+      <div id="time4" style="display: block;"></div>
       
     <!-- Model Gagner -->
     <div id="finishDialog" class="modal mazify" style="display: none;">
@@ -430,11 +425,13 @@
       const departMinutes = 0.01
       let temps = departMinutes * 60
       
-      const timerElement = document.getElementById("timer")
+
+      const timerElement = document.getElementById("time4");
       
       setInterval(() => {
         let minutes = parseInt(temps / 60, 10) 
-      
+        secondes = parseInt(temps % 60, 10)
+        
         minutes = minutes < 10 ? "0" + minutes : minutes
         secondes = secondes < 10 ? "0" + secondes : secondes
       
@@ -443,7 +440,7 @@
       }, 1000)
       
       function save() {
-        var saisie = document.getElementById("timer").innerHTML;
+        var saisie = document.getElementById("time4").innerHTML;
         document.getElementById("temps").innerHTML = "Vous avez franchi la ligne d'arrivée en " + saisie;
       }
     </script>
