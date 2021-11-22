@@ -9,7 +9,7 @@ AFRAME.registerComponent('enemy', {
     // 1: behind bushes
     // 2: behind trees
     // 3: behind clouds
-    type: {default: 1}
+    type: { default: 1 }
   },
 
   /**
@@ -52,12 +52,12 @@ AFRAME.registerComponent('enemy', {
       // Depending the type of enemy, the further it is, the higher it has to rise.
       lift = this.data.type * 1.2;
       this.tweenAppear = new TWEEN.Tween(this.el.object3D.position)
-        .to({y: this.hidingPos + lift}, 500)
+        .to({ y: this.hidingPos + lift }, 500)
         .easing(TWEEN.Easing.Elastic.Out)
         .onComplete(this.endAppear.bind(this));
 
       this.tweenDisappear = new TWEEN.Tween(this.el.object3D.position)
-        .to({y: this.hidingPos}, 200)
+        .to({ y: this.hidingPos }, 200)
         .delay(1000)
         .easing(TWEEN.Easing.Cubic.Out)
         .onComplete(this.endDisappear.bind(this));
@@ -134,7 +134,7 @@ AFRAME.registerComponent('enemy', {
       this.el.object3D.visible = true;
       // After a random number of secs (2-5), appear again.
       setTimeout(this.appear.bind(this),
-                 2000 + Math.floor(Math.random() * 3000));
+        2000 + Math.floor(Math.random() * 3000));
     }, 300);
   }
 });

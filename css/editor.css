@@ -34,6 +34,7 @@
 .toolbar {
   margin-bottom: 10px;
 }
+
 .mazify-editor .btn {
   border: none;
   color: #fff;
@@ -51,6 +52,7 @@
 .mazify-editor .btn-blue {
   background-color: #2196f3;
 }
+
 .mazify-editor .btn-blue:hover {
   background-color: #42a5f5;
 }
@@ -58,6 +60,7 @@
 .mazify-editor .btn-teal {
   background-color: #009688;
 }
+
 .mazify-editor .btn-teal:hover {
   background-color: #80cbc4;
 }
