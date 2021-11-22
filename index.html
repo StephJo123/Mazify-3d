@@ -103,7 +103,7 @@
                   
                   if (!document.getElementById('tinterrupteur').getAttribute('visible')){
                     if (--timer < 0) {
-                      document.getElementById("finishDialog").style.display = "block";
+                      document.getElementById("BombeDialogue").style.display = "block";
                       document.querySelector('a-scene').exitVR();
 
                   }
@@ -112,7 +112,7 @@
 
               setTimeout(function(){
                 clearInterval(monInter);
-              }, 32000);
+              }, 31000);
                 
               }
               
@@ -122,7 +122,9 @@
                 startTimer(fiveMinutes, display);
 
                 document.getElementById('interrupteur2').addEventListener('click', function (evt) {
+                  document.getElementById("compteur").setAttribute("visible", "false");
                   document.getElementById('tinterrupteur').setAttribute('visible',"true");
+                  
                 });
             }
           }
@@ -386,13 +388,13 @@
   
       <div id="time2" style="display: block;">0</div>
       
-    <!-- The Modal -->
+    <!-- Model Gagner -->
     <div id="finishDialog" class="modal mazify" style="display: none;">
       <!-- Modal content -->
       <div class="modal-content">
         <div class="modal-header">
           <span class="close" onclick="cont()">&times;</span>
-          <h2>T'est Mort</h2>
+          <h2>Terminé</h2>
         </div>
         <div class="modal-body">
           <p>Félicitation</p>
@@ -406,9 +408,29 @@
         </div>
       </div>
     </div>
+
+    <!-- Model Bombe -->
+    <div id="BombeDialogue" class="modal mazify" style="display: none;">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" onclick="cont()">&times;</span>
+          <h2>Perdu !</h2>
+        </div>
+        <div class="modal-body">
+          <p>La Bombe a explosé</p>
+         
+          <p id="temps"></p>
+        </div>
+        <div class="modal-footer">
+          <h3></h3>
+          <button class="button" onclick="reset()">Rejouer</button>
+        </div>
+      </div>
+    </div>
     <script>
       
-     /* const departMinutes = 0.01
+      const departMinutes = 0.01
       let temps = departMinutes * 60
       
       const timerElement = document.getElementById("timer")
@@ -426,7 +448,7 @@
       function save() {
         var saisie = document.getElementById("timer").innerHTML;
         document.getElementById("temps").innerHTML = "Vous avez franchi la ligne d'arrivée en " + saisie;
-      }*/
+      }
     </script>
   </body>
 </html>
