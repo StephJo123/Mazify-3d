@@ -136,7 +136,7 @@ AFRAME.registerComponent('hit-handler', {
         var el = this.el;
 
         el.addEventListener('hit', () => {
-            document.getElementById("finishDialog").style.display = "block";
+            
         });
 
         el.addEventListener('die', () => {
