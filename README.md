@@ -1,4 +1,4 @@
-# mazify-3d
+# Mazify-3d
 
 Maze editor and 3d maze vizualization using A-Frame and Vue.js
 
