@@ -12,7 +12,6 @@
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
   <script src="js/mazify.js"></script>
   <script src="js/player.js"></script>
-  <script src="THREE.MeshLine.js"></script>
   <script>
     var bombactive = false;
     /* Permet de tirer */
@@ -143,6 +142,8 @@
 
         if (abs(pos.x - posSphere.x) < 2) {
           if (abs(pos.z - posSphere.z) < 2) {
+            clearInterval(mainCounter);
+            document.getElementById('finishDialog').childNodes[3].childNodes[3].childNodes[1].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
             document.getElementById("finishDialog").style.display = "block";
             document.querySelector('a-scene').exitVR();
           }
@@ -389,7 +390,6 @@
       <div class="modal-footer">
         <h3></h3>
         <button class="button" onclick="reset()">Rejouer</button>
-        <button class="button" onclick="save()">Afficher score</button>
       </div>
     </div>
   </div>
@@ -414,12 +414,12 @@
     </div>
   </div>
   <script>
-
+    // compteur principal
     const departMinutes = 0.01
     let temps = departMinutes * 60
     var secondes = 0;
 
-    setInterval(() => {
+    var mainCounter = setInterval(() => {
       let minutes = parseInt(temps / 60, 10)
 
       minutes = minutes < 10 ? "0" + minutes : minutes
@@ -427,11 +427,6 @@
 
       temps = temps <= 0 ? 0 : temps + 1
     }, 1000)
-
-    function save() {
-      var saisie = document.getElementById("timer").innerHTML;
-      document.getElementById("temps").innerHTML = "Vous avez franchi la ligne d'arrivée en " + saisie;
-    }
   </script>
 </body>
 
