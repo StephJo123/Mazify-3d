@@ -8,6 +8,13 @@ AFRAME.registerComponent('click-to-shoot', {
     }
 });
 
+/* Joue la musique d'ambiance */
+document.addEventListener('click', musicPlay);
+function musicPlay() {
+  document.getElementById('musique').play();
+  document.removeEventListener('click', musicPlay);
+} 
+
 /* Son de l'arme quand elle tire */
 AFRAME.registerComponent('audiohandler', {
     init: function () {
@@ -53,6 +60,8 @@ AFRAME.registerComponent('trackball', {
         if (abs(pos.x - posSphere.x) < 4) {
             if (abs(pos.z - posSphere.z) < 4) {
                 bombactive = true;
+                document.getElementById('musique').pause(); 
+                document.getElementById('countdown').play(); 
                 document.getElementById("tbombe").setAttribute("visible", "true");
                 document.getElementById("compteur").setAttribute("visible", "true");
 
@@ -86,6 +95,8 @@ AFRAME.registerComponent('trackball', {
                 startTimer(fiveMinutes, display);
 
                 document.getElementById('interrupteur2').addEventListener('click', function () {
+                    document.getElementById('countdown').pause();
+                    document.getElementById('musique').play(); 
                     document.getElementById("compteur").setAttribute("visible", "false");
                     document.getElementById('tinterrupteur').setAttribute('visible', "true");
                 });
@@ -144,31 +155,5 @@ AFRAME.registerComponent('shoot-ennemy', {
         setInterval(function () {
             enemy.emit('shoot');
         }, 1000);
-    }
-});
-
-AFRAME.registerComponent('emit-when-colliding', {
-    schema: {
-        target: { type: 'selector', default: '#player' },
-        distance: { type: 'number', default: 1 },
-        event: { type: 'string', default: 'collided' }
-    },
-    init: function () {
-        this.tick = AFRAME.utils.throttleTick(this.checkDist, 200, this);
-        this.emiting = false;
-    },
-    checkDist: function () {
-        let myPos = new THREE.Vector3(0, 0, 0);
-        let targetPos = new THREE.Vector3(0, 0, 0);
-        this.el.object3D.getWorldPosition(myPos);
-        this.data.target.object3D.getWorldPosition(targetPos);
-        let distanceTo = myPos.distanceTo(targetPos);
-        if (distanceTo < this.data.distance && !this.emiting) {
-            this.emiting = true;
-            this.el.emit(this.data.event, { collidingEntity: this.data.target }, false);
-            this.data.target.emit(this.data.event, { collidingEntity: this.el }, false);
-        } else {
-            this.emiting = false;
-        }
     }
 });
