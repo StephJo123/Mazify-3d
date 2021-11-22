@@ -81,6 +81,7 @@ AFRAME.registerComponent('trackball', {
 
                         if (!document.getElementById('tinterrupteur').getAttribute('visible')) {
                             if (--timer < 0) {
+                                document.getElementById('countdown').pause(); 
                                 document.getElementById("BombeDialogue").style.display = "block";
                                 document.querySelector('a-scene').exitVR();
                                 clearInterval(monInter);
