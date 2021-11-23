@@ -1,9 +1,16 @@
 var bombactive = false;
+var nbTirs = 10;
 /* Permet de tirer */
 AFRAME.registerComponent('click-to-shoot', {
     init: function () {
         document.body.addEventListener('mousedown', () => {
-            this.el.emit('shoot');
+            if(nbTirs > 0) {
+                this.el.emit('shoot');
+                let audio = document.querySelector("#sonArme");
+                audio.play();
+                audio.currentTime = 0;
+                nbTirs -= 1;
+            }
         });
     }
 });
@@ -16,15 +23,15 @@ function musicPlay() {
 } 
 
 /* Son de l'arme quand elle tire */
-AFRAME.registerComponent('audiohandler', {
-    init: function () {
-        let audio = document.querySelector("#sonArme");
-        this.el.addEventListener('click', () => {
-            audio.play();
-            audio.currentTime = 0;
-        });
-    }
-});
+// AFRAME.registerComponent('audiohandler', {
+//     init: function () {
+//         let audio = document.querySelector("#sonArme");
+//         this.el.addEventListener('click', () => {
+//             audio.play();
+//             audio.currentTime = 0;
+//         });
+//     }
+// });
 
 AFRAME.registerComponent('collision', {
 
