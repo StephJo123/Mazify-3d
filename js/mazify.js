@@ -86,9 +86,6 @@ AFRAME.registerComponent("mazify", {
 })
 
 function reset() {
-    // let finishDlgElm = document.querySelector("#finishDialog")
-    // finishDlgElm.setAttribute("style", "display: none");
-
     location.reload();
 }
 
