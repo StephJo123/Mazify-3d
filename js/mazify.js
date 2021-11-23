@@ -88,7 +88,6 @@ function reset() {
     location.reload();
 }
 
-function cont() {
-    let finishDlgElm = document.querySelector("#finishDialog")
-    finishDlgElm.setAttribute("style", "display: none");
+function closeDialog(spanClose) {
+    spanClose.closest('div.modal').setAttribute("style", "display: none");
 }
