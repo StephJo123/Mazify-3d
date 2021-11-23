@@ -1,5 +1,6 @@
 var bombactive = false;
 var nbTirs = 10;
+boxx = -0.25;
 /* Permet de tirer */
 AFRAME.registerComponent('click-to-shoot', {
     init: function () {
@@ -163,5 +164,23 @@ AFRAME.registerComponent('shoot-ennemy', {
         setInterval(function () {
             enemy.emit('shoot');
         }, 1000);
+    }
+});
+
+AFRAME.registerComponent('munitions', {
+    init: function () {
+        let camera = document.getElementById('camera');
+        for(var i=0;i<5;i++){
+          let balle = document.createElement('a-image');
+          camera.appendChild(balle);
+          balle.setAttribute('src', '#bullet');
+          balle.setAttribute('id','ooooooo');
+          balle.setAttribute('position',{x: boxx, y:1, z: -2});
+          balle.setAttribute('scale',{x: 10, y: 10, z: 10});
+          balle.setAttribute('scale',{x: 0.01, y:0.01, z: 0.01});
+          balle.setAttribute('height', '14');
+          balle.setAttribute('width', '3');
+          boxx = boxx + 0.1
+        }
     }
 });
