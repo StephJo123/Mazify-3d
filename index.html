@@ -31,6 +31,7 @@
       <img id="redsky" src="assets/t.jpg">
       <img id="texteBombe" src="assets/textebombe.png">
       <img id="texteInterrupteur" src="assets/texteInterrupteur.png">
+      <img id="texteTeleportation" src="assets/textetp.png">
       <a-asset-item id="interrupteur" src="assets/light_switch/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
       <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
@@ -114,9 +115,9 @@
     </a-entity>
 
     <a-circle id="boxTp" material="color: black; opacity: 0.5; transparent: true" position="-27 1.2 11"></a-circle>
-    <a-entity position="-27 2.4 11" geometry="primitive: box; width: 0.9; height: 0.2; depth: 0.05"
-      material="color: #5A3314">
-      <a-entity text="value: Portail de teleportation" position="0.15 0 0.025"></a-entity>
+    <a-image src="#texteTeleportation" id="txttp" position="-26.900 2.75 11.025" rotation="0 0 0" scale="0.09 0.09 0.09"
+      height="8" width="20" visible="true"
+      animation="property: position; to: -26.900 2.6 11.025; loop: true; dur: 4000; dir: alternate"></a-image>
     </a-entity>
 
     <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
