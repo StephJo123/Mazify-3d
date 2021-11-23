@@ -1,25 +1,21 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Mazify 3D</title>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta name="description" content="Mazify 3D" />
-    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
-    <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
-    <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
-    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script> 
-    <script src="js/mazify.js"></script>
-    <script src="js/player.js"></script>
-    <script src="js/aframe-component.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css?family=Spartan&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
+
+<head>
+  <title>Mazify 3D</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="description" content="Mazify 3D" />
+  <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+  <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <script src="js/mazify.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/aframe-component.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="assets/maze.png" />
 </head>
 
 <body style="background-color: #222222">
@@ -29,7 +25,6 @@
     <a-assets>
       <img id="ground" src="assets/sol.jpg" />
       <img id="wall" src="assets/test.jpg" />
-      <img id="ball" src="assets/ball.jpg" />
       <img id="red-carpet" src="assets/red-carpet.jpg" />
       <img id="start" src="assets/start.jpg" />
       <img id="finish" src="assets/finish.jpg" />
@@ -61,7 +56,8 @@
     <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="100" width="100"></a-plane>
 
     <!-- Logo UCA -->
-    <a-image src="#logoUCA" id="logo" position="-27 1.4 16.55" rotation="0 0 0" scale="0.09 0.13 0.09" height="8" width="20"></a-image>
+    <a-image src="#logoUCA" id="logo" position="-27 1.4 16.55" rotation="0 0 0" scale="0.09 0.13 0.09" height="8"
+      width="20"></a-image>
 
     <!--Interrupteur-->
     <a-entity gltf-model="#interrupteur" id="interrupteur2" onclick="" trackball scale="15 15 15"
@@ -95,9 +91,9 @@
 
     <!-- Caméra Rig -->
     <a-entity id="player" player listener movement-controls="constrainToNavMesh: true" position="0 1.6 0"
-    animation__teleportx="property: object3D.position.x; to: 0; dur: 10; easing: linear; startEvents: teleport"                
-    animation__teleportz="property: object3D.position.z; to: 1; dur: 10; easing: linear; startEvents: teleport"    
-    trackball trackballfinish collision>
+      animation__teleportx="property: object3D.position.x; to: 0; dur: 10; easing: linear; startEvents: teleport"
+      animation__teleportz="property: object3D.position.z; to: 1; dur: 10; easing: linear; startEvents: teleport"
+      trackball trackballfinish collision>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
         <a-cursor></a-cursor>
@@ -118,73 +114,71 @@
     </a-entity>
 
     <a-circle id="boxTp" material="color: black; opacity: 0.5; transparent: true" position="-27 1.2 11"></a-circle>
-    <a-entity position="-27 2.4 11" geometry="primitive: box; width: 0.9; height: 0.2; depth: 0.05" material="color: #5A3314">
+    <a-entity position="-27 2.4 11" geometry="primitive: box; width: 0.9; height: 0.2; depth: 0.05"
+      material="color: #5A3314">
       <a-entity text="value: Portail de teleportation" position="0.15 0 0.025"></a-entity>
     </a-entity>
 
-      <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
-      </a-entity>
-
-    <a-entity gltf-model="#cyclops" animation-mixer id="cyclops" scale="0.2 0.2 0.2" position="-1.198 0 23.962" rotation="0 -90 0" 
-    animation="property: position; to: -22.5 0 23.962; loop: false; dur: 35000"
-    look-at="#player" target="healthPoints: 3" hit-handler>
-
-      <a-box shoot-ennemy shooter position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="340 -180 0" ></a-box>
+    <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
     </a-entity>
 
-    <a-entity gltf-model="#cyclops" animation-mixer id="cyclops2" scale="0.2 0.2 0.2" position="-24 0 17.5"  hit-handler>
-      <a-box  position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="315 -180 0" ></a-box>
-    </a-entity>
-  
-      <!-- Maze -->
-      <a-entity mazify> </a-entity>
+    <a-entity gltf-model="#cyclops" animation-mixer id="cyclops" scale="0.2 0.2 0.2" position="-1.198 0 23.962"
+      rotation="0 -90 0" animation="property: position; to: -22.5 0 23.962; loop: false; dur: 35000" look-at="#player"
+      target="healthPoints: 3" hit-handler>
 
-      <!-- Finish -->
-      
-    </a-scene>
-    
-  
-      <div id="time2" style="display: block;"></div>
-      <div id="time4" style="display: block;"></div>
-      
-    <!-- Model Gagner -->
-    <div id="finishDialog" class="modal mazify" style="display: none;">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close" onclick="cont()">&times;</span>
-          <h2>Terminé</h2>
-        </div>
-        <div class="modal-body">
-          <p>Félicitation</p>
-         
-          <p id="temps"></p>
-        </div>
-        <div class="modal-footer">
-          <h3></h3>
-          <button class="button" onclick="reset()">Rejouer</button>
-        </div>
+      <a-box shoot-ennemy shooter position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="340 -180 0"></a-box>
+    </a-entity>
+
+    <a-entity gltf-model="#cyclops" animation-mixer id="cyclops2" scale="0.2 0.2 0.2" position="-24 0 17.5" hit-handler>
+      <a-box position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="315 -180 0"></a-box>
+    </a-entity>
+
+    <!-- Maze -->
+    <a-entity mazify> </a-entity>
+
+    <!-- Finish -->
+
+  </a-scene>
+
+  <div id="time2" style="display: block;"></div>
+  <div id="time4" style="display: block;"></div>
+
+  <!-- Model Gagner -->
+  <div id="finishDialog" class="modal mazify" style="display: none;">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" onclick="cont()">&times;</span>
+        <h2>Terminé</h2>
+      </div>
+      <div class="modal-body">
+        <p>Félicitation</p>
+        <p id="temps"></p>
+      </div>
+      <div class="modal-footer">
+        <h3></h3>
+        <button class="button" onclick="reset()">Rejouer</button>
       </div>
     </div>
-    <!-- Model Bombe -->
-    <div id="BombeDialogue" class="modal mazify" style="display: none;">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close" onclick="cont()">&times;</span>
-          <h2>Perdu !</h2>
-        </div>
-        <div class="modal-body">
-          <p>La Bombe a explosé</p>
-         
-          <p id="temps"></p>
-        </div>
-        <div class="modal-footer">
-          <h3></h3>
-          <button class="button" onclick="reset()">Rejouer</button>
-        </div>
+  </div>
+  <!-- Model Bombe -->
+  <div id="BombeDialogue" class="modal mazify" style="display: none;">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" onclick="cont()">&times;</span>
+        <h2>Perdu !</h2>
+      </div>
+      <div class="modal-body">
+        <p>La Bombe a explosé</p>
+        <p id="temps"></p>
+      </div>
+      <div class="modal-footer">
+        <h3></h3>
+        <button class="button" onclick="reset()">Rejouer</button>
       </div>
     </div>
+  </div>
   <script>
     // compteur principal
     const departMinutes = 0.01
@@ -201,4 +195,5 @@
     }, 1000)
   </script>
 </body>
+
 </html>
