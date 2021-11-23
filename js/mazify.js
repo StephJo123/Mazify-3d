@@ -38,7 +38,6 @@ AFRAME.registerComponent("mazify", {
                     wall.setAttribute('depth', maze_size);
                     wall.setAttribute('position', position);
 
-
                     wall.setAttribute('color', '#fff');
                     wall.setAttribute('material', 'src: #wall; repeat: 2 1');
                 }
