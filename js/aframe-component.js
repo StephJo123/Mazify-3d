@@ -16,7 +16,7 @@ AFRAME.registerComponent('click-to-shoot', {
                 if(tirAutorise) {
                     this.el.emit('shoot');
                     $('balle'+(nbTirs-1)).remove();
-                    let audio = document.querySelector("#sonArme");
+                    let audio = $('sonArme');
                     audio.play();
                     audio.currentTime = 0;
                     nbTirs -= 1;
@@ -46,7 +46,7 @@ AFRAME.registerComponent('collision', {
       if (Math.abs(pos.x-posSphere.x) < 0.7 ) {
         if(Math.abs(pos.z-posSphere.z) < 0.7) {
           this.el.setAttribute('position', { x: -2.76, y: 1.6, z:-2.1 });
-          let audio = document.querySelector("#sonTeleportation").play();
+          $('sonTeleportation').play();
         }
       }
     }
@@ -60,7 +60,7 @@ AFRAME.registerComponent('trackball', {
 
         let pos = this.el.getAttribute("position");
 
-        let posSphere = document.querySelector("a-sphere").getAttribute("position");
+        let posSphere = document.querySelector('a-sphere').getAttribute("position");
         if (Math.abs(pos.x - posSphere.x) < 4) {
             if (Math.abs(pos.z - posSphere.z) < 4) {
                 bombactive = true;
@@ -120,7 +120,7 @@ AFRAME.registerComponent('trackballfinish', {
         if (Math.abs(pos.x - posSphere.x) < 2) {
             if (Math.abs(pos.z - posSphere.z) < 2) {
                 clearInterval(mainCounter);
-                $('finishDialog').childNodes[3].childNodes[3].childNodes[1].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
+                $('finishDialog').children[0].children[1].children[0].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
                 $('finishDialog').style.display = "block";
                 document.querySelector('a-scene').exitVR();
             }
@@ -175,7 +175,7 @@ AFRAME.registerComponent('munitions', {
           balle.setAttribute('scale',{x: 0.01, y:0.01, z: 0.01});
           balle.setAttribute('height', '14');
           balle.setAttribute('width', '3');
-          posBalleX = posBalleX + 0.1;
+          posBalleX += 0.1;
         }
     }
 });
