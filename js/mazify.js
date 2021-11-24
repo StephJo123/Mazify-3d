@@ -68,7 +68,6 @@ AFRAME.registerComponent("mazify", {
 
                     tile.setAttribute('position', { x: position.x, y: 0, z: position.z });
 
-
                     tile.setAttribute('material', 'src: #finish');
                     tile.setAttribute('id', 'finish-tile');
                 }
