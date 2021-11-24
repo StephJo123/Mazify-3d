@@ -1,9 +1,27 @@
 var bombactive = false;
+var nbTirs = 5;
+var posBalleX = -0.25;
+var test = 0;
+var tirAutorise = true;
+
 /* Permet de tirer */
 AFRAME.registerComponent('click-to-shoot', {
     init: function () {
         document.body.addEventListener('mousedown', () => {
-            this.el.emit('shoot');
+            if(nbTirs != 0) {
+                if(tirAutorise == true) {
+                    this.el.emit('shoot');
+                    console.log(nbTirs-1);
+                    document.getElementById("balle"+(nbTirs-1)).remove();
+                    let audio = document.querySelector("#sonArme");
+                    audio.play();
+                    audio.currentTime = 0;
+                    nbTirs -= 1;
+                    tirAutorise = false;
+                } else {
+                    tirAutorise = true;
+                }
+            }
         });
     }
 });
@@ -14,17 +32,6 @@ function musicPlay() {
     document.getElementById('musique').play();
     document.removeEventListener('click', musicPlay);
 }
-
-/* Son de l'arme quand elle tire */
-AFRAME.registerComponent('audiohandler', {
-    init: function () {
-        let audio = document.querySelector("#sonArme");
-        this.el.addEventListener('click', () => {
-            audio.play();
-            audio.currentTime = 0;
-        });
-    }
-});
 
 AFRAME.registerComponent('collision', {
 
@@ -159,5 +166,23 @@ AFRAME.registerComponent('shoot-ennemy', {
         setInterval(function () {
             enemy.emit('shoot');
         }, 1000);
+    }
+});
+
+AFRAME.registerComponent('munitions', {
+    init: function () {
+        let camera = document.getElementById('camera');
+        for(var i=0;i<nbTirs;i++){
+          let balle = document.createElement('a-image');
+          camera.appendChild(balle);
+          balle.setAttribute('src', '#bullet');
+          balle.setAttribute('id','balle'+i);
+          balle.setAttribute('position',{x: posBalleX, y:1, z: -2});
+          balle.setAttribute('scale',{x: 10, y: 10, z: 10});
+          balle.setAttribute('scale',{x: 0.01, y:0.01, z: 0.01});
+          balle.setAttribute('height', '14');
+          balle.setAttribute('width', '3');
+          posBalleX = posBalleX + 0.1;
+        }
     }
 });

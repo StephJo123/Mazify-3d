@@ -46,6 +46,7 @@
       <a-asset-item id="human" src="assets/super_human/scene.gltf"></a-asset-item>
       <audio id="countdown" src="sounds/countdown.mp3"></audio>
       <img id="logoUCA" src="assets/logo_UCA.jpg">
+      <img id="bullet" src="assets/bullets.png">
     </a-assets>
 
     <!-- Environment -->
@@ -89,8 +90,6 @@
 
     <!-- Caméra Rig -->
     <a-entity id="player" player listener movement-controls="constrainToNavMesh: true" position="0 1.6 0"
-      animation__teleportx="property: object3D.position.x; to: 0; dur: 10; easing: linear; startEvents: teleport"
-      animation__teleportz="property: object3D.position.z; to: 1; dur: 10; easing: linear; startEvents: teleport"
       trackball trackballfinish collision>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
@@ -103,10 +102,10 @@
       </a-entity>
       <!-- Main droite -->
       <a-entity oculus-touch-controls="hand: right"
-        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3" shooter="activeBulletType: normal"
+        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3"
         position="0.5 -0.7 -1.2" class="vr-except">
         <!-- Pistolet -->
-        <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot shooter></a-entity>
+        <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot munitions shooter></a-entity>
       </a-entity>
 
     </a-entity>
@@ -178,6 +177,13 @@
     </div>
   </div>
   <script>
+    let data = {
+    	"data": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, "f", 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, "s", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        "height": 20,
+        "width": 20
+    }
+    localStorage.setItem("maze-data", JSON.stringify(data));
+  
     // compteur principal
     const departMinutes = 0.01
     let temps = departMinutes * 60
