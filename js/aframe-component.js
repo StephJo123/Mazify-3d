@@ -129,12 +129,20 @@ AFRAME.registerComponent('openlootbox', {
             }
             event.target.setAttribute('animation-mixer', 'timeScale: 1;');
             event.target.setAttribute('animation-mixer', { clip: "*", loop: "repeat", repetitions: 1 });
+
+            if (event.target === lootbox1) {
+                document.getElementById('tbonus1').setAttribute('visible', true);
+                const munitionsBonus = randomIntFromInterval(1, 6);
+                addAmmo(munitionsBonus);
+            }
+
             delay(function () {
                 event.target.remove();
             }, 800);
         });
     }
 });
+
 // fonction qui ajoute un délai avant la disparition de la lootbox
 var delay = (function () {
     var timer = 0;
@@ -143,6 +151,29 @@ var delay = (function () {
         timer = setTimeout(callback, ms);
     };
 })();
+
+// notion de génération aléatoire
+function randomIntFromInterval(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+// fonction qui ajoute un nombre de munitions de façon aléatoire
+var addAmmo = function (munitionsBonus) {
+    let camera = document.getElementById('camera');
+    for (var i = nbTirs; i < munitionsBonus; i++) {
+        let balle = document.createElement('a-image');
+        camera.appendChild(balle);
+        balle.setAttribute('src', '#bullet');
+        balle.setAttribute('id', 'balle' + i);
+        balle.setAttribute('position', { x: posBalleX, y: 1, z: -2 });
+        balle.setAttribute('scale', { x: 10, y: 10, z: 10 });
+        balle.setAttribute('scale', { x: 0.01, y: 0.01, z: 0.01 });
+        balle.setAttribute('height', '14');
+        balle.setAttribute('width', '3');
+        posBalleX = posBalleX + 0.1;
+        nbTirs = munitionsBonus;
+    }
+};
 
 AFRAME.registerComponent('trackballfinish', {
     tick: function () {

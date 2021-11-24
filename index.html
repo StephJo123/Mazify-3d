@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Mazify 3D</title>
+  <title>Mazify - 3D</title>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
   <meta name="description" content="Mazify 3D" />
   <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
@@ -32,6 +32,7 @@
       <img id="texteBombe" src="assets/textebombe.png">
       <img id="texteInterrupteur" src="assets/texteInterrupteur.png">
       <img id="texteTeleportation" src="assets/textetp.png">
+      <img id="texteBonusMunitions" src="assets/texteBonus1.png">
       <a-asset-item id="interrupteur" src="assets/light_switch/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
       <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
@@ -137,6 +138,11 @@
       animation-mixer="timeScale: 0;" visible="true"></a-entity>
     <a-entity gltf-model="#loot_box" id="lootbox2" openlootbox scale="0.07 0.07 0.07" position="-6.077 -0.019 -23.955"
       animation-mixer="timeScale: 0;" visible="true"></a-entity>
+
+    <!-- lootboxes messages -->
+    <a-image src="#texteBonusMunitions" id="tbonus1" position="1.471 1.848 -23.995" rotation="0 -90 0"
+      scale="0.09 0.09 0.09" height="8" width="20" visible="false"
+      animation="property: position; to: 1.471 1.950 -23.995; loop: true; dur: 4000; dir: alternate"></a-image>
 
     <!-- Maze -->
     <a-entity mazify> </a-entity>
