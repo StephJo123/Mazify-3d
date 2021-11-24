@@ -4,6 +4,10 @@ var posBalleX = -0.25;
 var test = 0;
 var tirAutorise = true;
 
+function $(v){
+return document.getElementById(v);
+}
+
 /* Permet de tirer */
 AFRAME.registerComponent('click-to-shoot', {
     init: function () {
@@ -11,7 +15,7 @@ AFRAME.registerComponent('click-to-shoot', {
             if(nbTirs != 0) {
                 if(tirAutorise) {
                     this.el.emit('shoot');
-                    document.getElementById("balle"+(nbTirs-1)).remove();
+                    $('balle'+(nbTirs-1)).remove();
                     let audio = document.querySelector("#sonArme");
                     audio.play();
                     audio.currentTime = 0;
@@ -28,7 +32,7 @@ AFRAME.registerComponent('click-to-shoot', {
 /* Joue la musique d'ambiance */
 document.addEventListener('click', musicPlay);
 function musicPlay() {
-  document.getElementById('musique').play();
+  $('musique').play();
   document.removeEventListener('click', musicPlay);
 } 
 
@@ -37,7 +41,7 @@ AFRAME.registerComponent('collision', {
     tick: function() {
       let pos = this.el.getAttribute("position");
       
-      let posSphere = document.getElementById("boxTp").getAttribute("position");
+      let posSphere = $('boxTp').getAttribute("position");
 
       if (Math.abs(pos.x-posSphere.x) < 0.7 ) {
         if(Math.abs(pos.z-posSphere.z) < 0.7) {
@@ -60,17 +64,17 @@ AFRAME.registerComponent('trackball', {
         if (Math.abs(pos.x - posSphere.x) < 4) {
             if (Math.abs(pos.z - posSphere.z) < 4) {
                 bombactive = true;
-                document.getElementById('musique').pause(); 
-                document.getElementById('countdown').play(); 
-                document.getElementById("tbombe").setAttribute("visible", "true");
-                document.getElementById("compteur").setAttribute("visible", "true");
+                $('musique').pause(); 
+                $('countdown').play(); 
+                $('tbombe').setAttribute("visible", "true");
+                $('compteur').setAttribute("visible", "true");
 
                 var monInter;
                 function startTimer(duration, display) {
                     var timer = duration,
                         minutes, seconds;
                         monInter = setInterval(function () {
-                        document.getElementById("compteur").setAttribute("text", "value: " + timer + ";");
+                        $('compteur').setAttribute("text", "value: " + timer + ";");
                         minutes = parseInt(timer / 60, 10)
                         seconds = parseInt(timer % 60, 10);
 
@@ -79,10 +83,10 @@ AFRAME.registerComponent('trackball', {
 
                         display.textContent = minutes + ":" + seconds;
 
-                        if (!document.getElementById('tinterrupteur').getAttribute('visible')) {
+                        if (!$('tinterrupteur').getAttribute('visible')) {
                             if (--timer < 0) {
-                                document.getElementById('countdown').pause(); 
-                                document.getElementById("BombeDialogue").style.display = "block";
+                                $('countdown').pause(); 
+                                $('BombeDialogue').style.display = "block";
                                 document.querySelector('a-scene').exitVR();
                                 clearInterval(monInter);
                             }
@@ -92,16 +96,16 @@ AFRAME.registerComponent('trackball', {
 
 
                 var fiveMinutes = 30,
-                display = document.getElementById("time2");
+                display = $('time2');
                 startTimer(fiveMinutes, display);
 
-                document.getElementById('interrupteur2').addEventListener('click', function () {
+                $('interrupteur2').addEventListener('click', function () {
                     // stop le compteur pour éviter de continuer le calcul
                     clearInterval(monInter);
-                    document.getElementById('countdown').pause();
-                    document.getElementById('musique').play(); 
-                    document.getElementById("compteur").setAttribute("visible", "false");
-                    document.getElementById('tinterrupteur').setAttribute('visible', "true");
+                    $('countdown').pause();
+                    $('musique').play(); 
+                    $('compteur').setAttribute("visible", "false");
+                    $('tinterrupteur').setAttribute('visible', "true");
                 });
             }
         }
@@ -111,13 +115,13 @@ AFRAME.registerComponent('trackball', {
 AFRAME.registerComponent('trackballfinish', {
     tick: function () {
         let pos = this.el.getAttribute("position");
-        let posSphere = document.getElementById("fini2").getAttribute("position");
+        let posSphere = $('fini2').getAttribute("position");
 
         if (Math.abs(pos.x - posSphere.x) < 2) {
             if (Math.abs(pos.z - posSphere.z) < 2) {
                 clearInterval(mainCounter);
-                document.getElementById('finishDialog').childNodes[3].childNodes[3].childNodes[1].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
-                document.getElementById("finishDialog").style.display = "block";
+                $('finishDialog').childNodes[3].childNodes[3].childNodes[1].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
+                $('finishDialog').style.display = "block";
                 document.querySelector('a-scene').exitVR();
             }
         }
@@ -160,7 +164,7 @@ AFRAME.registerComponent('shoot-ennemy', {
 
 AFRAME.registerComponent('munitions', {
     init: function () {
-        let camera = document.getElementById('camera');
+        let camera = $('camera');
         for(var i=0;i<nbTirs;i++){
           let balle = document.createElement('a-image');
           camera.appendChild(balle);
