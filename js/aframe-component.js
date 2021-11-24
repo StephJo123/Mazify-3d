@@ -3,6 +3,7 @@ var nbTirs = 5;
 var posBalleX = -0.25;
 var test = 0;
 var tirAutorise = true;
+var tpAutorise = false;
 
 /* Permet de tirer */
 AFRAME.registerComponent('click-to-shoot', {
@@ -41,8 +42,10 @@ AFRAME.registerComponent('collision', {
 
       if (Math.abs(pos.x-posSphere.x) < 0.7 ) {
         if(Math.abs(pos.z-posSphere.z) < 0.7) {
-          this.el.setAttribute('position', { x: -2.76, y: 1.6, z:-2.1 });
-          let audio = document.querySelector("#sonTeleportation").play();
+            if(tpAutorise == true) {
+                this.el.setAttribute('position', { x: -2.76, y: 1.6, z:-2.1 });
+                let audio = document.querySelector("#sonTeleportation").play();
+            }
         }
       }
     }
@@ -102,6 +105,8 @@ AFRAME.registerComponent('trackball', {
                     document.getElementById('musique').play(); 
                     document.getElementById("compteur").setAttribute("visible", "false");
                     document.getElementById('tinterrupteur').setAttribute('visible', "true");
+                    document.getElementById('tbombe').setAttribute('visible', "true");
+                    tpAutorise = true;
                 });
             }
         }
