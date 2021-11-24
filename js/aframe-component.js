@@ -8,11 +8,11 @@ var tirAutorise = true;
 AFRAME.registerComponent('click-to-shoot', {
     init: function () {
         document.body.addEventListener('mousedown', () => {
-            if(nbTirs != 0) {
-                if(tirAutorise == true) {
+            if (nbTirs != 0) {
+                if (tirAutorise == true) {
                     this.el.emit('shoot');
-                    console.log(nbTirs-1);
-                    document.getElementById("balle"+(nbTirs-1)).remove();
+                    console.log(nbTirs - 1);
+                    document.getElementById("balle" + (nbTirs - 1)).remove();
                     let audio = document.querySelector("#sonArme");
                     audio.play();
                     audio.currentTime = 0;
@@ -116,6 +116,34 @@ AFRAME.registerComponent('trackball', {
     }
 });
 
+// fonction pour les lootboxes
+AFRAME.registerComponent('openlootbox', {
+    init: function () {
+        const lootbox1 = document.getElementById('lootbox1');
+        const lootbox2 = document.getElementById('lootbox2');
+
+        // si une lootbox est touchée, on l'ouvre, puis la supprime...
+        document.addEventListener('click', event => {
+            if (event.target !== lootbox1 && event.target !== lootbox2) {
+                return;
+            }
+            event.target.setAttribute('animation-mixer', 'timeScale: 1;');
+            event.target.setAttribute('animation-mixer', { clip: "*", loop: "repeat", repetitions: 1 });
+            delay(function () {
+                event.target.remove();
+            }, 800);
+        });
+    }
+});
+// fonction qui ajoute un délai avant la disparition de la lootbox
+var delay = (function () {
+    var timer = 0;
+    return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+
 AFRAME.registerComponent('trackballfinish', {
     tick: function () {
         function abs(val) {
@@ -172,17 +200,17 @@ AFRAME.registerComponent('shoot-ennemy', {
 AFRAME.registerComponent('munitions', {
     init: function () {
         let camera = document.getElementById('camera');
-        for(var i=0;i<nbTirs;i++){
-          let balle = document.createElement('a-image');
-          camera.appendChild(balle);
-          balle.setAttribute('src', '#bullet');
-          balle.setAttribute('id','balle'+i);
-          balle.setAttribute('position',{x: posBalleX, y:1, z: -2});
-          balle.setAttribute('scale',{x: 10, y: 10, z: 10});
-          balle.setAttribute('scale',{x: 0.01, y:0.01, z: 0.01});
-          balle.setAttribute('height', '14');
-          balle.setAttribute('width', '3');
-          posBalleX = posBalleX + 0.1;
+        for (var i = 0; i < nbTirs; i++) {
+            let balle = document.createElement('a-image');
+            camera.appendChild(balle);
+            balle.setAttribute('src', '#bullet');
+            balle.setAttribute('id', 'balle' + i);
+            balle.setAttribute('position', { x: posBalleX, y: 1, z: -2 });
+            balle.setAttribute('scale', { x: 10, y: 10, z: 10 });
+            balle.setAttribute('scale', { x: 0.01, y: 0.01, z: 0.01 });
+            balle.setAttribute('height', '14');
+            balle.setAttribute('width', '3');
+            posBalleX = posBalleX + 0.1;
         }
     }
 });
