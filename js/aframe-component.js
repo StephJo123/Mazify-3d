@@ -3,6 +3,7 @@ var nbTirs = 5;
 var posBalleX = -0.25;
 var test = 0;
 var tirAutorise = true;
+var monInter;
 
 function $(v){
 return document.getElementById(v);
@@ -68,8 +69,7 @@ AFRAME.registerComponent('trackball', {
                 $('countdown').play(); 
                 $('tbombe').setAttribute("visible", "true");
                 $('compteur').setAttribute("visible", "true");
-
-                var monInter;
+                
                 function startTimer(duration, display) {
                     var timer = duration,
                         minutes, seconds;
@@ -120,6 +120,8 @@ AFRAME.registerComponent('trackballfinish', {
                 clearInterval(mainCounter);
                 $('finishDialog').children[0].children[1].children[0].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
                 $('finishDialog').style.display = "block";
+                clearInterval(monInter);
+                $('compteur').setAttribute("visible", "false");
                 document.querySelector('a-scene').exitVR();
             }
         }
