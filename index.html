@@ -69,18 +69,15 @@
       animation="property: position; to: -21.0 2.1 -21.8; loop: true; dur: 4000; dir: alternate"></a-image>
 
     <!--Bombe-->
-    <a-entity gltf-model="#bomb" id="bomb" scale="0.02 0.02 0.02" position="-2.76 2 -6" rotation="270 0 0">
+    <a-entity gltf-model="#bomb" id="bombe" scale="0.02 0.02 0.02" position="-2.942 1.759 -4.410" rotation="270 0 0">
     </a-entity>
-    <a-cone id="fini2" position="18.6 1 -21.14" scale="0.002 0.002 0.002" radius="0.25" color="#EF2D5E" dynamic-body>
-    </a-cone>
-
-    <!--Finish-->
-    <a-sphere id="sphere" position="-2.76 2.3 -6" radius="0.25" color="#EF2D5E" dynamic-body></a-sphere>
 
     <a-image src="#texteBombe" id="tbombe" position="-0.711 2.387 -4.168" rotation="0 -45 0" scale="0.09 0.09 0.09"
       height="8" width="20" visible="false"
       animation="property: position; to: -0.711 2.6 -4.168; loop: true; dur: 4000; dir: alternate"></a-image>
 
+    <a-cone id="fini2" position="18.6 1 -21.14" scale="0.002 0.002 0.002" radius="0.25" color="#EF2D5E" dynamic-body>
+    </a-cone>
 
     <!-- Tracking des mains -->
     <a-entity id="leftHand" hand-tracking-controls="hand: left;"></a-entity>
