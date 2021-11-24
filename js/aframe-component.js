@@ -15,18 +15,19 @@ AFRAME.registerComponent('click-to-shoot', {
         document.body.addEventListener('mousedown', () => {
             if(nbTirs != 0) {
                 if(tirAutorise) {
+					tirAutorise = false;
                     this.el.emit('shoot');
                     $('balle'+(nbTirs-1)).remove();
                     let audio = $('sonArme');
                     audio.play();
                     audio.currentTime = 0;
                     nbTirs -= 1;
-                    tirAutorise = false;
-                } else {
-                    tirAutorise = true;
                 }
             }
         });
+        document.body.addEventListener('mouseup', () => {
+			tirAutorise = true;
+		});
     }
 });
 
