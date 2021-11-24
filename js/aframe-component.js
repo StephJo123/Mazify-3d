@@ -5,19 +5,19 @@ var test = 0;
 var tirAutorise = true;
 var monInter;
 
-function $(v){
-return document.getElementById(v);
+function $(v) {
+    return document.getElementById(v);
 }
 
 /* Permet de tirer */
 AFRAME.registerComponent('click-to-shoot', {
     init: function () {
         document.body.addEventListener('mousedown', () => {
-            if(nbTirs != 0) {
-                if(tirAutorise) {
-					tirAutorise = false;
+            if (nbTirs != 0) {
+                if (tirAutorise) {
+                    tirAutorise = false;
                     this.el.emit('shoot');
-                    $('balle'+(nbTirs-1)).remove();
+                    $('balle' + (nbTirs - 1)).remove();
                     let audio = $('sonArme');
                     audio.play();
                     audio.currentTime = 0;
@@ -26,33 +26,33 @@ AFRAME.registerComponent('click-to-shoot', {
             }
         });
         document.body.addEventListener('mouseup', () => {
-			tirAutorise = true;
-		});
+            tirAutorise = true;
+        });
     }
 });
 
 /* Joue la musique d'ambiance */
 document.addEventListener('click', musicPlay);
 function musicPlay() {
-  $('musique').play();
-  document.removeEventListener('click', musicPlay);
-} 
+    $('musique').play();
+    document.removeEventListener('click', musicPlay);
+}
 
 AFRAME.registerComponent('collision', {
 
-    tick: function() {
-      let pos = this.el.getAttribute("position");
-      
-      let posSphere = $('boxTp').getAttribute("position");
+    tick: function () {
+        let pos = this.el.getAttribute("position");
 
-      if (Math.abs(pos.x-posSphere.x) < 0.7 ) {
-        if(Math.abs(pos.z-posSphere.z) < 0.7) {
-          this.el.setAttribute('position', { x: -2.76, y: 1.6, z:-2.1 });
-          $('sonTeleportation').play();
+        let posSphere = $('boxTp').getAttribute("position");
+
+        if (Math.abs(pos.x - posSphere.x) < 0.7) {
+            if (Math.abs(pos.z - posSphere.z) < 0.7) {
+                this.el.setAttribute('position', { x: -2.76, y: 1.6, z: -2.1 });
+                $('sonTeleportation').play();
+            }
         }
-      }
     }
-  });
+});
 
 AFRAME.registerComponent('trackball', {
     tick: function () {
@@ -62,19 +62,19 @@ AFRAME.registerComponent('trackball', {
 
         let pos = this.el.getAttribute("position");
 
-        let posSphere = document.querySelector('a-sphere').getAttribute("position");
+        let posSphere = document.getElementById('bombe').getAttribute("position");
         if (Math.abs(pos.x - posSphere.x) < 4) {
             if (Math.abs(pos.z - posSphere.z) < 4) {
                 bombactive = true;
-                $('musique').pause(); 
-                $('countdown').play(); 
+                $('musique').pause();
+                $('countdown').play();
                 $('tbombe').setAttribute("visible", "true");
                 $('compteur').setAttribute("visible", "true");
-                
+
                 function startTimer(duration, display) {
                     var timer = duration,
                         minutes, seconds;
-                        monInter = setInterval(function () {
+                    monInter = setInterval(function () {
                         $('compteur').setAttribute("text", "value: " + timer + ";");
                         minutes = parseInt(timer / 60, 10)
                         seconds = parseInt(timer % 60, 10);
@@ -86,7 +86,7 @@ AFRAME.registerComponent('trackball', {
 
                         if (!$('tinterrupteur').getAttribute('visible')) {
                             if (--timer < 0) {
-                                $('countdown').pause(); 
+                                $('countdown').pause();
                                 $('BombeDialogue').style.display = "block";
                                 document.querySelector('a-scene').exitVR();
                                 clearInterval(monInter);
@@ -102,7 +102,7 @@ AFRAME.registerComponent('trackball', {
                     // stop le compteur pour éviter de continuer le calcul
                     clearInterval(monInter);
                     $('countdown').pause();
-                    $('musique').play(); 
+                    $('musique').play();
                     $('compteur').setAttribute("visible", "false");
                     $('tinterrupteur').setAttribute('visible', "true");
                 });
@@ -110,6 +110,65 @@ AFRAME.registerComponent('trackball', {
         }
     }
 });
+
+// fonction pour les lootboxes
+AFRAME.registerComponent('openlootbox', {
+    init: function () {
+        const lootbox1 = document.getElementById('lootbox1');
+        const lootbox2 = document.getElementById('lootbox2');
+
+        // si une lootbox est touchée, on l'ouvre, puis la supprime...
+        document.addEventListener('click', event => {
+            if (event.target !== lootbox1 && event.target !== lootbox2) {
+                return;
+            }
+            event.target.setAttribute('animation-mixer', 'timeScale: 1;');
+            event.target.setAttribute('animation-mixer', { clip: "*", loop: "repeat", repetitions: 1 });
+
+            if (event.target === lootbox1) {
+                document.getElementById('tbonus1').setAttribute('visible', true);
+                const munitionsBonus = randomIntFromInterval(1, 6);
+                addAmmo(munitionsBonus);
+            }
+
+            delay(function () {
+                event.target.remove();
+            }, 800);
+        });
+    }
+});
+
+// fonction qui ajoute un délai avant la disparition de la lootbox
+var delay = (function () {
+    var timer = 0;
+    return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+
+// notion de génération aléatoire
+function randomIntFromInterval(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+// fonction qui ajoute un nombre de munitions de façon aléatoire
+var addAmmo = function (munitionsBonus) {
+    let camera = document.getElementById('camera');
+    for (var i = nbTirs; i < munitionsBonus; i++) {
+        let balle = document.createElement('a-image');
+        camera.appendChild(balle);
+        balle.setAttribute('src', '#bullet');
+        balle.setAttribute('id', 'balle' + i);
+        balle.setAttribute('position', { x: posBalleX, y: 1, z: -2 });
+        balle.setAttribute('scale', { x: 10, y: 10, z: 10 });
+        balle.setAttribute('scale', { x: 0.01, y: 0.01, z: 0.01 });
+        balle.setAttribute('height', '14');
+        balle.setAttribute('width', '3');
+        posBalleX = posBalleX + 0.1;
+        nbTirs = munitionsBonus;
+    }
+};
 
 AFRAME.registerComponent('trackballfinish', {
     tick: function () {
@@ -141,7 +200,7 @@ AFRAME.registerComponent('hit-handler', {
         var el = this.el;
 
         el.addEventListener('hit', () => {
-            
+
         });
 
         el.addEventListener('die', () => {
@@ -166,17 +225,17 @@ AFRAME.registerComponent('shoot-ennemy', {
 AFRAME.registerComponent('munitions', {
     init: function () {
         let camera = $('camera');
-        for(var i=0;i<nbTirs;i++){
-          let balle = document.createElement('a-image');
-          camera.appendChild(balle);
-          balle.setAttribute('src', '#bullet');
-          balle.setAttribute('id','balle'+i);
-          balle.setAttribute('position',{x: posBalleX, y:1, z: -2});
-          balle.setAttribute('scale',{x: 10, y: 10, z: 10});
-          balle.setAttribute('scale',{x: 0.01, y:0.01, z: 0.01});
-          balle.setAttribute('height', '14');
-          balle.setAttribute('width', '3');
-          posBalleX += 0.1;
+        for (var i = 0; i < nbTirs; i++) {
+            let balle = document.createElement('a-image');
+            camera.appendChild(balle);
+            balle.setAttribute('src', '#bullet');
+            balle.setAttribute('id', 'balle' + i);
+            balle.setAttribute('position', { x: posBalleX, y: 1, z: -2 });
+            balle.setAttribute('scale', { x: 10, y: 10, z: 10 });
+            balle.setAttribute('scale', { x: 0.01, y: 0.01, z: 0.01 });
+            balle.setAttribute('height', '14');
+            balle.setAttribute('width', '3');
+            posBalleX += 0.1;
         }
     }
 });

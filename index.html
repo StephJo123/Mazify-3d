@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Mazify 3D</title>
+  <title>Mazify - 3D</title>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
   <meta name="description" content="Mazify 3D" />
   <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
@@ -32,6 +32,7 @@
       <img id="texteBombe" src="assets/textebombe.png">
       <img id="texteInterrupteur" src="assets/texteInterrupteur.png">
       <img id="texteTeleportation" src="assets/textetp.png">
+      <img id="texteBonusMunitions" src="assets/texteBonus1.png">
       <a-asset-item id="interrupteur" src="assets/light_switch/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
       <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
@@ -40,11 +41,12 @@
       <a-asset-item id="dragon" src="assets/mythic_dragon_variant/scene.gltf"></a-asset-item>
       <a-asset-item id="cyclops" src="assets/cyclops/scene.gltf"></a-asset-item>
       <a-asset-item id="bomb" src="assets/atomic_bomb/scene.gltf"></a-asset-item>
-      <audio id="sonArme" src="assets/pistol.mp3" preload="auto"/>
-      <audio id="sonTeleportation" src="assets/teleport2.mp3" preload="auto"/>
-      <audio id="musique" src="assets/critical-tension-drama-tension-suspense-music-brulik-entertainment.mp3"/>
+      <a-asset-item id="loot_box" src="assets/lootbox/scene.gltf"></a-asset-item>
+      <audio id="sonArme" src="assets/pistol.mp3" preload="auto"></audio>
+      <audio id="sonTeleportation" src="assets/teleport2.mp3" preload="auto"></audio>
+      <audio id="musique" src="assets/critical-tension-drama-tension-suspense-music-brulik-entertainment.mp3"></audio>
       <a-asset-item id="human" src="assets/super_human/scene.gltf"></a-asset-item>
-      <audio id="countdown" src="sounds/countdown.mp3"/>
+      <audio id="countdown" src="sounds/countdown.mp3"></audio>
       <img id="logoUCA" src="assets/logo_UCA.jpg">
       <img id="bullet" src="assets/bullets.png">
     </a-assets>
@@ -70,18 +72,15 @@
       animation="property: position; to: -21.0 2.1 -21.8; loop: true; dur: 4000; dir: alternate"></a-image>
 
     <!--Bombe-->
-    <a-entity gltf-model="#bomb" id="bomb" scale="0.02 0.02 0.02" position="-2.76 2 -6" rotation="270 0 0">
+    <a-entity gltf-model="#bomb" id="bombe" scale="0.02 0.02 0.02" position="-2.942 1.759 -4.410" rotation="270 0 0">
     </a-entity>
-    <a-cone id="fini2" position="18.6 1 -21.14" scale="0.002 0.002 0.002" radius="0.25" color="#EF2D5E" dynamic-body>
-    </a-cone>
-
-    <!--Finish-->
-    <a-sphere id="sphere" position="-2.76 2.3 -6" radius="0.25" color="#EF2D5E" dynamic-body></a-sphere>
 
     <a-image src="#texteBombe" id="tbombe" position="-0.711 2.387 -4.168" rotation="0 -45 0" scale="0.09 0.09 0.09"
       height="8" width="20" visible="false"
       animation="property: position; to: -0.711 2.6 -4.168; loop: true; dur: 4000; dir: alternate"></a-image>
 
+    <a-cone id="fini2" position="18.6 1 -21.14" scale="0.002 0.002 0.002" radius="0.25" color="#EF2D5E" dynamic-body>
+    </a-cone>
 
     <!-- Tracking des mains -->
     <a-entity id="leftHand" hand-tracking-controls="hand: left;"></a-entity>
@@ -92,10 +91,8 @@
       material="color: #FF7; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
 
     <!-- Caméra Rig -->
-    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true" position="0 1.6 0"
-      animation__teleportx="property: object3D.position.x; to: 0; dur: 10; easing: linear; startEvents: teleport"
-      animation__teleportz="property: object3D.position.z; to: 1; dur: 10; easing: linear; startEvents: teleport"
-      trackball trackballfinish collision>
+    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true" position="0 1.6 0" trackball
+      trackballfinish collision>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
         <a-cursor></a-cursor>
@@ -107,10 +104,11 @@
       </a-entity>
       <!-- Main droite -->
       <a-entity oculus-touch-controls="hand: right"
-        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3"
-        position="0.5 -0.7 -1.2" class="vr-except">
+        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3" position="0.5 -0.7 -1.2"
+        class="vr-except">
         <!-- Pistolet -->
-        <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot munitions shooter></a-entity>
+        <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot munitions shooter>
+        </a-entity>
       </a-entity>
 
     </a-entity>
@@ -134,6 +132,17 @@
     <a-entity gltf-model="#cyclops" animation-mixer id="cyclops2" scale="0.2 0.2 0.2" position="-24 0 17.5" hit-handler>
       <a-box position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="315 -180 0"></a-box>
     </a-entity>
+
+    <!-- lootboxes models -->
+    <a-entity gltf-model="#loot_box" id="lootbox1" openlootbox scale="0.07 0.07 0.07" position="0.077 -0.019 -23.955"
+      animation-mixer="timeScale: 0;" visible="true"></a-entity>
+    <a-entity gltf-model="#loot_box" id="lootbox2" openlootbox scale="0.07 0.07 0.07" position="-6.077 -0.019 -23.955"
+      animation-mixer="timeScale: 0;" visible="true"></a-entity>
+
+    <!-- lootboxes messages -->
+    <a-image src="#texteBonusMunitions" id="tbonus1" position="1.471 1.848 -23.995" rotation="0 -90 0"
+      scale="0.09 0.09 0.09" height="8" width="20" visible="false"
+      animation="property: position; to: 1.471 1.950 -23.995; loop: true; dur: 4000; dir: alternate"></a-image>
 
     <!-- Maze -->
     <a-entity mazify> </a-entity>
@@ -171,7 +180,7 @@
         <h2>Perdu !</h2>
       </div>
       <div class="modal-body">
-        <p>La Bombe a explosé</p>
+        <p>La bombe a explosé...</p>
         <p id="temps"></p>
       </div>
       <div class="modal-footer">
