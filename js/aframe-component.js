@@ -89,15 +89,13 @@ AFRAME.registerComponent('trackball', {
                                 $('BombeDialogue').style.display = "block";
                                 document.querySelector('a-scene').exitVR();
                                 clearInterval(monInter);
+                                $('compteur').setAttribute("visible", "false");
                             }
                         }
                     }, 1000);
                 }
 
-
-                var fiveMinutes = 30,
-                display = $('time2');
-                startTimer(fiveMinutes, display);
+                startTimer(30, $('time2'));
 
                 $('interrupteur2').addEventListener('click', function () {
                     // stop le compteur pour éviter de continuer le calcul
