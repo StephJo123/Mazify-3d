@@ -9,9 +9,8 @@ AFRAME.registerComponent('click-to-shoot', {
     init: function () {
         document.body.addEventListener('mousedown', () => {
             if(nbTirs != 0) {
-                if(tirAutorise == true) {
+                if(tirAutorise) {
                     this.el.emit('shoot');
-                    console.log(nbTirs-1);
                     document.getElementById("balle"+(nbTirs-1)).remove();
                     let audio = document.querySelector("#sonArme");
                     audio.play();
@@ -36,15 +35,12 @@ function musicPlay() {
 AFRAME.registerComponent('collision', {
 
     tick: function() {
-      function abs(val) {
-        return (val < 0) ? -val : val;
-      }
       let pos = this.el.getAttribute("position");
       
       let posSphere = document.getElementById("boxTp").getAttribute("position");
 
-      if (abs(pos.x-posSphere.x) < 0.7 ) {
-        if(abs(pos.z-posSphere.z) < 0.7) {
+      if (Math.abs(pos.x-posSphere.x) < 0.7 ) {
+        if(Math.abs(pos.z-posSphere.z) < 0.7) {
           this.el.setAttribute('position', { x: -2.76, y: 1.6, z:-2.1 });
           let audio = document.querySelector("#sonTeleportation").play();
         }
@@ -58,14 +54,11 @@ AFRAME.registerComponent('trackball', {
         if (bombactive)
             return;
 
-        function abs(val) {
-            return (val < 0) ? -val : val;
-        }
         let pos = this.el.getAttribute("position");
 
         let posSphere = document.querySelector("a-sphere").getAttribute("position");
-        if (abs(pos.x - posSphere.x) < 4) {
-            if (abs(pos.z - posSphere.z) < 4) {
+        if (Math.abs(pos.x - posSphere.x) < 4) {
+            if (Math.abs(pos.z - posSphere.z) < 4) {
                 bombactive = true;
                 document.getElementById('musique').pause(); 
                 document.getElementById('countdown').play(); 
@@ -117,14 +110,11 @@ AFRAME.registerComponent('trackball', {
 
 AFRAME.registerComponent('trackballfinish', {
     tick: function () {
-        function abs(val) {
-            return (val < 0) ? -val : val;
-        }
         let pos = this.el.getAttribute("position");
         let posSphere = document.getElementById("fini2").getAttribute("position");
 
-        if (abs(pos.x - posSphere.x) < 2) {
-            if (abs(pos.z - posSphere.z) < 2) {
+        if (Math.abs(pos.x - posSphere.x) < 2) {
+            if (Math.abs(pos.z - posSphere.z) < 2) {
                 clearInterval(mainCounter);
                 document.getElementById('finishDialog').childNodes[3].childNodes[3].childNodes[1].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
                 document.getElementById("finishDialog").style.display = "block";
