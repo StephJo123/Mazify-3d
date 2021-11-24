@@ -38,7 +38,6 @@ AFRAME.registerComponent("mazify", {
                     wall.setAttribute('depth', maze_size);
                     wall.setAttribute('position', position);
 
-
                     wall.setAttribute('color', '#fff');
                     wall.setAttribute('material', 'src: #wall; repeat: 2 1');
                 }
@@ -86,13 +85,9 @@ AFRAME.registerComponent("mazify", {
 })
 
 function reset() {
-    // let finishDlgElm = document.querySelector("#finishDialog")
-    // finishDlgElm.setAttribute("style", "display: none");
-
     location.reload();
 }
 
-function cont() {
-    let finishDlgElm = document.querySelector("#finishDialog")
-    finishDlgElm.setAttribute("style", "display: none");
+function closeDialog(spanClose) {
+    spanClose.closest('div.modal').setAttribute("style", "display: none");
 }

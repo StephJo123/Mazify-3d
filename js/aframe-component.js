@@ -72,11 +72,11 @@ AFRAME.registerComponent('trackball', {
                 document.getElementById("tbombe").setAttribute("visible", "true");
                 document.getElementById("compteur").setAttribute("visible", "true");
 
-
+                var monInter;
                 function startTimer(duration, display) {
                     var timer = duration,
                         minutes, seconds;
-                    var monInter = setInterval(function () {
+                        monInter = setInterval(function () {
                         document.getElementById("compteur").setAttribute("text", "value: " + timer + ";");
                         minutes = parseInt(timer / 60, 10)
                         seconds = parseInt(timer % 60, 10);
@@ -103,6 +103,8 @@ AFRAME.registerComponent('trackball', {
                 startTimer(fiveMinutes, display);
 
                 document.getElementById('interrupteur2').addEventListener('click', function () {
+                    // stop le compteur pour éviter de continuer le calcul
+                    clearInterval(monInter);
                     document.getElementById('countdown').pause();
                     document.getElementById('musique').play(); 
                     document.getElementById("compteur").setAttribute("visible", "false");
