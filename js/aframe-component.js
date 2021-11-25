@@ -1,5 +1,5 @@
 var bombactive = false;
-var nbTirs = 5;
+var nbTirs = 0;
 var posBalleX = -0.25;
 var test = 0;
 var tirAutorise = true;
@@ -16,7 +16,6 @@ AFRAME.registerComponent('click-to-shoot', {
         document.body.addEventListener('mousedown', () => {
             if (nbTirs != 0) {
                 if (tirAutorise) {
-                    console.log(nbTirs);
                     tirAutorise = false;
                     this.el.emit('shoot');
                     $('balle' + (nbTirs - 1)).remove();
@@ -113,6 +112,25 @@ AFRAME.registerComponent('trackball', {
     }
 });
 
+// fonction qui ajoute un nombre de munitions de façon aléatoire
+function addAmmo(munitionsBonus) {
+    let camera = $('camera');
+    let posBalleX = -0.25 + 0.1 * camera.getElementsByTagName("a-image").length;
+    for (var i = 0; i < munitionsBonus; i++) {
+        let balle = document.createElement('a-image');
+        camera.appendChild(balle);
+        balle.setAttribute('src', '#bullet');
+        balle.setAttribute('id', 'balle' + (nbTirs + i));
+        balle.setAttribute('position', { x: posBalleX, y: 1, z: -2 });
+        balle.setAttribute('scale', { x: 10, y: 10, z: 10 });
+        balle.setAttribute('scale', { x: 0.01, y: 0.01, z: 0.01 });
+        balle.setAttribute('height', '14');
+        balle.setAttribute('width', '3');
+        posBalleX += 0.1;
+    }
+    nbTirs += munitionsBonus;
+};
+
 // fonction pour les lootboxes
 AFRAME.registerComponent('openlootbox', {
     init: function () {
@@ -161,25 +179,6 @@ var delay = (function () {
 function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
-// fonction qui ajoute un nombre de munitions de façon aléatoire
-var addAmmo = function (munitionsBonus) {
-    let camera = $('camera');
-    for (var i = 0; i < munitionsBonus; i++) {
-        let balle = document.createElement('a-image');
-        posBalleX = -0.25 + 0.1 * camera.getElementsByTagName("a-image").length;
-        camera.appendChild(balle);
-        balle.setAttribute('src', '#bullet');
-        balle.setAttribute('id', 'balle' + (nbTirs + i));
-        balle.setAttribute('position', { x: posBalleX, y: 1, z: -2 });
-        balle.setAttribute('scale', { x: 10, y: 10, z: 10 });
-        balle.setAttribute('scale', { x: 0.01, y: 0.01, z: 0.01 });
-        balle.setAttribute('height', '14');
-        balle.setAttribute('width', '3');
-    }
-    console.log("munitions bonus " + munitionsBonus);
-    nbTirs += munitionsBonus;
-};
 
 AFRAME.registerComponent('trackballfinish', {
     tick: function () {
@@ -235,18 +234,6 @@ AFRAME.registerComponent('shoot-ennemy', {
 
 AFRAME.registerComponent('munitions', {
     init: function () {
-        let camera = $('camera');
-        for (var i = 0; i < nbTirs; i++) {
-            let balle = document.createElement('a-image');
-            camera.appendChild(balle);
-            balle.setAttribute('src', '#bullet');
-            balle.setAttribute('id', 'balle' + i);
-            balle.setAttribute('position', { x: posBalleX, y: 1, z: -2 });
-            balle.setAttribute('scale', { x: 10, y: 10, z: 10 });
-            balle.setAttribute('scale', { x: 0.01, y: 0.01, z: 0.01 });
-            balle.setAttribute('height', '14');
-            balle.setAttribute('width', '3');
-            posBalleX += 0.1;
-        }
+        addAmmo(5);
     }
 });
