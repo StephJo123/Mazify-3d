@@ -4,7 +4,6 @@ var posBalleX = -0.25;
 var test = 0;
 var tirAutorise = true;
 var monInter;
-var passe = false;
 
 function $(v) {
     return document.getElementById(v);
@@ -92,7 +91,7 @@ AFRAME.registerComponent('trackball', {
                                 $('BombeDialogue').style.display = "block";
                                 document.querySelector('a-scene').exitVR();
                                 clearInterval(monInter);
-                                $('compteur').setAttribute("visible", "false");
+                                $('compteur').remove();
                             }
                         }
                     }, 1000);
@@ -105,7 +104,7 @@ AFRAME.registerComponent('trackball', {
                     clearInterval(monInter);
                     $('countdown').pause();
                     $('musique').play();
-                    $('compteur').setAttribute("visible", "false");
+                    $('compteur').remove();
                     $('tinterrupteur').setAttribute('visible', "true");
                 });
             }
@@ -115,36 +114,31 @@ AFRAME.registerComponent('trackball', {
 
 // fonction pour les lootboxes
 AFRAME.registerComponent('openlootbox', {
+    // récupération de l'id de notre lootbox
+    schema: {
+        id: {}
+    },
     init: function () {
-        const lootbox1 = document.getElementById('lootbox1');
-        const lootbox2 = document.getElementById('lootbox2');
+        var data = this.data; // valeurs des propriétés des composants.
+        var el = this.el;  // référence à l'entité du composant.
 
         // si une lootbox est touchée, on l'ouvre, puis la supprime...
-        document.addEventListener('click', event => {
-            if (passe) {
-                return;
-            }
-            if (event.target !== lootbox1 && event.target !== lootbox2) {
-                return;
-            }
+        if (data.id) {
+            el.addEventListener('click', () => {
 
-            passe = true;
+                el.setAttribute('animation-mixer', 'timeScale: 1;');
+                el.setAttribute('animation-mixer', { clip: "*", loop: "repeat", repetitions: 1 });
 
-            //document.removeEventListener('click', namedListener);
-
-            event.target.setAttribute('animation-mixer', 'timeScale: 1;');
-            event.target.setAttribute('animation-mixer', { clip: "*", loop: "repeat", repetitions: 1 });
-
-            if (event.target === lootbox1) {
+                // afficher un message temporaire dans la caméra à la place
                 document.getElementById('tbonus1').setAttribute('visible', true);
                 const munitionsBonus = randomIntFromInterval(1, 6);
                 addAmmo(munitionsBonus);
-            }
 
-            delay(function () {
-                event.target.remove();
-            }, 800);
-        });
+                delay(function () {
+                    el.remove();
+                }, 800);
+            }, { once: true });
+        }
     }
 });
 
@@ -192,7 +186,7 @@ AFRAME.registerComponent('trackballfinish', {
                 $('finishDialog').children[0].children[1].children[0].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
                 $('finishDialog').style.display = "block";
                 clearInterval(monInter);
-                $('compteur').setAttribute("visible", "false");
+                $('compteur').remove();
                 document.querySelector('a-scene').exitVR();
             }
         }
