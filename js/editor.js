@@ -6,8 +6,7 @@ var app = new Vue({
         m: 20,
         blockSize: 20,
         selectedType: 1,
-        tools: [
-            {
+        tools: [{
                 label: "Eraser",
                 type: 0
             },
@@ -64,7 +63,7 @@ var app = new Vue({
             if (e.buttons == 1 || e.type == "click") {
                 let idx = parseInt(e.target.id);
 
-                if (this.selectedType == 's') {//only one tile can be marked as start position
+                if (this.selectedType == 's') { //only one tile can be marked as start position
                     this.mazeData.map(m => {
                         if (m.type == 's') {
                             m.type = 0

@@ -1,4 +1,3 @@
-
 AFRAME.registerComponent("mazify", {
 
     init: function () {
@@ -40,8 +39,7 @@ AFRAME.registerComponent("mazify", {
 
                     wall.setAttribute('color', '#fff');
                     wall.setAttribute('material', 'src: #wall; repeat: 2 1');
-                }
-                else if (mazeData.data[i] == 's') {
+                } else if (mazeData.data[i] == 's') {
                     let tile = document.createElement('a-box');
                     el.appendChild(tile);
 
@@ -49,7 +47,11 @@ AFRAME.registerComponent("mazify", {
                     tile.setAttribute('height', 0.1);
                     tile.setAttribute('depth', maze_size);
 
-                    tile.setAttribute('position', { x: position.x, y: 0, z: position.z });
+                    tile.setAttribute('position', {
+                        x: position.x,
+                        y: 0,
+                        z: position.z
+                    });
 
 
                     tile.setAttribute('material', 'src: #start');
@@ -57,7 +59,11 @@ AFRAME.registerComponent("mazify", {
 
                     let player = document.querySelector("#player");
                     let playerPos = player.getAttribute("position");
-                    player.setAttribute('position', { x: position.x, y: playerPos.y, z: position.z })
+                    player.setAttribute('position', {
+                        x: position.x,
+                        y: playerPos.y,
+                        z: position.z
+                    })
                 } else if (mazeData.data[i] == 'f') {
                     let tile = document.createElement('a-box');
                     el.appendChild(tile);
@@ -66,7 +72,11 @@ AFRAME.registerComponent("mazify", {
                     tile.setAttribute('height', 0.1);
                     tile.setAttribute('depth', maze_size);
 
-                    tile.setAttribute('position', { x: position.x, y: 0, z: position.z });
+                    tile.setAttribute('position', {
+                        x: position.x,
+                        y: 0,
+                        z: position.z
+                    });
 
                     tile.setAttribute('material', 'src: #finish');
                     tile.setAttribute('id', 'finish-tile');

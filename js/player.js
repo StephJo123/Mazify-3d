@@ -1,4 +1,3 @@
-
 AFRAME.registerComponent("player", {
     init: function () {
         document.addEventListener('keyup', event => {
@@ -21,5 +20,3 @@ AFRAME.registerComponent("player", {
         });
     }
 })
-
-
