@@ -4,6 +4,7 @@ var posBalleX = -0.25;
 var test = 0;
 var tirAutorise = true;
 var monInter;
+var passe = false;
 
 function $(v) {
     return document.getElementById(v);
@@ -15,6 +16,7 @@ AFRAME.registerComponent('click-to-shoot', {
         document.body.addEventListener('mousedown', () => {
             if (nbTirs != 0) {
                 if (tirAutorise) {
+                    console.log(nbTirs);
                     tirAutorise = false;
                     this.el.emit('shoot');
                     $('balle' + (nbTirs - 1)).remove();
@@ -119,9 +121,17 @@ AFRAME.registerComponent('openlootbox', {
 
         // si une lootbox est touchée, on l'ouvre, puis la supprime...
         document.addEventListener('click', event => {
+            if (passe) {
+                return;
+            }
             if (event.target !== lootbox1 && event.target !== lootbox2) {
                 return;
             }
+
+            passe = true;
+
+            //document.removeEventListener('click', namedListener);
+
             event.target.setAttribute('animation-mixer', 'timeScale: 1;');
             event.target.setAttribute('animation-mixer', { clip: "*", loop: "repeat", repetitions: 1 });
 
@@ -154,20 +164,21 @@ function randomIntFromInterval(min, max) {
 
 // fonction qui ajoute un nombre de munitions de façon aléatoire
 var addAmmo = function (munitionsBonus) {
-    let camera = document.getElementById('camera');
-    for (var i = nbTirs; i < munitionsBonus; i++) {
+    let camera = $('camera');
+    for (var i = 0; i < munitionsBonus; i++) {
         let balle = document.createElement('a-image');
+        posBalleX = -0.25 + 0.1 * camera.getElementsByTagName("a-image").length;
         camera.appendChild(balle);
         balle.setAttribute('src', '#bullet');
-        balle.setAttribute('id', 'balle' + i);
+        balle.setAttribute('id', 'balle' + (nbTirs + i));
         balle.setAttribute('position', { x: posBalleX, y: 1, z: -2 });
         balle.setAttribute('scale', { x: 10, y: 10, z: 10 });
         balle.setAttribute('scale', { x: 0.01, y: 0.01, z: 0.01 });
         balle.setAttribute('height', '14');
         balle.setAttribute('width', '3');
-        posBalleX = posBalleX + 0.1;
-        nbTirs = munitionsBonus;
     }
+    console.log("munitions bonus " + munitionsBonus);
+    nbTirs += munitionsBonus;
 };
 
 AFRAME.registerComponent('trackballfinish', {
