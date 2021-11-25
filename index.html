@@ -97,14 +97,17 @@
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
         <a-cursor></a-cursor>
         <a-entity id="compteur" text="value: ;" position="1.19 0.2 -1" scale="2.5 2.5 2.5" visible="false">
+          <a-entity id="texteBonus" text="value: Munitions bonus !; color: yellow;" position="0.04 0.2 -0.5"
+            scale="1.5 1.5 1.5" visible="false"></a-entity>
         </a-entity>
       </a-entity>
       <!-- Main gauche -->
-      <a-entity oculus-touch-controls="hand: left" hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
+      <a-entity oculus-touch-controls="hand: left;"
+        hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
       </a-entity>
       <!-- Main droite -->
-      <a-entity oculus-touch-controls="hand: right"
-        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3" position="0.5 -0.7 -1.2"
+      <a-entity oculus-touch-controls="hand: right;"
+        hand-controls="hand: right; handModelStyle: highPoly; color: #B3B3B3;" position="0.5 -0.7 -1.2"
         class="vr-except">
         <!-- Pistolet -->
         <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot munitions shooter>
@@ -134,15 +137,18 @@
     </a-entity>
 
     <!-- lootboxes models -->
-    <a-entity gltf-model="#loot_box" id="lootbox1" openlootbox="id: lootbox1" scale="0.07 0.07 0.07" position="0.077 -0.019 -23.955"
-      animation-mixer="timeScale: 0;" visible="true"></a-entity>
-    <a-entity gltf-model="#loot_box" id="lootbox2" openlootbox="id: lootbox2" scale="0.07 0.07 0.07" position="-6.077 -0.019 -23.955"
-      animation-mixer="timeScale: 0;" visible="true"></a-entity>
+    <a-entity gltf-model="#loot_box" id="lootbox1" openlootbox="id: lootbox1" scale="0.07 0.07 0.07"
+      position="0.077 -0.019 -23.955" animation-mixer="timeScale: 0;" visible="true"></a-entity>
+    <a-entity gltf-model="#loot_box" id="lootbox2" openlootbox="id: lootbox2" scale="0.07 0.07 0.07"
+      position="-6.077 -0.019 -23.955" animation-mixer="timeScale: 0;" visible="true"></a-entity>
 
     <!-- lootboxes messages -->
-    <a-image src="#texteBonusMunitions" id="tbonus1" position="1.471 1.848 -23.995" rotation="0 -90 0"
+    <!-- <a-image src="#texteBonusMunitions" id="tbonus1" position="1.471 1.848 -23.995" rotation="0 -90 0"
       scale="0.09 0.09 0.09" height="8" width="20" visible="false"
-      animation="property: position; to: 1.471 1.950 -23.995; loop: true; dur: 4000; dir: alternate"></a-image>
+      animation="property: position; to: 1.471 1.950 -23.995; loop: true; dur: 4000; dir: alternate"></a-image> -->
+
+
+
 
     <!-- Maze -->
     <a-entity mazify> </a-entity>

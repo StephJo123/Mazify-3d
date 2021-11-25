@@ -4,6 +4,7 @@ var posBalleX = -0.25;
 var test = 0;
 var tirAutorise = true;
 var monInter;
+var removeText, removeBox;
 
 function $(v) {
     return document.getElementById(v);
@@ -120,36 +121,39 @@ AFRAME.registerComponent('openlootbox', {
     },
     init: function () {
         var data = this.data; // valeurs des propriétés des composants.
-        var el = this.el;  // référence à l'entité du composant.
+        var el = this.el; // référence à l'entité du composant.
+        var texteBonus = document.getElementById('texteBonus');
+        const munitionsBonus = randomIntFromInterval(1, 6); // génération du nombre de munitions offert
 
         // si une lootbox est touchée, on l'ouvre, puis la supprime...
         if (data.id) {
             el.addEventListener('click', () => {
 
+                // animation de la lootbox lors de son ouverture
                 el.setAttribute('animation-mixer', 'timeScale: 1;');
                 el.setAttribute('animation-mixer', { clip: "*", loop: "repeat", repetitions: 1 });
 
-                // afficher un message temporaire dans la caméra à la place
-                document.getElementById('tbonus1').setAttribute('visible', true);
-                const munitionsBonus = randomIntFromInterval(1, 6);
+                // affichage d'un message temporaire dans la caméra du joueur
+                texteBonus.setAttribute('visible', true);
+
+                // appel de notre fonction qui ajoute un nombre de munitions aléatoire
                 addAmmo(munitionsBonus);
 
-                delay(function () {
+                // masquage du message au bout de 5s
+                removeText = setTimeout(function () {
+                    texteBonus.setAttribute('visible', false);
+                }, 5000);
+
+                // suppression de la lootbox au bout de 0.8s
+                removeBox = setTimeout(function () {
                     el.remove();
                 }, 800);
             }, { once: true });
+            clearTimeout(removeText);
+            clearTimeout(removeBox);
         }
     }
 });
-
-// fonction qui ajoute un délai avant la disparition de la lootbox
-var delay = (function () {
-    var timer = 0;
-    return function (callback, ms) {
-        clearTimeout(timer);
-        timer = setTimeout(callback, ms);
-    };
-})();
 
 // notion de génération aléatoire
 function randomIntFromInterval(min, max) {
