@@ -87,8 +87,19 @@ var app = new Vue({
                 "height": this.n,
                 "width": this.m
             }
-            localStorage.setItem("maze-data", JSON.stringify(data));
+            localStorage.setItem("maze-data", JSON.stringify(data));            
         },
+        print_code(){
+			let arr = 'let data = [';
+			this.mazeData.forEach(i=>{
+				if (i.type == 's' || i.type == 'f') {
+					arr += ('"' + i.type + '", ');
+				} else {
+					arr += (i.type + ', ');
+				}
+			});
+			document.getElementById('footer').children[0].innerHTML = arr.substring(0,arr.length-2) + '];';
+		},
         gotoMaze() {
             location.href = "index.html"
         },
