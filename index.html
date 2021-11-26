@@ -10,6 +10,7 @@
   <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
   <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-event-set-component@4.1.2/dist/aframe-event-set-component.min.js"></script>
   <script src="js/mazify.js"></script>
   <script src="js/player.js"></script>
   <script src="js/aframe-component.js"></script>
@@ -20,32 +21,28 @@
 
 <body style="background-color: #222222">
   <div id="loader" class="lds-dual-ring centered"></div>
-  <a-scene style="display: none;" inspector-plugin-recast renderer="colorManagement: true; highRefreshRate: true;">
+  <a-scene style="display: none;" inspector-plugin-recast
+    renderer="colorManagement: true; highRefreshRate: true; antialias: true;">
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/sol.jpg" />
-      <img id="wall" src="assets/test.jpg" />
-      <img id="red-carpet" src="assets/red-carpet.jpg" />
+      <img id="wall" src="assets/wall.jpg" />
       <img id="start" src="assets/start.jpg" />
       <img id="finish" src="assets/finish.jpg" />
-      <img id="redsky" src="assets/t.jpg">
+      <img id="redsky" src="assets/sky.jpg">
       <img id="texteBombe" src="assets/textebombe.png">
       <img id="texteInterrupteur" src="assets/texteInterrupteur.png">
       <img id="texteTeleportation" src="assets/textetp.png">
-      <img id="texteBonusMunitions" src="assets/texteBonus1.png">
       <a-asset-item id="interrupteur" src="assets/light_switch/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
       <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
       <a-asset-item id="fini" src="assets/finish/scene.gltf"></a-asset-item>
-      <a-asset-item id="ennemy" src="assets/cultist_armed/scene.gltf"></a-asset-item>
-      <a-asset-item id="dragon" src="assets/mythic_dragon_variant/scene.gltf"></a-asset-item>
       <a-asset-item id="cyclops" src="assets/cyclops/scene.gltf"></a-asset-item>
       <a-asset-item id="bomb" src="assets/atomic_bomb/scene.gltf"></a-asset-item>
       <a-asset-item id="loot_box" src="assets/lootbox/scene.gltf"></a-asset-item>
       <audio id="sonArme" src="assets/pistol.mp3" preload="auto"></audio>
       <audio id="sonTeleportation" src="assets/teleport2.mp3" preload="auto"></audio>
-      <audio id="musique" src="assets/critical-tension-drama-tension-suspense-music-brulik-entertainment.mp3"></audio>
-      <a-asset-item id="human" src="assets/super_human/scene.gltf"></a-asset-item>
+      <audio id="musique" src="assets/critical-tension.mp3"></audio>
       <audio id="countdown" src="sounds/countdown.mp3"></audio>
       <img id="logoUCA" src="assets/logo_UCA.jpg">
       <img id="bullet" src="assets/bullets.png">
@@ -75,6 +72,7 @@
     <a-entity gltf-model="#bomb" id="bombe" scale="0.02 0.02 0.02" position="-2.942 1.759 -4.410" rotation="270 0 0">
     </a-entity>
 
+    <!-- texte bombe -->
     <a-image src="#texteBombe" id="tbombe" position="-0.711 2.387 -4.168" rotation="0 -45 0" scale="0.09 0.09 0.09"
       height="8" width="20" visible="false"
       animation="property: position; to: -0.711 2.6 -4.168; loop: true; dur: 4000; dir: alternate"></a-image>
@@ -95,16 +93,23 @@
       trackballfinish collision>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
-        <a-cursor></a-cursor>
-        <a-entity id="compteur" text="value: ;" position="1.19 0.2 -1" scale="2.5 2.5 2.5" visible="false">
-        </a-entity>
+        <a-cursor id="cursor" color="white;" position="0 0 -0.2" scale="0.25 0.25 0.25"
+          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 0.25 0.25 0.25; dur: 150">
+        </a-cursor>
+
+        <a-entity id="compteur" text="value: ;" position="0.19 0.05 -0.2" scale="0.4 0.4 0" visible="true"></a-entity>
+
+        <a-entity id="texteBonus" text="value: Munitions bonus !; color: yellow;" position="0.165 0.03 -0.3"
+          scale="0.5 0.5 0.5" visible="false"></a-entity>
+
       </a-entity>
       <!-- Main gauche -->
-      <a-entity oculus-touch-controls="hand: left" hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
+      <a-entity oculus-touch-controls="hand: left;"
+        hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
       </a-entity>
       <!-- Main droite -->
-      <a-entity oculus-touch-controls="hand: right"
-        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3" position="0.5 -0.7 -1.2"
+      <a-entity oculus-touch-controls="hand: right;"
+        hand-controls="hand: right; handModelStyle: highPoly; color: #B3B3B3;" position="0.5 -0.7 -1.2"
         class="vr-except">
         <!-- Pistolet -->
         <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot munitions shooter>
@@ -134,15 +139,10 @@
     </a-entity>
 
     <!-- lootboxes models -->
-    <a-entity gltf-model="#loot_box" id="lootbox1" openlootbox scale="0.07 0.07 0.07" position="0.077 -0.019 -23.955"
-      animation-mixer="timeScale: 0;" visible="true"></a-entity>
-    <a-entity gltf-model="#loot_box" id="lootbox2" openlootbox scale="0.07 0.07 0.07" position="-6.077 -0.019 -23.955"
-      animation-mixer="timeScale: 0;" visible="true"></a-entity>
-
-    <!-- lootboxes messages -->
-    <a-image src="#texteBonusMunitions" id="tbonus1" position="1.471 1.848 -23.995" rotation="0 -90 0"
-      scale="0.09 0.09 0.09" height="8" width="20" visible="false"
-      animation="property: position; to: 1.471 1.950 -23.995; loop: true; dur: 4000; dir: alternate"></a-image>
+    <a-entity gltf-model="#loot_box" id="lootbox1" openlootbox="id: lootbox1" scale="0.07 0.07 0.07"
+      position="0.077 -0.019 -23.955" animation-mixer="timeScale: 0;" visible="true"></a-entity>
+    <a-entity gltf-model="#loot_box" id="lootbox2" openlootbox="id: lootbox2" scale="0.07 0.07 0.07"
+      position="-6.077 -0.019 -23.955" animation-mixer="timeScale: 0;" visible="true"></a-entity>
 
     <!-- Maze -->
     <a-entity mazify> </a-entity>
@@ -190,14 +190,18 @@
     </div>
   </div>
   <script>
-    if (localStorage.getItem("maze-data") == undefined) {
-      let data = {
-        "data": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, "f", 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, "s", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        "height": 20,
-        "width": 20
-      }
-      localStorage.setItem("maze-data", JSON.stringify(data));
-    }
+    var mazeArr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1,
+      0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1,
+      1, 0, 1, 0, 1, "f", 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+      1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0,
+      0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0,
+      1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0,
+      1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0,
+      0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0,
+      1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0,
+      0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, "s", 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ];
     // compteur principal
     const departMinutes = 0.01
     let temps = departMinutes * 60

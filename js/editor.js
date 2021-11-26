@@ -6,8 +6,7 @@ var app = new Vue({
         m: 20,
         blockSize: 20,
         selectedType: 1,
-        tools: [
-            {
+        tools: [{
                 label: "Eraser",
                 type: 0
             },
@@ -64,7 +63,7 @@ var app = new Vue({
             if (e.buttons == 1 || e.type == "click") {
                 let idx = parseInt(e.target.id);
 
-                if (this.selectedType == 's') {//only one tile can be marked as start position
+                if (this.selectedType == 's') { //only one tile can be marked as start position
                     this.mazeData.map(m => {
                         if (m.type == 's') {
                             m.type = 0
@@ -87,8 +86,19 @@ var app = new Vue({
                 "height": this.n,
                 "width": this.m
             }
-            localStorage.setItem("maze-data", JSON.stringify(data));
+            localStorage.setItem("maze-data", JSON.stringify(data));            
         },
+        print_code(){
+			let arr = 'let data = [';
+			this.mazeData.forEach(i=>{
+				if (i.type == 's' || i.type == 'f') {
+					arr += ('"' + i.type + '", ');
+				} else {
+					arr += (i.type + ', ');
+				}
+			});
+			document.getElementById('footer').children[0].innerHTML = arr.substring(0,arr.length-2) + '];';
+		},
         gotoMaze() {
             location.href = "index.html"
         },
