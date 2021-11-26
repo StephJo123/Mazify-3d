@@ -46,9 +46,10 @@ AFRAME.registerComponent('collision', {
 
         if (abs(pos.x - posSphere.x) < 0.7) {
             if (abs(pos.z - posSphere.z) < 0.7) {
-                this.el.setAttribute('position', { x: -2.76, y: 1.6, z: -2.1 });
-                let audio = document.querySelector("#sonTeleportation").play();
-
+                if(tpAutorise) {
+                    this.el.setAttribute('position', { x: -2.76, y: 1.6, z: -2.1 });
+                    let audio = document.querySelector("#sonTeleportation").play();
+                }
             }
         }
     }
