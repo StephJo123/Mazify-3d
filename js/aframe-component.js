@@ -261,5 +261,5 @@ function changeColor() {
 }
 
 function changeBack() {
-  cursor.setAttribute('material', 'color: black');
+  cursor.setAttribute('material', 'color: white');
 }
