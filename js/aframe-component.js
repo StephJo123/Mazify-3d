@@ -108,7 +108,9 @@ AFRAME.registerComponent("trackball", {
         clearInterval(monInter);
         $("countdown").pause();
         $("musique").play();
-        $("compteur").remove();
+        if (document.contains($("compteur"))) {
+          $("compteur").remove();
+        }
         $("tinterrupteur").setAttribute("visible", "true");
       });
     }
