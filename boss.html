@@ -1,0 +1,182 @@
+<html>
+
+<head>
+
+  <meta name="description" content="Mazify 3D" />
+  <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
+  <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <script src="js/aframe-component.js"></script>
+  <script>
+
+    var boxx = -24
+    var boxz = 18
+    var boxx2 = 22
+
+    AFRAME.registerComponent("sallboss", {
+
+      init: function () {
+
+        let scene = document.querySelector('a-scene');
+
+        for (var i = 0; i < 25; i++) {
+          let boxe = document.createElement('a-box');
+          scene.appendChild(boxe);
+          boxe.setAttribute('position', { x: boxx, y: 2, z: 20 });
+          boxe.setAttribute('scale', { x: 2, y: 4, z: 2 });
+          boxe.setAttribute('material', 'src: #wall');
+
+          boxx = boxx + 2;
+
+        }
+        for (var i = 0; i < 24; i++) {
+          let boxe = document.createElement('a-box');
+          scene.appendChild(boxe);
+          boxe.setAttribute('position', { x: 24, y: 2, z: boxz });
+          boxe.setAttribute('scale', { x: 2, y: 4, z: 2 });
+          boxe.setAttribute('material', 'src: #wall');
+
+          boxz = boxz - 2;
+
+        }
+        for (var i = 0; i < 24; i++) {
+          let boxe = document.createElement('a-box');
+          scene.appendChild(boxe);
+          boxe.setAttribute('position', { x: boxx2, y: 2, z: -28 });
+          boxe.setAttribute('scale', { x: 2, y: 4, z: 2 });
+          boxe.setAttribute('material', 'src: #wall');
+
+          boxx2 = boxx2 - 2;
+
+        }
+        for (var i = 0; i < 25; i++) {
+          let boxe = document.createElement('a-box');
+          scene.appendChild(boxe);
+          boxe.setAttribute('position', { x: -24, y: 2, z: boxz });
+          boxe.setAttribute('scale', { x: 2, y: 4, z: 2 });
+          boxe.setAttribute('material', 'src: #wall');
+
+          boxz = boxz + 2;
+
+        }
+
+
+      }
+    });
+    AFRAME.registerComponent("auto-enter-vr",{
+      init:function(){
+        document.getElementById('player').addEventListener('click', function(evt){
+          document.querySelector('a-scene').enterVR()
+        });
+        
+      }
+    });
+   
+   
+
+  </script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body onload="enterVR()">
+  <a-scene inspector-plugin-recast renderer="colorManagement: true;" loading-screen auto-enter-vr>
+    <a-assets>
+      <img id="ground" src="assets/sol.jpg" />
+      <img id="wall" src="assets/test.jpg" />
+      <audio id="musique" src="assets/critical-tension-drama-tension-suspense-music-brulik-entertainment.mp3"></audio>
+      <audio id="roar" src="assets/monsterRoar.mp3"></audio>
+      <a-asset-item id="boss" src="assets/boss/scene.gltf"></a-asset-item>
+      <a-asset-item id="my-nav-mesh" src="assets/navmesh6.gltf"></a-asset-item>
+      <a-asset-item id="missile" src="assets/missile/scene.gltf"></a-asset-item>
+      <a-asset-item id="barriere" src="assets/barriere/scene.gltf"></a-asset-item>
+      <a-asset-item id="shelter" src="assets/shelter/scene.gltf"></a-asset-item>
+      <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
+    </a-assets>
+    <a-sky></a-sky>
+    <a-plane material="src: #ground; repeat: 25 25" position="0 0 -4" rotation="-90 0 0" width="50" height="50"
+      color="#7BC8A4"></a-plane>
+    <a-entity sallboss></a-entity>
+
+    <!-- Caméra Rig -->
+    <a-entity id="player" movement-controls="constrainToNavMesh: true" target="healthPoints: 100" hit-handler>
+      <!-- Caméra -->
+      <a-entity  camera position="0 1.6 0" look-controls id="camera" >
+        <a-cursor></a-cursor>
+      </a-entity>
+       <a-entity oculus-touch-controls="hand: right"
+        hand-controls="hand: right; handModelStyle: lowPoly ; color: #B3B3B3"
+        position="0.5 -0.7 -1.2">
+        <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot shooter></a-entity>
+      </a-entity>
+       
+    </a-entity>
+
+
+    <a-entity gltf-model="#my-nav-mesh" nav-mesh visible="false"></a-entity>
+
+
+    <a-entity gltf-model="#boss" id="boss2" scale="0.006 0.006 0.006" 
+      position="-1 1.6 -16" rotation="33 0 0"
+      target="healthPoints: 10000" hit-handler-boss>
+      <a-entity id="bosslife" geometry="primitive: box; width: 20; height: 0.3; depth: 0.3" material="color: green"
+        position="-7.35 1330 -318.5" rotation="45 0 0" scale="100 100 100"></a-entity>
+    </a-entity>
+    <a-sphere id="sphere1" position="-2.12 7.615 -11.77" animation="property: position; to: -1.26 9 -9.4; loop: true; dur: 7000; dir: alternate" rotation="215 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
+      <a-sphere id="sphere2" position="-1.38 7.627 -11.79" animation="property: position; to: -0.25 9.33 -9.097; loop: true; dur: 7000; dir: alternate" rotation="215 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
+      <a-sphere id="sphere3" position="-0.69 7.733 -11.61" animation="property: position; to: 0.244 9.177 -9.184; loop: true; dur: 7000; dir: alternate" rotation="215 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
+      <a-sphere id="sphere4" position="0 7.574 -11.78" animation="property: position; to: 1.111 8.980 -9.423; loop: true; dur: 7000; dir: alternate" rotation="215 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
+
+    <!-- <a-entity gltf-model="#lezard" position="-3 0 -3" rotation="0 230 0" animation-mixer scale="0.002 0.002 0.002"></a-entity> -->
+    <a-entity id="bullet2" bullet="name: normal; speed: 20.0; poolSize:100" geometry="primitive: icosahedron; radius: 0.2;detail:1"
+      material="color: red; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
+
+     
+      <a-entity gltf-model="#missile" id="missile2" scale="1 1 1" position="2.427 8.049 -13.77" rotation="-60 0 0" visible="false">
+      </a-entity>
+      <a-entity gltf-model="#barriere" id="barriere2" scale="2 1 1" position="-1.6 0 -4" rotation="0 0 0">
+      </a-entity>
+      <a-entity gltf-model="#barriere" id="barriere2" scale="3 1 1" position="-4.8 0 0.8" rotation="0 90 0">
+      </a-entity>
+      <a-entity gltf-model="#barriere" id="barriere3" scale="3 1 1" position="1.706 0 0.8" rotation="0 90 0">
+      </a-entity>
+      <a-entity gltf-model="#barriere" id="barriere4" scale="2 1 1" position="-1.6 0 5.4" rotation="0 0 0">
+      </a-entity>
+
+      <a-entity gltf-model="#shelter" id="shelter2" scale="2 2 4" position="-10.3 0 1" rotation="0 0 0">
+      </a-entity>
+     
+      <a-sphere id="sphere5" position="-2 15 -2.54" rotation="-90 0 0" shooter visible="false"></a-sphere>
+      <a-sphere id="sphere6" position="-3.82 15 0" rotation="-90 0 0" shooter visible="false"></a-sphere>
+      <a-sphere id="sphere7" position="-3.75 15 4.614" rotation="-90 0 0" shooter visible="false"></a-sphere>
+      <a-sphere id="sphere8" position="-1.90 15 7.575" rotation="-90 0 0" shooter visible="false"></a-sphere>
+      <a-sphere id="sphere9" position="1.154 15 7.117" rotation="-90 0 0" shooter visible="false"></a-sphere>
+      <a-sphere id="sphere10" position="1.787 15 4.570" rotation="-90 0 0" shooter visible="false"></a-sphere>
+      <a-sphere id="sphere11" position="2.331 15 0.945" rotation="-90 0 0" shooter visible="false"></a-sphere>
+      <a-sphere id="sphere12" position="0.797 15 -2.052" rotation="-90 0 0" shooter visible="false"></a-sphere>
+
+
+  </a-scene>
+  <!-- Model Gagner -->
+  <div id="finishDialog" class="modal mazify" style="display: none;">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" onclick="cont()">&times;</span>
+        <h2>Terminé</h2>
+      </div>
+      <div class="modal-body">
+        <p>Félicitation</p>
+
+        <p id="temps"></p>
+      </div>
+      <div class="modal-footer">
+        <h3></h3>
+        <button class="button" onclick="reset()">Rejouer</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

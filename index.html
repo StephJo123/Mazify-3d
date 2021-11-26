@@ -20,7 +20,7 @@
 
 <body style="background-color: #e9c0c0">
   <div id="loader" class="lds-dual-ring centered"></div>
-  <a-scene style="display: none;" inspector-plugin-recast renderer=" colorManagement: true;">
+  <a-scene style="display: none;" inspector-plugin-recast renderer="colorManagement: true;">
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/sol.jpg" />
@@ -36,6 +36,7 @@
       <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
       <a-asset-item id="cyclops" src="assets/cyclops/scene.gltf"></a-asset-item>
       <a-asset-item id="bomb" src="assets/atomic_bomb/scene.gltf"></a-asset-item>
+      <a-asset-item id="skull" src="assets/demon_skull/scene.gltf"></a-asset-item>
       <a-asset-item id="blade_trap" src="assets/blade_trap/scene.gltf"></a-asset-item>
       <audio id="sonArme" src="assets/pistol.mp3" preload="auto"></audio>
       <audio id="sonTeleportation" src="assets/teleport_sound.mp3" preload="auto"></audio>
@@ -51,7 +52,7 @@
     </a-sky>
 
     <a-light type="ambient" color="#fff" intensity="0.8"></a-light>
-    <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="100" width="100"></a-plane>
+    <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="150" width="150"></a-plane>
 
     <!-- Logo UCA -->
     <a-image src="#logoUCA" id="logo" position="-27 1.4 16.55" rotation="0 0 0" scale="0.09 0.13 0.09" height="8"
