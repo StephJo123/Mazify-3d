@@ -62,13 +62,15 @@ AFRAME.registerComponent('collision_piege', {
         }
         let pos = this.el.getAttribute("position");
  
-        let posSphere = document.getElementById("piege_1").getAttribute("position");
+        let posSphere = document.getElementById("piege_0").getAttribute("position");
+        let posSphere1 = document.getElementById("piege_1").getAttribute("position");
+        let posSphere2 = document.getElementById("piege_2").getAttribute("position");
+        let posSphere3 = document.getElementById("piege_3").getAttribute("position");
  
-        if (abs(pos.x - posSphere.x) < 0.7) {
-            if (abs(pos.z - posSphere.z) < 0.7) {
+        if (abs((pos.x - posSphere.x) || (pos.x - posSphere1.x) || (pos.x - posSphere2.x) || (pos.x - posSphere3.x)) < 0.7) {
+            if (abs(pos.z - posSphere.z) < 0.7 || abs(pos.z - posSphere1.z) < 0.7 || abs(pos.z - posSphere2.z) < 0.7 || abs(pos.z - posSphere3.z) < 0.7) {
                 document.getElementById("trapDialog").style.display = "block";
                 let audio = document.querySelector("#sonTeleportation").play();
-                console.log("ok");
             }
         }
     }
@@ -215,7 +217,7 @@ AFRAME.registerComponent('delais', {
         }, 15000);
         setTimeout(() => {  
             let piege1 = document.getElementById('piege_1');
-            piege.setAttribute('animation', {
+            piege1.setAttribute('animation', {
                 property: 'position',
                 to: '-1.8 0.92838 -14.44684', 
                 loop: true,
@@ -225,7 +227,7 @@ AFRAME.registerComponent('delais', {
             let piege3 = document.getElementById('piege_3');
             piege3.setAttribute('animation', {
                 property: 'position',
-                to: '-1.8 0.92838 -14.44684', 
+                to: '-1.8 0.92838 -20', 
                 loop: true,
                 dur: '827,3',
                 dir: 'alternate'
@@ -243,7 +245,7 @@ AFRAME.registerComponent('delais', {
             let piege = document.getElementById('piege_0');
             piege.setAttribute('animation', {
                 property: 'position',
-                to: '-1.8 0.92838 -14.44684', 
+                to: '-1.8 0.92838 -11', 
                 loop: true,
                 dur: '827,3',
                 dir: 'alternate'
@@ -251,7 +253,7 @@ AFRAME.registerComponent('delais', {
             let piege2 = document.getElementById('piege_2');
             piege2.setAttribute('animation', {
                 property: 'position',
-                to: '-1.8 0.92838 -14.44684', 
+                to: '-1.8 0.92838 -17', 
                 loop: true,
                 dur: '827,3',
                 dir: 'alternate'
