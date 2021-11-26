@@ -211,7 +211,9 @@ AFRAME.registerComponent('trackballfinish', {
         $('finishDialog').children[0].children[1].children[0].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
         $('finishDialog').style.display = "block";
         clearInterval(monInter);
-        $("compteur").remove();
+        if (document.contains($("compteur"))) {
+          $("compteur").remove();
+        }
         document.querySelector('a-scene').exitVR();
       }
     }
