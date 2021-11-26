@@ -211,9 +211,7 @@ AFRAME.registerComponent('trackballfinish', {
         $('finishDialog').children[0].children[1].children[0].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
         $('finishDialog').style.display = "block";
         clearInterval(monInter);
-        if (document.contains($("compteur"))) {
-			$('compteur').remove();
-		}
+        $("compteur").remove();
         document.querySelector('a-scene').exitVR();
       }
     }
@@ -257,11 +255,3 @@ AFRAME.registerComponent('munitions', {
     addAmmo(5);
   }
 });
-
-function changeColor() {
-  cursor.setAttribute('material', 'color: springgreen');
-}
-
-function changeBack() {
-  cursor.setAttribute('material', 'color: black');
-}
