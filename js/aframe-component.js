@@ -1,6 +1,5 @@
 var bombactive = false;
 var nbTirs = 0;
-var posBalleX = -0.25;
 var test = 0;
 var tirAutorise = true;
 var monInter;
@@ -117,7 +116,7 @@ AFRAME.registerComponent("trackball", {
 // fonction qui ajoute un nombre de munitions de façon aléatoire
 function addAmmo(munitionsBonus) {
   let camera = $('camera');
-  let posBalleX = -0.25 + 0.1 * camera.getElementsByTagName("a-image").length;
+  let posBalleX = 0.6 + 0.1 * camera.getElementsByTagName("a-image").length;
   for (var i = 0; i < munitionsBonus; i++) {
     let balle = document.createElement('a-image');
     camera.appendChild(balle);
@@ -125,13 +124,8 @@ function addAmmo(munitionsBonus) {
     balle.setAttribute('id', 'balle' + (nbTirs + i));
     balle.setAttribute('position', {
       x: posBalleX,
-      y: 1,
+      y: -0.5,
       z: -2
-    });
-    balle.setAttribute('scale', {
-      x: 10,
-      y: 10,
-      z: 10
     });
     balle.setAttribute('scale', {
       x: 0.01,
