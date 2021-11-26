@@ -255,3 +255,11 @@ AFRAME.registerComponent('munitions', {
     addAmmo(5);
   }
 });
+
+function changeColor() {
+  cursor.setAttribute('material', 'color: springgreen');
+}
+
+function changeBack() {
+  cursor.setAttribute('material', 'color: white');
+}

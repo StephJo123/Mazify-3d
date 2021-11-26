@@ -21,7 +21,8 @@
 
 <body style="background-color: #222222">
   <div id="loader" class="lds-dual-ring centered"></div>
-  <a-scene style="display: none;" inspector-plugin-recast renderer="colorManagement: true; highRefreshRate: true;">
+  <a-scene style="display: none;" inspector-plugin-recast
+    renderer="colorManagement: true; highRefreshRate: true; antialias: true;">
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/sol.jpg" />
@@ -92,7 +93,7 @@
       trackballfinish collision>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
-        <a-cursor id="cursor" position="0 0 -0.2" scale="0.25 0.25 0.25"
+        <a-cursor id="cursor" color="white;" position="0 0 -0.2" scale="0.25 0.25 0.25"
           animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 0.25 0.25 0.25; dur: 150">
         </a-cursor>
 
