@@ -24,13 +24,11 @@
 
 <body style="background-color: #222222">
   <div id="loader" class="lds-dual-ring centered"></div>
-  <a-scene style="display: none;" inspector-plugin-recast renderer=" colorManagement: true;">
+  <a-scene style="display: none;" inspector-plugin-recast renderer="colorManagement: true;">
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/sol.jpg" />
       <img id="wall" src="assets/test.jpg" />
-      <img id="ball" src="assets/ball.jpg" />
-      <img id="red-carpet" src="assets/red-carpet.jpg" />
       <img id="start" src="assets/start.jpg" />
       <img id="finish" src="assets/finish.jpg" />
       <img id="redsky" src="assets/t.jpg">
@@ -39,15 +37,12 @@
       <a-asset-item id="interrupteur" src="assets/light_switch/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
       <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
-      <a-asset-item id="fini" src="assets/finish/scene.gltf"></a-asset-item>
-      <a-asset-item id="ennemy" src="assets/cultist_armed/scene.gltf"></a-asset-item>
-      <a-asset-item id="dragon" src="assets/mythic_dragon_variant/scene.gltf"></a-asset-item>
       <a-asset-item id="cyclops" src="assets/cyclops/scene.gltf"></a-asset-item>
       <a-asset-item id="bomb" src="assets/atomic_bomb/scene.gltf"></a-asset-item>
+      <a-asset-item id="skull" src="assets/demon_skull/scene.gltf"></a-asset-item>
       <audio id="sonArme" src="assets/pistol.mp3" preload="auto"></audio>
       <audio id="sonTeleportation" src="assets/teleport2.mp3" preload="auto"></audio>
       <audio id="musique" src="assets/critical-tension-drama-tension-suspense-music-brulik-entertainment.mp3"></audio>
-      <a-asset-item id="human" src="assets/super_human/scene.gltf"></a-asset-item>
       <audio id="countdown" src="sounds/countdown.mp3"></audio>
       <img id="logoUCA" src="assets/logo_UCA.jpg">
     </a-assets>
@@ -58,7 +53,7 @@
     </a-sky>
 
     <a-light type="ambient" color="#fff" intensity="0.8"></a-light>
-    <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="100" width="100"></a-plane>
+    <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="150" width="150"></a-plane>
 
     <!-- Logo UCA -->
     <a-image src="#logoUCA" id="logo" position="-27 1.4 16.55" rotation="0 0 0" scale="0.09 0.13 0.09" height="8" width="20"></a-image>
@@ -95,9 +90,7 @@
 
     <!-- Caméra Rig -->
     <a-entity id="player" player listener movement-controls="constrainToNavMesh: true" position="0 1.6 0"
-    animation__teleportx="property: object3D.position.x; to: 0; dur: 10; easing: linear; startEvents: teleport"                
-    animation__teleportz="property: object3D.position.z; to: 1; dur: 10; easing: linear; startEvents: teleport"    
-    trackball trackballfinish collision>
+    trackball trackballfinish collision >
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
         <a-cursor></a-cursor>
@@ -129,16 +122,22 @@
     animation="property: position; to: -22.5 0 23.962; loop: false; dur: 35000"
     look-at="#player" target="healthPoints: 3" hit-handler>
 
-      <a-box shoot-ennemy shooter position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="340 -180 0" ></a-box>
+      
     </a-entity>
 
     <a-entity gltf-model="#cyclops" animation-mixer id="cyclops2" scale="0.2 0.2 0.2" position="-24 0 17.5"  hit-handler>
       <a-box  position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="315 -180 0" ></a-box>
     </a-entity>
-  
+
+    <a-entity tpsalleboss gltf-model="#skull" id="skull2" scale="0.5 0.5 0.5" position="24.8 1.8 -13.417" rotation="0 -90 0">
+    </a-entity>
+    <a-entity position="25.431 2.688 -13.38" geometry="primitive: box; width: 0.9; height: 0.2; depth: 0.05" material="color: #5A3314" rotation="0 -90 0">
+      <a-entity text="value: Appuyez 2 fois sur le crane \n pour aller dans la salle du boss !" position="0.15 0 0.025"></a-entity>
+    </a-entity>
+    <a-box id="porteSortie" position="24 1.2 -16" scale="3 2.5 0.5" material="src: #ground"></a-box>
       <!-- Maze -->
       <a-entity mazify> </a-entity>
-
+      
       <!-- Finish -->
       
     </a-scene>
