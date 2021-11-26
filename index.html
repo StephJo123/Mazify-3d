@@ -1,50 +1,49 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Mazify 3D</title>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta name="description" content="Mazify 3D" />
-    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
-    <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
-    <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
-    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script> 
-    <script src="js/mazify.js"></script>
-    <script src="js/player.js"></script>
-    <script src="js/aframe-component.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css?family=Spartan&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
+
+<head>
+  <title>Mazify 3D</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="description" content="Mazify 3D" />
+  <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+  <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <script src="js/mazify.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/aframe-component.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="assets/maze.png" />
 </head>
 
-<body style="background-color: #222222">
+<body style="background-color: #e9c0c0">
   <div id="loader" class="lds-dual-ring centered"></div>
   <a-scene style="display: none;" inspector-plugin-recast renderer="colorManagement: true;">
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/sol.jpg" />
-      <img id="wall" src="assets/test.jpg" />
+      <img id="wall" src="assets/wall.jpg" />
       <img id="start" src="assets/start.jpg" />
       <img id="finish" src="assets/finish.jpg" />
-      <img id="redsky" src="assets/t.jpg">
+      <img id="redsky" src="assets/sky.jpg">
       <img id="texteBombe" src="assets/textebombe.png">
       <img id="texteInterrupteur" src="assets/texteInterrupteur.png">
+      <img id="texteTeleportation" src="assets/textetp.png">
       <a-asset-item id="interrupteur" src="assets/light_switch/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
       <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
       <a-asset-item id="cyclops" src="assets/cyclops/scene.gltf"></a-asset-item>
       <a-asset-item id="bomb" src="assets/atomic_bomb/scene.gltf"></a-asset-item>
       <a-asset-item id="skull" src="assets/demon_skull/scene.gltf"></a-asset-item>
+      <a-asset-item id="blade_trap" src="assets/blade_trap/scene.gltf"></a-asset-item>
       <audio id="sonArme" src="assets/pistol.mp3" preload="auto"></audio>
-      <audio id="sonTeleportation" src="assets/teleport2.mp3" preload="auto"></audio>
-      <audio id="musique" src="assets/critical-tension-drama-tension-suspense-music-brulik-entertainment.mp3"></audio>
+      <audio id="sonTeleportation" src="assets/teleport_sound.mp3" preload="auto"></audio>
+      <audio id="musique" src="assets/ambiance_sound.mp3"></audio>
       <audio id="countdown" src="sounds/countdown.mp3"></audio>
       <img id="logoUCA" src="assets/logo_UCA.jpg">
+      <img id="bullet" src="assets/bullets.png">
     </a-assets>
 
     <!-- Environment -->
@@ -56,7 +55,8 @@
     <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="150" width="150"></a-plane>
 
     <!-- Logo UCA -->
-    <a-image src="#logoUCA" id="logo" position="-27 1.4 16.55" rotation="0 0 0" scale="0.09 0.13 0.09" height="8" width="20"></a-image>
+    <a-image src="#logoUCA" id="logo" position="-27 1.4 16.55" rotation="0 0 0" scale="0.09 0.13 0.09" height="8"
+      width="20"></a-image>
 
     <!--Interrupteur-->
     <a-entity gltf-model="#interrupteur" id="interrupteur2" onclick="" trackball scale="15 15 15"
@@ -71,6 +71,27 @@
     </a-entity>
     <a-cone id="fini2" position="18.6 1 -21.14" scale="0.002 0.002 0.002" radius="0.25" color="#EF2D5E" dynamic-body>
     </a-cone>
+
+    <!--Blade trap-->
+    <a-entity gltf-model="#blade_trap" id="blade" scale="0.8 0.7 0.8" delais position="-3.79382 0.4 -11" rotation="0 0 0">
+    </a-entity>
+    <a-box id="piege_0" position="-5.1 1 -11" scale="1.1 0 0"></a-box>
+
+    <!--Blade trap1-->
+    <a-entity gltf-model="#blade_trap" id="blade1" scale="0.8 0.7 0.8" delais position="-3.79382 0.4 -14.4" rotation="0 0 0">
+    </a-entity>
+    <a-box id="piege_1" position="-5.1 1 -14.44684" scale="1.1 0 0"></a-box>
+
+    <!--Blade trap2-->
+    <a-entity gltf-model="#blade_trap" id="blade2" scale="0.8 0.7 0.8" delais position="-3.79382 0.4 -17" rotation="0 0 0">
+    </a-entity>
+    <a-box id="piege_2" position="-5.1 1 -17" scale="1.1 0 0"></a-box>
+
+    <!--Blade trap3-->
+    <a-entity gltf-model="#blade_trap" id="blade3" scale="0.8 0.7 0.8" delais position="-3.79382 0.4 -20" rotation="0 0 0">
+    </a-entity>
+    <a-box id="piege_3" position="-5.1 1 -20" scale="1.1 0 0"></a-box>
+
 
     <!--Finish-->
     <a-sphere id="sphere" position="-2.76 2.3 -6" radius="0.25" color="#EF2D5E" dynamic-body></a-sphere>
@@ -90,11 +111,11 @@
 
     <!-- Caméra Rig -->
     <a-entity id="player" player listener movement-controls="constrainToNavMesh: true" position="0 1.6 0"
-    trackball trackballfinish collision >
+      trackball trackballfinish collision collision_piege>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
         <a-cursor></a-cursor>
-        <a-entity id="compteur" text="value: ; align: center;" position="0 0 -1" scale="2.5 2.5 2.5" visible="false">
+        <a-entity id="compteur" text="value: ;" position="1.19 0.2 -1" scale="2.5 2.5 2.5" visible="false">
         </a-entity>
       </a-entity>
       <!-- Main gauche -->
@@ -102,102 +123,117 @@
       </a-entity>
       <!-- Main droite -->
       <a-entity oculus-touch-controls="hand: right"
-        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3" shooter="activeBulletType: normal"
+        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3"
         position="0.5 -0.7 -1.2" class="vr-except">
         <!-- Pistolet -->
-        <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot shooter></a-entity>
+        <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot munitions shooter></a-entity>
       </a-entity>
 
     </a-entity>
 
-    <a-circle id="boxTp" material="color: black; opacity: 0.5; transparent: true" position="-27 1.2 11"></a-circle>
-    <a-entity position="-27 2.4 11" geometry="primitive: box; width: 0.9; height: 0.2; depth: 0.05" material="color: #5A3314">
-      <a-entity text="value: Portail de teleportation" position="0.15 0 0.025"></a-entity>
+    <a-circle id="boxTp" material="color: black; opacity: 0.5; transparent: true" position="-2.9 1.2 -26"></a-circle>
+    <a-image src="#texteTeleportation" id="txttp" position="-2.9 2.6 -26" rotation="0 0 0" scale="0.09 0.09 0.09"
+      height="8" width="20" visible="true"></a-image>
     </a-entity>
 
-      <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
-      </a-entity>
-
-    <a-entity gltf-model="#cyclops" animation-mixer id="cyclops" scale="0.2 0.2 0.2" position="-1.198 0 23.962" rotation="0 -90 0" 
-    animation="property: position; to: -22.5 0 23.962; loop: false; dur: 35000"
-    look-at="#player" target="healthPoints: 3" hit-handler>
-
-      
+    <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
     </a-entity>
 
-    <a-entity gltf-model="#cyclops" animation-mixer id="cyclops2" scale="0.2 0.2 0.2" position="-24 0 17.5"  hit-handler>
-      <a-box  position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="315 -180 0" ></a-box>
+    <a-entity gltf-model="#cyclops" animation-mixer id="cyclops" scale="0.2 0.2 0.2" position="-1.198 0 23.962"
+      rotation="0 -90 0" animation="property: position; to: -22.5 0 23.962; loop: false; dur: 35000" look-at="#player"
+      target="healthPoints: 3" hit-handler>
+
+      <a-box shoot-ennemy shooter position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="340 -180 0"></a-box>
     </a-entity>
 
-    <a-entity tpsalleboss gltf-model="#skull" id="skull2" scale="0.5 0.5 0.5" position="24.8 1.8 -13.417" rotation="0 -90 0">
+    <a-entity gltf-model="#cyclops" animation-mixer id="cyclops2" scale="0.2 0.2 0.2" position="-24 0 17.5" hit-handler>
+      <a-box position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="315 -180 0"></a-box>
     </a-entity>
-    <a-entity position="25.431 2.688 -13.38" geometry="primitive: box; width: 0.9; height: 0.2; depth: 0.05" material="color: #5A3314" rotation="0 -90 0">
-      <a-entity text="value: Appuyez 2 fois sur le crane \n pour aller dans la salle du boss !" position="0.15 0 0.025"></a-entity>
-    </a-entity>
-    <a-box id="porteSortie" position="24 1.2 -16" scale="3 2.5 0.5" material="src: #ground"></a-box>
-      <!-- Maze -->
-      <a-entity mazify> </a-entity>
-      
-      <!-- Finish -->
-      
-    </a-scene>
-    
-  
-      <div id="time2" style="display: block;"></div>
-      <div id="time4" style="display: block;"></div>
-      
-    <!-- Model Gagner -->
-    <div id="finishDialog" class="modal mazify" style="display: none;">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close" onclick="cont()">&times;</span>
-          <h2>Terminé</h2>
-        </div>
-        <div class="modal-body">
-          <p>Félicitation</p>
-         
-          <p id="temps"></p>
-        </div>
-        <div class="modal-footer">
-          <h3></h3>
-          <button class="button" onclick="reset()">Rejouer</button>
-        </div>
+
+    <!-- Maze -->
+    <a-entity mazify> </a-entity>
+
+    <!-- Finish -->
+
+  </a-scene>
+
+  <div id="time2" style="display: block;"></div>
+  <div id="time4" style="display: block;"></div>
+
+  <!-- Model piège -->
+  <div id="trapDialog" class="modal mazify" style="display: none;">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" onclick='closeDialog(this)'>&times;</span>
+        <h2>Boom</h2>
+      </div>
+      <div class="modal-body">
+        <p>T'es mort</p>
+        <p id="temps"></p>
+      </div>
+      <div class="modal-footer">
+        <h3></h3>
+        <button class="button" onclick="reset()">Rejouer</button>
       </div>
     </div>
-    <!-- Model Bombe -->
-    <div id="BombeDialogue" class="modal mazify" style="display: none;">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close" onclick="cont()">&times;</span>
-          <h2>Perdu !</h2>
-        </div>
-        <div class="modal-body">
-          <p>La Bombe a explosé</p>
-         
-          <p id="temps"></p>
-        </div>
-        <div class="modal-footer">
-          <h3></h3>
-          <button class="button" onclick="reset()">Rejouer</button>
-        </div>
+  </div>
+  <!-- Model Gagner -->
+  <div id="finishDialog" class="modal mazify" style="display: none;">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" onclick='closeDialog(this)'>&times;</span>
+        <h2>Terminé</h2>
+      </div>
+      <div class="modal-body">
+        <p>Félicitation</p>
+        <p id="temps"></p>
+      </div>
+      <div class="modal-footer">
+        <h3></h3>
+        <button class="button" onclick="reset()">Rejouer</button>
       </div>
     </div>
-  <script>
-    // compteur principal
-    const departMinutes = 0.01
-    let temps = departMinutes * 60
-    var secondes = 0;
-
-    var mainCounter = setInterval(() => {
-      let minutes = parseInt(temps / 60, 10)
-
-      minutes = minutes < 10 ? "0" + minutes : minutes
-      secondes = secondes < 10 ? "0" + secondes : secondes
-
-      temps = temps <= 0 ? 0 : temps + 1
-    }, 1000)
-  </script>
+  </div>
+  <!-- Model Bombe -->
+  <div id="BombeDialogue" class="modal mazify" style="display: none;">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" onclick="closeDialog(this)">&times;</span>
+        <h2>Perdu !</h2>
+      </div>
+      <div class="modal-body">
+        <p>La Bombe a explosé</p>
+        <p id="temps"></p>
+      </div>
+      <div class="modal-footer">
+        <h3></h3>
+        <button class="button" onclick="reset()">Rejouer</button>
+      </div>
+    </div>
+  </div>
+<script>
+if(localStorage.getItem("maze-data") == undefined) {
+	let data = {
+		"data": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, "f", 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, "s", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+		"height": 20,
+		"width": 20
+	}
+	localStorage.setItem("maze-data", JSON.stringify(data));
+}
+// compteur principal
+const departMinutes = 0.01
+let temps = departMinutes * 60
+var secondes = 0;
+var mainCounter = setInterval(() => {
+	let minutes = parseInt(temps / 60, 10)
+	minutes = minutes < 10 ? "0" + minutes : minutes
+	secondes = secondes < 10 ? "0" + secondes : secondes
+	temps = temps <= 0 ? 0 : temps + 1
+}, 1000)
+</script>
 </body>
+
 </html>

@@ -1,10 +1,28 @@
 var bombactive = false;
 var vie = 20;
+var nbTirs = 5;
+var posBalleX = -0.25;
+var test = 0;
+var tirAutorise = true;
+var tpAutorise = false;
+
 /* Permet de tirer */
 AFRAME.registerComponent('click-to-shoot', {
     init: function () {
         document.body.addEventListener('mousedown', () => {
-            this.el.emit('shoot');
+            if (nbTirs != 0) {
+                if (tirAutorise) {
+                    this.el.emit('shoot');
+                    document.getElementById("balle" + (nbTirs - 1)).remove();
+                    let audio = document.querySelector("#sonArme");
+                    audio.play();
+                    audio.currentTime = 0;
+                    nbTirs -= 1;
+                    tirAutorise = false;
+                } else {
+                    tirAutorise = true;
+                }
+            }
         });
     }
 });
@@ -15,17 +33,6 @@ function musicPlay() {
     document.getElementById('musique').play();
     document.removeEventListener('click', musicPlay);
 }
-
-/* Son de l'arme quand elle tire */
-AFRAME.registerComponent('audiohandler', {
-    init: function () {
-        let audio = document.querySelector("#sonArme");
-        this.el.addEventListener('click', () => {
-            audio.play();
-            audio.currentTime = 0;
-        });
-    }
-});
 
 AFRAME.registerComponent('collision', {
 
@@ -42,6 +49,27 @@ AFRAME.registerComponent('collision', {
                 this.el.setAttribute('position', { x: -2.76, y: 1.6, z: -2.1 });
                 let audio = document.querySelector("#sonTeleportation").play();
 
+            }
+        }
+    }
+});
+
+
+AFRAME.registerComponent('collision_piege', {
+
+    tick: function () {
+        function abs(val) {
+            return (val < 0) ? -val : val;
+        }
+        let pos = this.el.getAttribute("position");
+
+        let posSphere = document.getElementById("piege_1").getAttribute("position");
+
+        if (abs(pos.x - posSphere.x) < 0.7) {
+            if (abs(pos.z - posSphere.z) < 0.7) {
+                document.getElementById("trapDialog").style.display = "block";
+                let audio = document.querySelector("#sonTeleportation").play();
+                console.log("ok");
             }
         }
     }
@@ -68,25 +96,22 @@ AFRAME.registerComponent('trackball', {
         if (bombactive)
             return;
 
-        function abs(val) {
-            return (val < 0) ? -val : val;
-        }
         let pos = this.el.getAttribute("position");
 
         let posSphere = document.querySelector("a-sphere").getAttribute("position");
-        if (abs(pos.x - posSphere.x) < 4) {
-            if (abs(pos.z - posSphere.z) < 4) {
+        if (Math.abs(pos.x - posSphere.x) < 4) {
+            if (Math.abs(pos.z - posSphere.z) < 4) {
                 bombactive = true;
                 document.getElementById('musique').pause();
                 document.getElementById('countdown').play();
                 document.getElementById("tbombe").setAttribute("visible", "true");
                 document.getElementById("compteur").setAttribute("visible", "true");
 
-
+                var monInter;
                 function startTimer(duration, display) {
                     var timer = duration,
                         minutes, seconds;
-                    var monInter = setInterval(function () {
+                    monInter = setInterval(function () {
                         document.getElementById("compteur").setAttribute("text", "value: " + timer + ";");
                         minutes = parseInt(timer / 60, 10)
                         seconds = parseInt(timer % 60, 10);
@@ -98,6 +123,7 @@ AFRAME.registerComponent('trackball', {
 
                         if (!document.getElementById('tinterrupteur').getAttribute('visible')) {
                             if (--timer < 0) {
+                                document.getElementById('countdown').pause();
                                 document.getElementById("BombeDialogue").style.display = "block";
                                 document.querySelector('a-scene').exitVR();
                                 clearInterval(monInter);
@@ -112,10 +138,14 @@ AFRAME.registerComponent('trackball', {
                 startTimer(fiveMinutes, display);
 
                 document.getElementById('interrupteur2').addEventListener('click', function () {
+                    // stop le compteur pour éviter de continuer le calcul
+                    clearInterval(monInter);
                     document.getElementById('countdown').pause();
                     document.getElementById('musique').play();
                     document.getElementById("compteur").setAttribute("visible", "false");
                     document.getElementById('tinterrupteur').setAttribute('visible', "true");
+                    document.getElementById('tbombe').setAttribute('visible', "true");
+                    tpAutorise = true;
                 });
             }
         }
@@ -124,14 +154,11 @@ AFRAME.registerComponent('trackball', {
 
 AFRAME.registerComponent('trackballfinish', {
     tick: function () {
-        function abs(val) {
-            return (val < 0) ? -val : val;
-        }
         let pos = this.el.getAttribute("position");
         let posSphere = document.getElementById("fini2").getAttribute("position");
 
-        if (abs(pos.x - posSphere.x) < 2) {
-            if (abs(pos.z - posSphere.z) < 2) {
+        if (Math.abs(pos.x - posSphere.x) < 2) {
+            if (Math.abs(pos.z - posSphere.z) < 2) {
                 clearInterval(mainCounter);
                 document.getElementById('finishDialog').childNodes[3].childNodes[3].childNodes[1].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
                 document.getElementById("finishDialog").style.display = "block";
@@ -213,19 +240,19 @@ AFRAME.registerComponent('hit-handler-boss', {
             document.getElementById('bosslife').setAttribute('geometry', {
                 width: vie
             });
-            if(vie<10){
-                document.getElementById('bosslife').setAttribute('material','color:orange')
-                missile.setAttribute('visible','true')
-                missile.setAttribute('animation',{
-                    property:'position',
-                    to:'0 0 -1',
-                    dur:3000
+            if (vie < 10) {
+                document.getElementById('bosslife').setAttribute('material', 'color:orange')
+                missile.setAttribute('visible', 'true')
+                missile.setAttribute('animation', {
+                    property: 'position',
+                    to: '0 0 -1',
+                    dur: 3000
                 });
 
-                
+
             }
-            if(vie<5){
-                document.getElementById('bosslife').setAttribute('material','color:red')
+            if (vie < 5) {
+                document.getElementById('bosslife').setAttribute('material', 'color:red')
                 sphere5.setAttribute('shoot-ennemy-rafale', null)
                 sphere6.setAttribute('shoot-ennemy-rafale', null)
                 sphere7.setAttribute('shoot-ennemy-rafale', null)
@@ -244,8 +271,8 @@ AFRAME.registerComponent('hit-handler-boss', {
 
             }
             vie = vie - 0.04
-            
-            
+
+
         });
 
         el.addEventListener('die', () => {
@@ -263,5 +290,79 @@ AFRAME.registerComponent('monster-roar', {
         setInterval(function () {
             document.getElementById('roar').play();
         }, 20000);
+    }
+});
+
+AFRAME.registerComponent('munitions', {
+    init: function () {
+        let camera = document.getElementById('camera');
+        for (var i = 0; i < nbTirs; i++) {
+            let balle = document.createElement('a-image');
+            camera.appendChild(balle);
+            balle.setAttribute('src', '#bullet');
+            balle.setAttribute('id', 'balle' + i);
+            balle.setAttribute('position', { x: posBalleX, y: 1, z: -2 });
+            balle.setAttribute('scale', { x: 10, y: 10, z: 10 });
+            balle.setAttribute('scale', { x: 0.01, y: 0.01, z: 0.01 });
+            balle.setAttribute('height', '14');
+            balle.setAttribute('width', '3');
+            posBalleX = posBalleX + 0.1;
+        }
+    }
+});
+
+AFRAME.registerComponent('delais', {
+    init: function () {
+        setTimeout(() => {
+            let blade1 = document.getElementById('blade1');
+            blade1.setAttribute('animation-mixer', '');
+            let blade3 = document.getElementById('blade3');
+            blade3.setAttribute('animation-mixer', '');
+
+        }, 15000);
+        setTimeout(() => {
+            let piege1 = document.getElementById('piege_1');
+            piege.setAttribute('animation', {
+                property: 'position',
+                to: '-1.8 0.92838 -14.44684',
+                loop: true,
+                dur: '827,3',
+                dir: 'alternate'
+            });
+            let piege3 = document.getElementById('piege_3');
+            piege3.setAttribute('animation', {
+                property: 'position',
+                to: '-1.8 0.92838 -14.44684',
+                loop: true,
+                dur: '827,3',
+                dir: 'alternate'
+            });
+        }, 14900);
+
+        setTimeout(() => {
+            let blade = document.getElementById('blade');
+            blade.setAttribute('animation-mixer', '');
+            let blade2 = document.getElementById('blade2');
+            blade2.setAttribute('animation-mixer', '');
+        }, 14500);
+
+        setTimeout(() => {
+            let piege = document.getElementById('piege_0');
+            piege.setAttribute('animation', {
+                property: 'position',
+                to: '-1.8 0.92838 -14.44684',
+                loop: true,
+                dur: '827,3',
+                dir: 'alternate'
+            });
+            let piege2 = document.getElementById('piege_2');
+            piege2.setAttribute('animation', {
+                property: 'position',
+                to: '-1.8 0.92838 -14.44684',
+                loop: true,
+                dur: '827,3',
+                dir: 'alternate'
+            });
+        }, 14400);
     }
 });
