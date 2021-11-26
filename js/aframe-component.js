@@ -1,6 +1,5 @@
 var bombactive = false;
 var nbTirs = 0;
-var test = 0;
 var tirAutorise = true;
 var monInter;
 var removeText, removeBox;
@@ -101,6 +100,9 @@ AFRAME.registerComponent("trackball", {
 
       startTimer(30, $("time2"));
 
+      $("interrupteur2").addEventListener('mouseenter', changeColor);
+      $("interrupteur2").addEventListener('mouseleave', changeBack);
+
       $("interrupteur2").addEventListener("click", function () {
         // stop le compteur pour éviter de continuer le calcul
         clearInterval(monInter);
@@ -116,7 +118,8 @@ AFRAME.registerComponent("trackball", {
 // fonction qui ajoute un nombre de munitions de façon aléatoire
 function addAmmo(munitionsBonus) {
   let camera = $('camera');
-  let posBalleX = 0.6 + 0.1 * camera.getElementsByTagName("a-image").length;
+  let posBalleX = 0.13 + 0.01 * camera.getElementsByTagName("a-image").length;
+
   for (var i = 0; i < munitionsBonus; i++) {
     let balle = document.createElement('a-image');
     camera.appendChild(balle);
@@ -124,17 +127,17 @@ function addAmmo(munitionsBonus) {
     balle.setAttribute('id', 'balle' + (nbTirs + i));
     balle.setAttribute('position', {
       x: posBalleX,
-      y: -0.5,
-      z: -2
+      y: -0.07,
+      z: -0.2
     });
     balle.setAttribute('scale', {
-      x: 0.01,
-      y: 0.01,
-      z: 0.01
+      x: 0.005,
+      y: 0.005,
+      z: 0.005
     });
-    balle.setAttribute('height', '14');
-    balle.setAttribute('width', '3');
-    posBalleX += 0.1;
+    balle.setAttribute('height', '5');
+    balle.setAttribute('width', '0.8');
+    posBalleX += 0.01;
   }
   nbTirs += munitionsBonus;
 };
@@ -153,6 +156,8 @@ AFRAME.registerComponent("openlootbox", {
 
     // si une lootbox est touchée, on l'ouvre, puis la supprime...
     if (data.id) {
+      el.addEventListener('mouseenter', changeColor);
+      el.addEventListener('mouseleave', changeBack);
       el.addEventListener(
         "click",
         () => {
@@ -252,3 +257,11 @@ AFRAME.registerComponent('munitions', {
     addAmmo(5);
   }
 });
+
+function changeColor() {
+  cursor.setAttribute('material', 'color: springgreen');
+}
+
+function changeBack() {
+  cursor.setAttribute('material', 'color: black');
+}
