@@ -36,6 +36,7 @@
       <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
       <a-asset-item id="cyclops" src="assets/cyclops/scene.gltf"></a-asset-item>
       <a-asset-item id="bomb" src="assets/atomic_bomb/scene.gltf"></a-asset-item>
+      <a-asset-item id="blade_trap" src="assets/blade_trap/scene.gltf"></a-asset-item>
       <audio id="sonArme" src="assets/pistol.mp3" preload="auto"></audio>
       <audio id="sonTeleportation" src="assets/teleport_sound.mp3" preload="auto"></audio>
       <audio id="musique" src="assets/ambiance_sound.mp3"></audio>
@@ -70,6 +71,27 @@
     <a-cone id="fini2" position="18.6 1 -21.14" scale="0.002 0.002 0.002" radius="0.25" color="#EF2D5E" dynamic-body>
     </a-cone>
 
+    <!--Blade trap-->
+    <a-entity gltf-model="#blade_trap" id="blade" scale="0.8 0.7 0.8" delais position="-3.79382 0.4 -11" rotation="0 0 0">
+    </a-entity>
+    <a-box id="piege_0" position="-5.1 1 -11" scale="1.1 0 0"></a-box>
+
+    <!--Blade trap1-->
+    <a-entity gltf-model="#blade_trap" id="blade1" scale="0.8 0.7 0.8" delais position="-3.79382 0.4 -14.4" rotation="0 0 0">
+    </a-entity>
+    <a-box id="piege_1" position="-5.1 1 -14.44684" scale="1.1 0 0"></a-box>
+
+    <!--Blade trap2-->
+    <a-entity gltf-model="#blade_trap" id="blade2" scale="0.8 0.7 0.8" delais position="-3.79382 0.4 -17" rotation="0 0 0">
+    </a-entity>
+    <a-box id="piege_2" position="-5.1 1 -17" scale="1.1 0 0"></a-box>
+
+    <!--Blade trap3-->
+    <a-entity gltf-model="#blade_trap" id="blade3" scale="0.8 0.7 0.8" delais position="-3.79382 0.4 -20" rotation="0 0 0">
+    </a-entity>
+    <a-box id="piege_3" position="-5.1 1 -20" scale="1.1 0 0"></a-box>
+
+
     <!--Finish-->
     <a-sphere id="sphere" position="-2.76 2.3 -6" radius="0.25" color="#EF2D5E" dynamic-body></a-sphere>
 
@@ -88,7 +110,7 @@
 
     <!-- Caméra Rig -->
     <a-entity id="player" player listener movement-controls="constrainToNavMesh: true" position="0 1.6 0"
-      trackball trackballfinish collision>
+      trackball trackballfinish collision collision_piege>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
         <a-cursor></a-cursor>
@@ -137,6 +159,24 @@
   <div id="time2" style="display: block;"></div>
   <div id="time4" style="display: block;"></div>
 
+  <!-- Model piège -->
+  <div id="trapDialog" class="modal mazify" style="display: none;">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" onclick='closeDialog(this)'>&times;</span>
+        <h2>Boom</h2>
+      </div>
+      <div class="modal-body">
+        <p>T'es mort</p>
+        <p id="temps"></p>
+      </div>
+      <div class="modal-footer">
+        <h3></h3>
+        <button class="button" onclick="reset()">Rejouer</button>
+      </div>
+    </div>
+  </div>
   <!-- Model Gagner -->
   <div id="finishDialog" class="modal mazify" style="display: none;">
     <!-- Modal content -->

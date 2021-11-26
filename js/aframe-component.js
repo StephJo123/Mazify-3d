@@ -34,22 +34,45 @@ function musicPlay() {
 } 
 
 AFRAME.registerComponent('collision', {
-
-    tick: function() {
-      let pos = this.el.getAttribute("position");
-      
-      let posSphere = document.getElementById("boxTp").getAttribute("position");
-
-      if (Math.abs(pos.x-posSphere.x) < 0.7 ) {
-        if(Math.abs(pos.z-posSphere.z) < 0.7) {
-            if(tpAutorise == true) {
-                this.el.setAttribute('position', { x: -2.76, y: 1.6, z:-2.1 });
+ 
+    tick: function () {
+        function abs(val) {
+            return (val < 0) ? -val : val;
+        }
+        let pos = this.el.getAttribute("position");
+ 
+        let posSphere = document.getElementById("boxTp").getAttribute("position");
+ 
+        if (abs(pos.x - posSphere.x) < 0.7) {
+            if (abs(pos.z - posSphere.z) < 0.7) {
+                this.el.setAttribute('position', { x: -2.76, y: 1.6, z: -2.1 });
                 let audio = document.querySelector("#sonTeleportation").play();
+ 
             }
         }
-      }
     }
-  });
+});
+
+
+AFRAME.registerComponent('collision_piege', {
+ 
+    tick: function () {
+        function abs(val) {
+            return (val < 0) ? -val : val;
+        }
+        let pos = this.el.getAttribute("position");
+ 
+        let posSphere = document.getElementById("piege_1").getAttribute("position");
+ 
+        if (abs(pos.x - posSphere.x) < 0.7) {
+            if (abs(pos.z - posSphere.z) < 0.7) {
+                document.getElementById("trapDialog").style.display = "block";
+                let audio = document.querySelector("#sonTeleportation").play();
+                console.log("ok");
+            }
+        }
+    }
+});
 
 AFRAME.registerComponent('trackball', {
     tick: function () {
@@ -178,5 +201,61 @@ AFRAME.registerComponent('munitions', {
           balle.setAttribute('width', '3');
           posBalleX = posBalleX + 0.1;
         }
+    }
+});
+
+AFRAME.registerComponent('delais', {
+    init: function () {
+        setTimeout(() => {  
+            let blade1 = document.getElementById('blade1');
+            blade1.setAttribute('animation-mixer','');
+            let blade3 = document.getElementById('blade3');
+            blade3.setAttribute('animation-mixer','');
+            
+        }, 15000);
+        setTimeout(() => {  
+            let piege1 = document.getElementById('piege_1');
+            piege.setAttribute('animation', {
+                property: 'position',
+                to: '-1.8 0.92838 -14.44684', 
+                loop: true,
+                dur: '827,3',
+                dir: 'alternate'
+            });
+            let piege3 = document.getElementById('piege_3');
+            piege3.setAttribute('animation', {
+                property: 'position',
+                to: '-1.8 0.92838 -14.44684', 
+                loop: true,
+                dur: '827,3',
+                dir: 'alternate'
+            });
+        }, 14900);
+
+        setTimeout(() => {  
+            let blade = document.getElementById('blade');
+            blade.setAttribute('animation-mixer','');
+            let blade2 = document.getElementById('blade2');
+            blade2.setAttribute('animation-mixer','');
+        }, 14500);
+
+        setTimeout(() => {  
+            let piege = document.getElementById('piege_0');
+            piege.setAttribute('animation', {
+                property: 'position',
+                to: '-1.8 0.92838 -14.44684', 
+                loop: true,
+                dur: '827,3',
+                dir: 'alternate'
+            });
+            let piege2 = document.getElementById('piege_2');
+            piege2.setAttribute('animation', {
+                property: 'position',
+                to: '-1.8 0.92838 -14.44684', 
+                loop: true,
+                dur: '827,3',
+                dir: 'alternate'
+            });
+        }, 14400);
     }
 });
