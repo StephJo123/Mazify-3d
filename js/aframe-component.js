@@ -146,10 +146,10 @@ AFRAME.registerComponent("openlootbox", {
           // appel de notre fonction qui ajoute un nombre de munitions aléatoire
           addAmmo(munitionsBonus);
 
-          // masquage du message au bout de 5s
+          // masquage du message au bout de 4s
           removeText = setTimeout(function () {
             texteBonus.setAttribute("visible", false);
-          }, 5000);
+          }, 4000);
 
           // suppression de la lootbox au bout de 0.8s
           removeBox = setTimeout(function () {
