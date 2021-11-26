@@ -101,6 +101,9 @@ AFRAME.registerComponent("trackball", {
 
       startTimer(30, $("time2"));
 
+      $("interrupteur2").addEventListener('mouseenter', changeColor);
+      $("interrupteur2").addEventListener('mouseleave', changeBack);
+
       $("interrupteur2").addEventListener("click", function () {
         // stop le compteur pour éviter de continuer le calcul
         clearInterval(monInter);
