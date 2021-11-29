@@ -144,12 +144,47 @@ AFRAME.registerComponent("trackball", {
           if (!$("tinterrupteur").getAttribute("visible") && --timer < 0) {
             $("countdown").pause();
             // blocage des controles du joueur
-            document.getElementById('player').setAttribute("keyboard-controls", "enabled: false");
-            document.getElementById('restart').setAttribute('visible', true);
-            document.getElementById('restart').setAttribute('position', player.getAttribute('position'));
-            document.getElementById('restart').object3D.position.x += 2;
-            document.getElementById('restart').object3D.position.y += 1;
-            document.getElementById('scene').setAttribute('fog', 'color: red');
+            $('player').setAttribute("keyboard-controls", "enabled: false");
+
+            // inversion de couleur
+            $('body').setAttribute('style', "background-color: red;")
+            $('scene').setAttribute('fog', 'color: red');
+            cursor.setAttribute('material', 'color: red');
+
+            $('restart').setAttribute('position', player.getAttribute('position'));
+            $('restart').object3D.position.x += 2;
+
+            let posRestart = $('restart').getAttribute('position');
+
+            function isValidePosition(posInit) {
+              let bool = true;
+              document.querySelectorAll('a-box').forEach(function (el) {
+                const posN = el.getAttribute('position');
+                if (Math.abs(posN.x - posInit.x) < 2 && Math.abs(posN.z - posInit.z) < 2) {
+                  console.log('false');
+                  bool = false;
+                  return;
+                }
+              })
+              return bool;
+            }
+
+            if (!isValidePosition(posRestart)) {
+              $('restart').setAttribute('position', player.getAttribute('position'));
+              $('restart').object3D.position.z -= 2;
+              if (!isValidePosition(posRestart)) {
+                $('restart').setAttribute('position', player.getAttribute('position'));
+                $('restart').object3D.position.z += 2;
+                if (!isValidePosition(posRestart)) {
+                  $('restart').setAttribute('position', player.getAttribute('position'));
+                  $('restart').object3D.position.x -= 2;
+                }
+              }
+            }
+            $('restart').object3D.position.y += 1;
+            $('restart').setAttribute('rotation', '0 0 0');
+            $('restart').setAttribute('visible', true);
+
             clearInterval(monInter);
             $("compteur").remove();
           }

@@ -26,7 +26,7 @@
   </script>
 </head>
 
-<body style="background-color: #444">
+<body id="body" style="background-color: #444">
   <div id="loader" class="lds-dual-ring centered"></div>
   <a-scene id="scene" style="display: none;" inspector-plugin-recast
     renderer="colorManagement: true; highRefreshRate: true; antialias: true;"
@@ -75,7 +75,7 @@
     </a-entity>
 
     <!-- dead/restart menu -->
-    <a-entity id="restart" layout="type: line; margin: 1.5" visible="false" look-at="#player">
+    <a-entity id="restart" layout="type: line; margin: 1.5" visible="false" look-at="#camera">
       <a-entity template="src: #link" data-thumb="#restart-menu" link="href: index.html;">
       </a-entity>
     </a-entity>
