@@ -34,6 +34,7 @@
       <img id="texteInterrupteur" src="assets/texteInterrupteur.png">
       <img id="texteTeleportation" src="assets/textetp.png">
       <a-asset-item id="interrupteur" src="assets/light_switch/scene.gltf"></a-asset-item>
+      <a-asset-item id="ghost" src="assets/fantasma_ghost_phantom/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
       <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
       <a-asset-item id="fini" src="assets/finish/scene.gltf"></a-asset-item>
@@ -126,6 +127,8 @@
 
     <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
     </a-entity>
+    
+    <a-entity gltf-model="#ghost" animation-mixer position="-1.198 0 24" scale="0.01 0.01 0.01" look-at="#player" ghost-follow></a-entity>
 
     <a-entity gltf-model="#cyclops" animation-mixer id="cyclops" scale="0.2 0.2 0.2" position="-1.198 0 23.962"
       rotation="0 -90 0" animation="property: position; to: -22.5 0 23.962; loop: false; dur: 35000" look-at="#player"

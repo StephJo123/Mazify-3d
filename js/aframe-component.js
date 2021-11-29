@@ -258,6 +258,25 @@ AFRAME.registerComponent('munitions', {
   }
 });
 
+AFRAME.registerComponent('ghost-follow', {
+  tick: function () {
+    let ghost = this.el;
+    function a() {
+		let posGhost = ghost.getAttribute('position');
+		let posPlayer = $('player').getAttribute('position');
+		let pas = 0.05, signeX = 0, signeZ = 0;
+		if (Math.abs(posGhost.x-posPlayer.x) > pas) {
+			signeX = (posGhost.x > posPlayer.x) ? -pas : pas;
+		}
+		if (Math.abs(posGhost.z-posPlayer.z) > pas) {
+			signeZ = (posGhost.z > posPlayer.z) ? -pas : pas;
+		}
+		ghost.setAttribute('position',{x: posGhost.x+signeX, y: 0,z: posGhost.z+signeZ});
+	}
+	a();
+  }
+});
+
 function changeColor() {
   cursor.setAttribute('material', 'color: springgreen');
 }
