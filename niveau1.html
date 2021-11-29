@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Mazify 3D</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="description" content="Mazify 3D" />
+  <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+  <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <script src="js/mazify.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/aframe-component.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="assets/maze.png" />
+</head>
+
+<body style="background-color: #222222">
+  <div id="loader" class="lds-dual-ring centered"></div>
+  <a-scene style="display: none;" inspector-plugin-recast renderer=" colorManagement: true;">
+    <!-- Assets -->
+    <a-assets>
+      <img id="ground" src="assets/sol.jpg" />
+      <img id="wall" src="assets/wall.jpg" />
+      <img id="start" src="assets/start.jpg" />
+      <img id="finish" src="assets/finish.jpg" />
+      <img id="redsky" src="assets/sky.jpg">
+      <img id="texteQ1" src="assets/question1.png">
+      <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
+    </a-assets>
+
+    <!-- Environment -->
+
+    <a-sky src="#redsky">
+    </a-sky>
+
+    <a-light type="ambient" color="#fff" intensity="0.8"></a-light>
+    <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="100" width="100"></a-plane>
+
+    <!-- Question 1 -->
+    <a-image src="#texteQ1" id="Q1" position="0 1.4 13.6" rotation="0 0 0" height="3"
+      width="2"></a-image>
+
+    <!-- Caméra Rig -->
+    <a-entity id="player" player listener movement-controls position="0 1.6 0">
+      <!-- Caméra -->
+      <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
+        <a-cursor></a-cursor>
+      </a-entity>
+      <!-- Main gauche -->
+      <a-entity oculus-touch-controls="hand: left" hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
+      </a-entity>
+      <!-- Main droite -->
+      <a-entity oculus-touch-controls="hand: right"
+        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3"
+        position="0.5 -0.7 -1.2" class="vr-except">
+      </a-entity>
+    </a-entity>
+
+
+    <!-- Maze -->
+    <a-entity mazify> </a-entity>
+
+    <!-- Finish -->
+
+  </a-scene>
+
+  <script>
+    var mazeArr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, "s", 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+  </script>
+
+</body>
+
+</html>
