@@ -455,3 +455,47 @@ function changeColor() {
 function changeBack() {
   cursor.setAttribute('material', 'color: white');
 }
+
+// Question labyrinthe
+AFRAME.registerComponent('question_resolue', {
+  init: function () {
+      document.getElementById('rep_Q1').addEventListener('click', function (evt) {
+
+        var data = this.data; // valeurs des propriétés des composants.
+        var el = this.el; // référence à l'entité du composant.
+        var texteBonus = document.getElementById("texteBonus"); 
+
+        // affichage d'un message temporaire dans la caméra du joueur
+        texteBonus.setAttribute("visible", true);
+        // masquage du message au bout de 4s
+
+        removeText = setTimeout(function () {
+          texteBonus.setAttribute("visible", false);
+        }, 4000);
+
+      });
+      clearTimeout(removeText);
+  }
+});
+
+// Question labyrinthe
+AFRAME.registerComponent('question_erreur', {
+  init: function () {
+      document.getElementById('rep_Q1F').addEventListener('click', function (evt) {
+
+        var data = this.data; // valeurs des propriétés des composants.
+        var el = this.el; // référence à l'entité du composant.
+        var texteErreur = document.getElementById("texteErreur"); 
+
+        // affichage d'un message temporaire dans la caméra du joueur
+        texteErreur.setAttribute("visible", true);
+        // masquage du message au bout de 4s
+
+        removeText = setTimeout(function () {
+          texteErreur.setAttribute("visible", false);
+        }, 4000);
+
+      });
+      clearTimeout(removeText);
+  }
+});
