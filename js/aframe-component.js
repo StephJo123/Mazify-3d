@@ -226,18 +226,10 @@ AFRAME.registerComponent('hit-handler-boss', {
         var rotationTmp = this.rotationTmp = this.rotationTmp || { x: 0, y: 0, z: 0 };
         var el = this.el;
         var missile = document.getElementById('missile2')
-        var sphere1 = document.getElementById('sphere1');
-        var sphere2 = document.getElementById('sphere2');
-        var sphere3 = document.getElementById('sphere3');
-        var sphere4 = document.getElementById('sphere4');
-        var sphere5 = document.getElementById('sphere5');
-        var sphere6 = document.getElementById('sphere6');
-        var sphere7 = document.getElementById('sphere7');
-        var sphere8 = document.getElementById('sphere8');
-        var sphere9 = document.getElementById('sphere9');
-        var sphere10 = document.getElementById('sphere10');
-        var sphere11 = document.getElementById('sphere11');
-        var sphere12 = document.getElementById('sphere12');
+        for(i=1;i<13;i++){
+            var sphere = "sphere" + i;
+            sphere = document.getElementById('sphere'  + i);
+        }
 
         el.addEventListener('hit', () => {
             document.getElementById('bosslife').setAttribute('geometry', {
