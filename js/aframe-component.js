@@ -32,6 +32,13 @@ AFRAME.registerComponent('click-to-shoot', {
     });
   }
 });
+AFRAME.registerComponent('click-to-shoot-boss', {
+  init: function () {
+    document.body.addEventListener('mousedown', () => {
+      this.el.emit('shoot')
+    });
+  }
+});
 
 /* Joue la musique d'ambiance */
 document.addEventListener("click", musicPlay);
