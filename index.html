@@ -17,19 +17,28 @@
   <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" href="assets/maze.png" />
+  <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
+
+  <script id="link" type="text/html">
+          <a-entity class="link" geometry="primitive: plane; height: 1; width: 1" material="shader: flat; src: ${thumb}"
+              event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1"
+              sound="on: click; src: #click-sound"></a-entity>
+  </script>
 </head>
 
-<body style="background-color: #e9c0c0">
+<body style="background-color: #444">
   <div id="loader" class="lds-dual-ring centered"></div>
   <a-scene style="display: none;" inspector-plugin-recast
-    renderer="colorManagement: true; highRefreshRate: true; antialias: true;">
+    renderer="colorManagement: true; highRefreshRate: true; antialias: true;"
+    fog="type: exponential; color: #444; density: 0.1">
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/sol.jpg" />
       <img id="wall" src="assets/wall.jpg" />
+      <!-- <img id="plafond" src="assets/wall.jpg" /> -->
       <img id="start" src="assets/start.jpg" />
       <img id="finish" src="assets/finish.jpg" />
-      <img id="redsky" src="assets/sky.jpg">
+      <!-- <img id="redsky" src="assets/sky.jpg"> -->
       <img id="texteBombe" src="assets/textebombe.png">
       <img id="texteInterrupteur" src="assets/texteInterrupteur.png">
       <img id="texteTeleportation" src="assets/textetp.png">
@@ -47,15 +56,26 @@
       <audio id="countdown" src="sounds/countdown.mp3"></audio>
       <img id="logoUCA" src="assets/logo_UCA.jpg">
       <img id="bullet" src="assets/bullets.png">
+      <img id="start-menu" crossorigin="anonymous" src="assets/start-menu.jpg">
+      <audio id="click-sound" crossorigin="anonymous"
+        src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
+      <img id="city" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg">
     </a-assets>
 
     <!-- Environment -->
 
-    <a-sky src="#redsky">
-    </a-sky>
+    <!-- <a-sky src="#redsky">
+    </a-sky> -->
 
-    <!--<a-plane material="src: #plafond; repeat: 25 25" rotation="90 0 0" position="0 3 0" height="100" width="100">
+    <!-- plafond -->
+    <!-- <a-plane material="src: #plafond; repeat: 25 25" rotation="90 0 0" position="0 3 0" height="100" width="100">
     </a-plane> -->
+
+    <!-- start menu -->
+    <a-entity id="links" layout="type: line; margin: 1.5" position="-26.959 1.500 21.331" startgame>
+      <a-entity template="src: #link" data-thumb="#start-menu">
+      </a-entity>
+    </a-entity>
 
     <a-light type="ambient" color="#fff" intensity="0.8"></a-light>
     <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="150" width="150"></a-plane>
@@ -118,8 +138,8 @@
       material="color: #FF7; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
 
     <!-- Caméra Rig -->
-    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true" position="0 1.6 0" trackball
-      trackballfinish collision collision_piege>
+    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true"
+      keyboard-controls="enabled: false" position="0 1.6 0" trackball trackballfinish collision collision_piege>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
         <a-cursor id="cursor" color="white;" position="0 0 -0.2" scale="0.25 0.25 0.25"
