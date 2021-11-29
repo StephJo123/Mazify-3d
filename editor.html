@@ -23,6 +23,7 @@
         <button class="btn btn-teal" @click="level1">Level 1</button>
         <button class="btn btn-teal" @click="level2">Level 2</button>
         <button class="btn btn-teal" @click="maze_default">Default</button>
+        <button class="btn btn-teal" @click="print_code">Print Code</button>
         <button class="btn btn-teal" @click="save">Save</button>
         <button class="btn btn-teal" @click="gotoMaze">Go to Maze</button>
       </div>
@@ -43,12 +44,11 @@
         v-bind:style="{top: block.top+'px', left: block.left+'px'}" @mousemove="changeTile" @click="changeTile"></div>
     </div>
   </div>
+  <div id="footer">
+	  <p></p>
+	</div>
 </body>
 
 <script src="js/editor.js"></script>
 
 </html>
-<a-entity oculus-touch-controls="hand: right"
-hand-controls="hand: right; handModelStyle: lowPoly ; color: #B3B3B3"
-position="0.5 -0.7 -1.2">
-<a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot shooter></a-entity>

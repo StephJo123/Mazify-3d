@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Mazify 3D</title>
+  <title>Mazify - 3D</title>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
   <meta name="description" content="Mazify 3D" />
   <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
@@ -10,6 +10,7 @@
   <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
   <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-event-set-component@4.1.2/dist/aframe-event-set-component.min.js"></script>
   <script src="js/mazify.js"></script>
   <script src="js/player.js"></script>
   <script src="js/aframe-component.js"></script>
@@ -20,7 +21,8 @@
 
 <body style="background-color: #e9c0c0">
   <div id="loader" class="lds-dual-ring centered"></div>
-  <a-scene style="display: none;" inspector-plugin-recast renderer="colorManagement: true;">
+  <a-scene style="display: none;" inspector-plugin-recast
+    renderer="colorManagement: true; highRefreshRate: true; antialias: true;">
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/sol.jpg" />
@@ -38,6 +40,7 @@
       <a-asset-item id="bomb" src="assets/atomic_bomb/scene.gltf"></a-asset-item>
       <a-asset-item id="skull" src="assets/demon_skull/scene.gltf"></a-asset-item>
       <a-asset-item id="blade_trap" src="assets/blade_trap/scene.gltf"></a-asset-item>
+      <a-asset-item id="loot_box" src="assets/lootbox/scene.gltf"></a-asset-item>
       <audio id="sonArme" src="assets/pistol.mp3" preload="auto"></audio>
       <audio id="sonTeleportation" src="assets/teleport_sound.mp3" preload="auto"></audio>
       <audio id="musique" src="assets/ambiance_sound.mp3"></audio>
@@ -50,6 +53,9 @@
 
     <a-sky src="#redsky">
     </a-sky>
+
+    <!--<a-plane material="src: #plafond; repeat: 25 25" rotation="90 0 0" position="0 3 0" height="100" width="100">
+    </a-plane> -->
 
     <a-light type="ambient" color="#fff" intensity="0.8"></a-light>
     <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="150" width="150"></a-plane>
@@ -67,13 +73,14 @@
       animation="property: position; to: -21.0 2.1 -21.8; loop: true; dur: 4000; dir: alternate"></a-image>
 
     <!--Bombe-->
-    <a-entity gltf-model="#bomb" id="bomb" scale="0.02 0.02 0.02" position="-2.76 2 -6" rotation="270 0 0">
+    <a-entity gltf-model="#bomb" id="bombe" scale="0.02 0.02 0.02" position="-2.942 1.759 -4.410" rotation="270 0 0">
     </a-entity>
     <a-cone id="fini2" position="18.6 1 -21.14" scale="0.002 0.002 0.002" radius="0.25" color="#EF2D5E" dynamic-body>
     </a-cone>
 
     <!--Blade trap-->
-    <a-entity delais gltf-model="#blade_trap" id="blade" scale="0.8 0.7 0.8" position="-3.79382 0.4 -11" rotation="0 0 0">
+    <a-entity delais gltf-model="#blade_trap" id="blade" scale="0.8 0.7 0.8" position="-3.79382 0.4 -11"
+      rotation="0 0 0">
     </a-entity>
     <a-box id="piege_0" delais position="-5.1 1 -11" scale="1.1 0 0"></a-box>
 
@@ -93,13 +100,14 @@
     <a-box id="piege_3" position="-5.1 1 -20" scale="1.1 0 0"></a-box>
 
 
-    <!--Finish-->
-    <a-sphere id="sphere" position="-2.76 2.3 -6" radius="0.25" color="#EF2D5E" dynamic-body></a-sphere>
 
+    <!-- texte bombe -->
     <a-image src="#texteBombe" id="tbombe" position="-0.711 2.387 -4.168" rotation="0 -45 0" scale="0.09 0.09 0.09"
       height="8" width="20" visible="false"
       animation="property: position; to: -0.711 2.6 -4.168; loop: true; dur: 4000; dir: alternate"></a-image>
 
+    <a-cone id="fini2" position="18.6 1 -21.14" scale="0.002 0.002 0.002" radius="0.25" color="#EF2D5E" dynamic-body>
+    </a-cone>
 
     <!-- Tracking des mains -->
     <a-entity id="leftHand" hand-tracking-controls="hand: left;"></a-entity>
@@ -110,23 +118,31 @@
       material="color: #FF7; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
 
     <!-- Caméra Rig -->
-    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true" position="0 1.6 0"
-      trackball trackballfinish collision collision_piege>
+    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true" position="0 1.6 0" trackball
+      trackballfinish collision collision_piege>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
-        <a-cursor></a-cursor>
-        <a-entity id="compteur" text="value: ;" position="1.19 0.2 -1" scale="2.5 2.5 2.5" visible="false">
-        </a-entity>
+        <a-cursor id="cursor" color="white;" position="0 0 -0.2" scale="0.25 0.25 0.25"
+          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 0.25 0.25 0.25; dur: 150">
+        </a-cursor>
+
+        <a-entity id="compteur" text="value: ;" position="0.19 0.05 -0.2" scale="0.4 0.4 0" visible="true"></a-entity>
+
+        <a-entity id="texteBonus" text="value: Munitions bonus !; color: yellow;" position="0.165 0.03 -0.3"
+          scale="0.5 0.5 0.5" visible="false"></a-entity>
+
       </a-entity>
       <!-- Main gauche -->
-      <a-entity oculus-touch-controls="hand: left" hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
+      <a-entity oculus-touch-controls="hand: left;"
+        hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
       </a-entity>
       <!-- Main droite -->
-      <a-entity oculus-touch-controls="hand: right"
-        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3"
-        position="0.5 -0.7 -1.2" class="vr-except">
+      <a-entity oculus-touch-controls="hand: right;"
+        hand-controls="hand: right; handModelStyle: highPoly; color: #B3B3B3;" position="0.5 -0.7 -1.2"
+        class="vr-except">
         <!-- Pistolet -->
-        <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot munitions shooter></a-entity>
+        <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot munitions shooter>
+        </a-entity>
       </a-entity>
 
     </a-entity>
@@ -150,6 +166,12 @@
       <a-box position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="315 -180 0"></a-box>
     </a-entity>
 
+    <!-- lootboxes models -->
+    <a-entity gltf-model="#loot_box" id="lootbox1" openlootbox="id: lootbox1" scale="0.07 0.07 0.07"
+      position="0.077 -0.019 -23.955" animation-mixer="timeScale: 0;" visible="true"></a-entity>
+    <a-entity gltf-model="#loot_box" id="lootbox2" openlootbox="id: lootbox2" scale="0.07 0.07 0.07"
+      position="-6.077 -0.019 -23.955" animation-mixer="timeScale: 0;" visible="true"></a-entity>
+
     <!-- Maze -->
     <a-entity mazify> </a-entity>
 
@@ -158,7 +180,6 @@
   </a-scene>
 
   <div id="time2" style="display: block;"></div>
-  <div id="time4" style="display: block;"></div>
 
   <!-- Model piège -->
   <div id="trapDialog" class="modal mazify" style="display: none;">
@@ -205,7 +226,7 @@
         <h2>Perdu !</h2>
       </div>
       <div class="modal-body">
-        <p>La Bombe a explosé</p>
+        <p>La bombe a explosé...</p>
         <p id="temps"></p>
       </div>
       <div class="modal-footer">
@@ -214,26 +235,19 @@
       </div>
     </div>
   </div>
-<script>
-if(localStorage.getItem("maze-data") == undefined) {
-	let data = {
-		"data": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, "f", 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, "s", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-		"height": 20,
-		"width": 20
-	}
-	localStorage.setItem("maze-data", JSON.stringify(data));
-}
-// compteur principal
-const departMinutes = 0.01
-let temps = departMinutes * 60
-var secondes = 0;
-var mainCounter = setInterval(() => {
-	let minutes = parseInt(temps / 60, 10)
-	minutes = minutes < 10 ? "0" + minutes : minutes
-	secondes = secondes < 10 ? "0" + secondes : secondes
-	temps = temps <= 0 ? 0 : temps + 1
-}, 1000)
-</script>
+  <script>
+    var mazeArr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, "f", 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, "s", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+    // compteur principal
+    const departMinutes = 0.01
+    let temps = departMinutes * 60
+    var secondes = 0;
+    var mainCounter = setInterval(() => {
+      let minutes = parseInt(temps / 60, 10)
+      minutes = minutes < 10 ? "0" + minutes : minutes
+      secondes = secondes < 10 ? "0" + secondes : secondes
+      temps = temps <= 0 ? 0 : temps + 1
+    }, 1000)
+  </script>
 </body>
 
 </html>

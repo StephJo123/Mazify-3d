@@ -72,3 +72,8 @@
 .mazify-editor .btn:focus {
   outline: none;
 }
+#footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
