@@ -15,7 +15,7 @@ AFRAME.registerComponent('startgame', {
     this.el.addEventListener('mouseleave', changeBack);
 
     this.el.addEventListener('click', () => {
-      document.getElementById('player').setAttribute("keyboard-controls", "enabled: true ");
+      document.getElementById('player').setAttribute("keyboard-controls", "enabled: true");
       this.el.remove();
     });
   }
@@ -143,8 +143,13 @@ AFRAME.registerComponent("trackball", {
 
           if (!$("tinterrupteur").getAttribute("visible") && --timer < 0) {
             $("countdown").pause();
-            $("BombeDialogue").style.display = "block";
-            document.querySelector("a-scene").exitVR();
+            // blocage des controles du joueur
+            document.getElementById('player').setAttribute("keyboard-controls", "enabled: false");
+            document.getElementById('restart').setAttribute('visible', true);
+            document.getElementById('restart').setAttribute('position', player.getAttribute('position'));
+            document.getElementById('restart').object3D.position.x += 2;
+            document.getElementById('restart').object3D.position.y += 1;
+            document.getElementById('scene').setAttribute('fog', 'color: red');
             clearInterval(monInter);
             $("compteur").remove();
           }

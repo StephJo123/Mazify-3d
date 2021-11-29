@@ -28,9 +28,9 @@
 
 <body style="background-color: #444">
   <div id="loader" class="lds-dual-ring centered"></div>
-  <a-scene style="display: none;" inspector-plugin-recast
+  <a-scene id="scene" style="display: none;" inspector-plugin-recast
     renderer="colorManagement: true; highRefreshRate: true; antialias: true;"
-    fog="type: exponential; color: #444; density: 0.1">
+    fog="type: exponential; color: #444; density: 0.15">
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/sol.jpg" />
@@ -38,7 +38,6 @@
       <!-- <img id="plafond" src="assets/wall.jpg" /> -->
       <img id="start" src="assets/start.jpg" />
       <img id="finish" src="assets/finish.jpg" />
-      <!-- <img id="redsky" src="assets/sky.jpg"> -->
       <img id="texteBombe" src="assets/textebombe.png">
       <img id="texteInterrupteur" src="assets/texteInterrupteur.png">
       <img id="texteTeleportation" src="assets/textetp.png">
@@ -57,6 +56,7 @@
       <img id="logoUCA" src="assets/logo_UCA.jpg">
       <img id="bullet" src="assets/bullets.png">
       <img id="start-menu" crossorigin="anonymous" src="assets/start-menu.jpg">
+      <img id="restart-menu" crossorigin="anonymous" src="assets/restart-menu.jpg">
       <audio id="click-sound" crossorigin="anonymous"
         src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
       <img id="city" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg">
@@ -64,16 +64,19 @@
 
     <!-- Environment -->
 
-    <!-- <a-sky src="#redsky">
-    </a-sky> -->
-
     <!-- plafond -->
     <!-- <a-plane material="src: #plafond; repeat: 25 25" rotation="90 0 0" position="0 3 0" height="100" width="100">
     </a-plane> -->
 
     <!-- start menu -->
-    <a-entity id="links" layout="type: line; margin: 1.5" position="-26.959 1.500 21.331" startgame>
+    <a-entity id="start" layout="type: line; margin: 1.5" position="-26.959 1.500 21.724" startgame>
       <a-entity template="src: #link" data-thumb="#start-menu">
+      </a-entity>
+    </a-entity>
+
+    <!-- dead/restart menu -->
+    <a-entity id="restart" layout="type: line; margin: 1.5" visible="false" look-at="#player">
+      <a-entity template="src: #link" data-thumb="#restart-menu" link="href: index.html;">
       </a-entity>
     </a-entity>
 
@@ -118,8 +121,6 @@
     <a-entity gltf-model="#blade_trap" id="blade3" scale="0.8 0.7 0.8" position="-3.79382 0.4 -20" rotation="0 0 0">
     </a-entity>
     <a-box id="piege_3" position="-5.1 1 -20" scale="1.1 0 0"></a-box>
-
-
 
     <!-- texte bombe -->
     <a-image src="#texteBombe" id="tbombe" position="-0.711 2.387 -4.168" rotation="0 -45 0" scale="0.09 0.09 0.09"
@@ -195,8 +196,6 @@
     <!-- Maze -->
     <a-entity mazify> </a-entity>
 
-    <!-- Finish -->
-
   </a-scene>
 
   <div id="time2" style="display: block;"></div>
@@ -229,24 +228,6 @@
       </div>
       <div class="modal-body">
         <p>Félicitation</p>
-        <p id="temps"></p>
-      </div>
-      <div class="modal-footer">
-        <h3></h3>
-        <button class="button" onclick="reset()">Rejouer</button>
-      </div>
-    </div>
-  </div>
-  <!-- Model Bombe -->
-  <div id="BombeDialogue" class="modal mazify" style="display: none;">
-    <!-- Modal content -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="close" onclick="closeDialog(this)">&times;</span>
-        <h2>Perdu !</h2>
-      </div>
-      <div class="modal-body">
-        <p>La bombe a explosé...</p>
         <p id="temps"></p>
       </div>
       <div class="modal-footer">
