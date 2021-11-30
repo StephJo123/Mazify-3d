@@ -44,7 +44,6 @@
       <a-asset-item id="interrupteur" src="assets/light_switch/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
       <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
-      <a-asset-item id="cyclops" src="assets/cyclops/scene.gltf"></a-asset-item>
       <a-asset-item id="bomb" src="assets/atomic_bomb/scene.gltf"></a-asset-item>
       <a-asset-item id="skull" src="assets/demon_skull/scene.gltf"></a-asset-item>
       <a-asset-item id="blade_trap" src="assets/blade_trap/scene.gltf"></a-asset-item>
@@ -174,17 +173,6 @@
     </a-entity>
 
     <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
-    </a-entity>
-
-    <a-entity gltf-model="#cyclops" animation-mixer id="cyclops" scale="0.2 0.2 0.2" position="-1.198 0 23.962"
-      rotation="0 -90 0" animation="property: position; to: -22.5 0 23.962; loop: false; dur: 35000" look-at="#player"
-      target="healthPoints: 3" hit-handler>
-
-      <a-box shoot-ennemy shooter position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="340 -180 0"></a-box>
-    </a-entity>
-
-    <a-entity gltf-model="#cyclops" animation-mixer id="cyclops2" scale="0.2 0.2 0.2" position="-24 0 17.5" hit-handler>
-      <a-box position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="315 -180 0"></a-box>
     </a-entity>
 
     <!-- lootboxes models -->
