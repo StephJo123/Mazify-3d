@@ -82,8 +82,8 @@ AFRAME.registerComponent('collision_piege', {
     let posPiege2 = $("piege_2").getAttribute("position");
     let posPiege3 = $("piege_3").getAttribute("position");
 
-    if (Math.abs((pos.x - posPiege.x) || Math.abs(pos.x - posPiege1.x) || Math.abs(pos.x - posPiege2.x) || Math.abs(pos.x - posPiege3.x)) < 0.7) {
-      if (Math.abs(pos.z - posPiege.z) < 0.7 || Math.abs(pos.z - posPiege1.z) < 0.7 || Math.abs(pos.z - posPiege2.z) < 0.7 || Math.abs(pos.z - posPiege3.z) < 0.7) {
+    if (Math.abs(pos.x - posSphere.x)  < 0.4 || Math.abs(pos.x - posSphere1.x) < 0.4 || Math.abs(pos.x - posSphere2.x) < 0.4 || Math.abs(pos.x - posSphere3.x) < 0.4) {
+      if (Math.abs(pos.z - posSphere.z) < 0.4 || Math.abs(pos.z - posSphere1.z) < 0.4 || Math.abs(pos.z - posSphere2.z) < 0.4 || Math.abs(pos.z - posSphere3.z) < 0.4) {
         if (isDead) {
           if (document.body.contains($('compteur'))) {
             if ($('compteur').getAttribute('visible') == true) {
