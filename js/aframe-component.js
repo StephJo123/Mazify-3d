@@ -15,7 +15,7 @@ AFRAME.registerComponent('startgame', {
     this.el.addEventListener('mouseleave', changeBack);
 
     this.el.addEventListener('click', () => {
-      document.getElementById('player').setAttribute("keyboard-controls", "enabled: true");
+      $('player').setAttribute("keyboard-controls", "enabled: true");
       this.el.remove();
     });
   }
@@ -58,7 +58,7 @@ AFRAME.registerComponent("collision", {
       return (val < 0) ? -val : val;
     }
     let pos = this.el.getAttribute("position");
-    let posTeleporteur = document.getElementById("boxTp").getAttribute("position");
+    let posTeleporteur = $("boxTp").getAttribute("position");
 
     if (abs(pos.x - posTeleporteur.x) < 0.7) {
       if (abs(pos.z - posTeleporteur.z) < 0.7) {
@@ -83,14 +83,14 @@ AFRAME.registerComponent('collision_piege', {
     }
     let pos = this.el.getAttribute("position");
 
-    let posSphere = document.getElementById("piege_0").getAttribute("position");
-    let posSphere1 = document.getElementById("piege_1").getAttribute("position");
-    let posSphere2 = document.getElementById("piege_2").getAttribute("position");
-    let posSphere3 = document.getElementById("piege_3").getAttribute("position");
+    let posSphere = $("piege_0").getAttribute("position");
+    let posSphere1 = $("piege_1").getAttribute("position");
+    let posSphere2 = $("piege_2").getAttribute("position");
+    let posSphere3 = $("piege_3").getAttribute("position");
 
     if (abs((pos.x - posSphere.x) || (pos.x - posSphere1.x) || (pos.x - posSphere2.x) || (pos.x - posSphere3.x)) < 0.7) {
       if (abs(pos.z - posSphere.z) < 0.7 || abs(pos.z - posSphere1.z) < 0.7 || abs(pos.z - posSphere2.z) < 0.7 || abs(pos.z - posSphere3.z) < 0.7) {
-        document.getElementById("trapDialog").style.display = "block";
+        die();
       }
     }
   }
@@ -99,14 +99,12 @@ AFRAME.registerComponent('collision_piege', {
 AFRAME.registerComponent('tpsalleboss', {
 
   tick: function () {
-    document.getElementById('skull2').addEventListener('click', function () {
-      document.getElementById('skull2').setAttribute('animation', {
+    $('skull2').addEventListener('click', function () {
+      $('skull2').setAttribute('animation', {
         property: 'position',
         to: '25.4 1.8 -13.417'
       });
-      document.getElementById('skull2').setAttribute('link', 'href:boss.html')
-
-
+      $('skull2').setAttribute('link', 'href:boss.html')
     });
   }
 });
@@ -117,7 +115,7 @@ AFRAME.registerComponent("trackball", {
 
     let pos = this.el.getAttribute("position");
 
-    let posSphere = document.getElementById("bombe").getAttribute("position");
+    let posSphere = $("bombe").getAttribute("position");
     if (Math.abs(pos.x - posSphere.x) < 4 &&
       Math.abs(pos.z - posSphere.z) < 4
     ) {
@@ -143,48 +141,7 @@ AFRAME.registerComponent("trackball", {
 
           if (!$("tinterrupteur").getAttribute("visible") && --timer < 0) {
             $("countdown").pause();
-            // blocage des controles du joueur
-            $('player').setAttribute("keyboard-controls", "enabled: false");
-
-            // inversion de couleur
-            $('body').setAttribute('style', "background-color: red;")
-            $('scene').setAttribute('fog', 'color: red');
-            cursor.setAttribute('material', 'color: red');
-
-            $('restart').setAttribute('position', player.getAttribute('position'));
-            $('restart').object3D.position.x += 2;
-
-            let posRestart = $('restart').getAttribute('position');
-
-            function isValidePosition(posInit) {
-              let bool = true;
-              document.querySelectorAll('a-box').forEach(function (el) {
-                const posN = el.getAttribute('position');
-                if (Math.abs(posN.x - posInit.x) < 2 && Math.abs(posN.z - posInit.z) < 2) {
-                  console.log('false');
-                  bool = false;
-                  return;
-                }
-              })
-              return bool;
-            }
-
-            if (!isValidePosition(posRestart)) {
-              $('restart').setAttribute('position', player.getAttribute('position'));
-              $('restart').object3D.position.z -= 2;
-              if (!isValidePosition(posRestart)) {
-                $('restart').setAttribute('position', player.getAttribute('position'));
-                $('restart').object3D.position.z += 2;
-                if (!isValidePosition(posRestart)) {
-                  $('restart').setAttribute('position', player.getAttribute('position'));
-                  $('restart').object3D.position.x -= 2;
-                }
-              }
-            }
-            $('restart').object3D.position.y += 1;
-            $('restart').setAttribute('rotation', '0 0 0');
-            $('restart').setAttribute('visible', true);
-
+            die();
             clearInterval(monInter);
             $("compteur").remove();
           }
@@ -209,6 +166,49 @@ AFRAME.registerComponent("trackball", {
     }
   },
 });
+
+function isValidePosition(posInit) {
+  let bool = true;
+  document.querySelectorAll('a-box').forEach(function (el) {
+    const posN = el.getAttribute('position');
+    if (Math.abs(posN.x - posInit.x) < 2 && Math.abs(posN.z - posInit.z) < 2) {
+      console.log('false');
+      bool = false;
+      return;
+    }
+  })
+  return bool;
+}
+
+function die() {
+  // blocage des controles du joueur
+  $('player').setAttribute("keyboard-controls", "enabled: false");
+
+  // inversion de couleur
+  $('body').setAttribute('style', "background-color: red;")
+  $('scene').setAttribute('fog', 'color: red');
+  cursor.setAttribute('material', 'color: red');
+
+  $('restart').setAttribute('position', player.getAttribute('position'));
+  $('restart').object3D.position.x += 2;
+
+  let posRestart = $('restart').getAttribute('position');
+
+  if (!isValidePosition(posRestart)) {
+    $('restart').setAttribute('position', player.getAttribute('position'));
+    $('restart').object3D.position.z -= 2;
+    if (!isValidePosition(posRestart)) {
+      $('restart').setAttribute('position', player.getAttribute('position'));
+      $('restart').object3D.position.z += 2;
+      if (!isValidePosition(posRestart)) {
+        $('restart').setAttribute('position', player.getAttribute('position'));
+        $('restart').object3D.position.x -= 2;
+      }
+    }
+  }
+  $('restart').object3D.position.y += 1;
+  $('restart').setAttribute('visible', true);
+}
 
 // fonction qui ajoute un nombre de munitions de façon aléatoire
 function addAmmo(munitionsBonus) {
@@ -246,7 +246,7 @@ AFRAME.registerComponent("openlootbox", {
   init: function () {
     var data = this.data; // valeurs des propriétés des composants.
     var el = this.el; // référence à l'entité du composant.
-    var texteBonus = document.getElementById("texteBonus");
+    var texteBonus = $("texteBonus");
     const munitionsBonus = randomIntFromInterval(1, 6); // génération du nombre de munitions offert
 
     // si une lootbox est touchée, on l'ouvre, puis la supprime...
