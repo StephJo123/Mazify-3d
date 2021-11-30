@@ -1,15 +1,26 @@
-var bombactive = false;
 var nbTirs = 0;
+var removeText, removeBox, monInter;
 var tirAutorise = true;
-var monInter;
-var removeText, removeBox;
-var tirAutorise = true;
-var tpAutorise = false;
+var tpAutorise, bombactive = false;
 var vie = 20;
 
 function $(v) {
   return document.getElementById(v);
 }
+
+/* début du jeu */
+AFRAME.registerComponent('startgame', {
+  init: function () {
+    this.el.addEventListener('mouseenter', changeColor);
+    this.el.addEventListener('mouseleave', changeBack);
+
+    this.el.addEventListener('click', () => {
+      document.getElementById('player').setAttribute("keyboard-controls", "enabled: true ");
+      this.el.remove();
+    });
+  }
+});
+
 
 /* Permet de tirer */
 AFRAME.registerComponent('click-to-shoot', {
@@ -29,6 +40,13 @@ AFRAME.registerComponent('click-to-shoot', {
     });
     document.body.addEventListener('mouseup', () => {
       tirAutorise = true;
+    });
+  }
+});
+AFRAME.registerComponent('click-to-shoot-boss', {
+  init: function () {
+    document.body.addEventListener('mousedown', () => {
+      this.el.emit('shoot')
     });
   }
 });
@@ -52,8 +70,11 @@ AFRAME.registerComponent("collision", {
     if (abs(pos.x - posTeleporteur.x) < 0.7) {
       if (abs(pos.z - posTeleporteur.z) < 0.7) {
         if (tpAutorise) {
-          this.el.setAttribute('position', { x: -2.76, y: 1.6, z: -2.1 });
-          let audio = document.querySelector("#sonTeleportation").play();
+          this.el.setAttribute('position', {
+            x: -2.76,
+            y: 1.6,
+            z: -2.1
+          });
         }
       }
     }
@@ -63,39 +84,38 @@ AFRAME.registerComponent("collision", {
 
 AFRAME.registerComponent('collision_piege', {
 
-    tick: function () {
-        function abs(val) {
-            return (val < 0) ? -val : val;
-        }
-        let pos = this.el.getAttribute("position");
- 
-        let posSphere = document.getElementById("piege_0").getAttribute("position");
-        let posSphere1 = document.getElementById("piege_1").getAttribute("position");
-        let posSphere2 = document.getElementById("piege_2").getAttribute("position");
-        let posSphere3 = document.getElementById("piege_3").getAttribute("position");
- 
-        if (abs((pos.x - posSphere.x) || (pos.x - posSphere1.x) || (pos.x - posSphere2.x) || (pos.x - posSphere3.x)) < 0.7) {
-            if (abs(pos.z - posSphere.z) < 0.7 || abs(pos.z - posSphere1.z) < 0.7 || abs(pos.z - posSphere2.z) < 0.7 || abs(pos.z - posSphere3.z) < 0.7) {
-                document.getElementById("trapDialog").style.display = "block";
-                let audio = document.querySelector("#sonTeleportation").play();
-            }
-        }
+  tick: function () {
+    function abs(val) {
+      return (val < 0) ? -val : val;
     }
+    let pos = this.el.getAttribute("position");
+
+    let posSphere = document.getElementById("piege_0").getAttribute("position");
+    let posSphere1 = document.getElementById("piege_1").getAttribute("position");
+    let posSphere2 = document.getElementById("piege_2").getAttribute("position");
+    let posSphere3 = document.getElementById("piege_3").getAttribute("position");
+
+    if (abs((pos.x - posSphere.x) || (pos.x - posSphere1.x) || (pos.x - posSphere2.x) || (pos.x - posSphere3.x)) < 0.7) {
+      if (abs(pos.z - posSphere.z) < 0.7 || abs(pos.z - posSphere1.z) < 0.7 || abs(pos.z - posSphere2.z) < 0.7 || abs(pos.z - posSphere3.z) < 0.7) {
+        document.getElementById("trapDialog").style.display = "block";
+      }
+    }
+  }
 });
 
 AFRAME.registerComponent('tpsalleboss', {
 
-    tick: function () {
-        document.getElementById('skull2').addEventListener('click', function (evt) {
-            document.getElementById('skull2').setAttribute('animation', {
-                property: 'position',
-                to: '25.4 1.8 -13.417'
-            });
-            document.getElementById('skull2').setAttribute('link', 'href:boss.html')
+  tick: function () {
+    document.getElementById('skull2').addEventListener('click', function () {
+      document.getElementById('skull2').setAttribute('animation', {
+        property: 'position',
+        to: '25.4 1.8 -13.417'
+      });
+      document.getElementById('skull2').setAttribute('link', 'href:boss.html')
 
 
-        });
-    }
+    });
+  }
 });
 
 AFRAME.registerComponent("trackball", {
@@ -273,7 +293,9 @@ AFRAME.registerComponent("hit-handler", {
     });
     var el = this.el;
 
-    el.addEventListener("hit", () => {});
+    el.addEventListener("hit", () => {
+      
+    });
 
     el.addEventListener("die", () => {
       var position = el.getAttribute("position");
@@ -293,153 +315,62 @@ AFRAME.registerComponent("shoot-ennemy", {
     }, 1000);
   },
 });
-AFRAME.registerComponent('shoot-ennemy-boss', {
-    init: function () {
-        let enemy = this.el;
-        setInterval(function () {
-            enemy.emit('shoot');
-        }, 1800);
-    }
-});
-AFRAME.registerComponent('shoot-ennemy-rafale', {
-    init: function () {
-        let enemy = this.el;
-        setInterval(function () {
-            enemy.emit('shoot');
-        }, 2500);
-    }
-});
-AFRAME.registerComponent('hit-handler-boss', {
-    dependencies: ['material'],
 
-    init: function () {
-        var rotationTmp = this.rotationTmp = this.rotationTmp || { x: 0, y: 0, z: 0 };
-        var el = this.el;
-        var missile = document.getElementById('missile2')
-        var sphere1 = document.getElementById('sphere1');
-        var sphere2 = document.getElementById('sphere2');
-        var sphere3 = document.getElementById('sphere3');
-        var sphere4 = document.getElementById('sphere4');
-        var sphere5 = document.getElementById('sphere5');
-        var sphere6 = document.getElementById('sphere6');
-        var sphere7 = document.getElementById('sphere7');
-        var sphere8 = document.getElementById('sphere8');
-        var sphere9 = document.getElementById('sphere9');
-        var sphere10 = document.getElementById('sphere10');
-        var sphere11 = document.getElementById('sphere11');
-        var sphere12 = document.getElementById('sphere12');
-
-        el.addEventListener('hit', () => {
-            document.getElementById('bosslife').setAttribute('geometry', {
-                width: vie
-            });
-            if (vie < 10) {
-                document.getElementById('bosslife').setAttribute('material', 'color:orange')
-                missile.setAttribute('visible', 'true')
-                missile.setAttribute('animation', {
-                    property: 'position',
-                    to: '0 0 -1',
-                    dur: 3000
-                });
-
-
-            }
-            if (vie < 5) {
-                document.getElementById('bosslife').setAttribute('material', 'color:red')
-                sphere5.setAttribute('shoot-ennemy-rafale', null)
-                sphere6.setAttribute('shoot-ennemy-rafale', null)
-                sphere7.setAttribute('shoot-ennemy-rafale', null)
-                sphere8.setAttribute('shoot-ennemy-rafale', null)
-                sphere9.setAttribute('shoot-ennemy-rafale', null)
-                sphere10.setAttribute('shoot-ennemy-rafale', null)
-                sphere11.setAttribute('shoot-ennemy-rafale', null)
-                sphere12.setAttribute('shoot-ennemy-rafale', null)
-            }
-            if (vie < 0) {
-                el.parentNode.remove(el);
-                sphere1.parentNode.remove(sphere1);
-                sphere2.parentNode.remove(sphere2);
-                sphere3.parentNode.remove(sphere3);
-                sphere4.parentNode.remove(sphere4);
-
-            }
-            vie = vie - 0.04
-
-
-        });
-
-        el.addEventListener('die', () => {
-
-            var rotation = el.getAttribute('position');
-            rotationTmp.x = rotation.x + 0.1;
-            rotationTmp.y = rotation.y - 100000;
-            rotationTmp.z = rotation.z + 0.1;
-            el.setAttribute('position', rotationTmp);
-        });
-    }
-});
-AFRAME.registerComponent('monster-roar', {
-    init: function () {
-        setInterval(function () {
-            document.getElementById('roar').play();
-        }, 20000);
-    }
-});
 
 AFRAME.registerComponent('delais', {
-    init: function () {
-        setTimeout(() => {
-            let blade1 = document.getElementById('blade1');
-            blade1.setAttribute('animation-mixer', '');
-            let blade3 = document.getElementById('blade3');
-            blade3.setAttribute('animation-mixer', '');
+  init: function () {
+    setTimeout(() => {
+      let blade1 = document.getElementById('blade1');
+      blade1.setAttribute('animation-mixer', '');
+      let blade3 = document.getElementById('blade3');
+      blade3.setAttribute('animation-mixer', '');
 
-        }, 15000);
-        setTimeout(() => {
-            let piege1 = document.getElementById('piege_1');
-            piege1.setAttribute('animation', {
-                property: 'position',
-                to: '-1.8 0.92838 -14.44684',
-                loop: true,
-                dur: '827,3',
-                dir: 'alternate'
-            });
-            let piege3 = document.getElementById('piege_3');
-            piege3.setAttribute('animation', {
-                property: 'position',
-                to: '-1.8 0.92838 -20', 
-                loop: true,
-                dur: '827,3',
-                dir: 'alternate'
-            });
-        }, 14900);
+    }, 15000);
+    setTimeout(() => {
+      let piege1 = document.getElementById('piege_1');
+      piege1.setAttribute('animation', {
+        property: 'position',
+        to: '-1.8 0.92838 -14.44684',
+        loop: true,
+        dur: '827,3',
+        dir: 'alternate'
+      });
+      let piege3 = document.getElementById('piege_3');
+      piege3.setAttribute('animation', {
+        property: 'position',
+        to: '-1.8 0.92838 -20',
+        loop: true,
+        dur: '827,3',
+        dir: 'alternate'
+      });
+    }, 14900);
 
-        setTimeout(() => {
-            let blade = document.getElementById('blade');
-            blade.setAttribute('animation-mixer', '');
-            let blade2 = document.getElementById('blade2');
-            blade2.setAttribute('animation-mixer', '');
-        }, 14500);
+    setTimeout(() => {
+      let blade = document.getElementById('blade');
+      blade.setAttribute('animation-mixer', '');
+      let blade2 = document.getElementById('blade2');
+      blade2.setAttribute('animation-mixer', '');
+    }, 14500);
 
-        setTimeout(() => {
-            let piege = document.getElementById('piege_0');
-            piege.setAttribute('animation', {
-                property: 'position',
-                to: '-1.8 0.92838 -11', 
-                loop: true,
-                dur: '827,3',
-                dir: 'alternate'
-            });
-            let piege2 = document.getElementById('piege_2');
-            piege2.setAttribute('animation', {
-                property: 'position',
-                to: '-1.8 0.92838 -17', 
-                loop: true,
-                dur: '827,3',
-                dir: 'alternate'
-            });
-        }, 14400);
-    }
+    setTimeout(() => {
+      let piege = document.getElementById('piege_0');
+      piege.setAttribute('animation', {
+        property: 'position',
+        to: '-1.8 0.92838 -11',
+        loop: true,
+        dur: '827,3',
+        dir: 'alternate'
+      });
+      let piege2 = document.getElementById('piege_2');
+      piege2.setAttribute('animation', {
+        property: 'position',
+        to: '-1.8 0.92838 -17',
+        loop: true,
+        dur: '827,3',
+        dir: 'alternate'
+      });
+    }, 14400);
+  }
 });
 
 AFRAME.registerComponent('munitions', {
