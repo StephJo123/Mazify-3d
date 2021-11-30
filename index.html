@@ -176,8 +176,8 @@
     <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
     </a-entity>
 
-    <a-entity gltf-model="#ghost" animation-mixer position="-1.198 0 24" scale="0.01 0.01 0.01" look-at="#player"
-      ghost-follow ghost-collision-detect></a-entity>
+    <a-entity gltf-model="#ghost" id="ghost-model" animation-mixer position="-1.198 0 24" scale="0.01 0.01 0.01"
+      look-at="#player" ghost-collision-detect></a-entity>
 
     <!-- lootboxes models -->
     <a-entity gltf-model="#loot_box" id="lootbox1" openlootbox="id: lootbox1" scale="0.07 0.07 0.07"
