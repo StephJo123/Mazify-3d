@@ -459,29 +459,34 @@ function changeBack() {
 // Question labyrinthe
 AFRAME.registerComponent('question_resolue', {
   init: function () {
-      document.getElementById('rep_Q1').addEventListener('click', function (evt) {
-
+    var goodA = document.getElementsByClassName('goodA');
+    for(let i = 0; i < goodA.length; i++) {
+      goodA[i].addEventListener('click', function(evt) {
+        console.log("bravo");
         var data = this.data; // valeurs des propriétés des composants.
         var el = this.el; // référence à l'entité du composant.
         var texteBonus = document.getElementById("texteBonus"); 
 
         // affichage d'un message temporaire dans la caméra du joueur
         texteBonus.setAttribute("visible", true);
-        // masquage du message au bout de 4s
+        // masquage du message au bout de 2s
 
         removeText = setTimeout(function () {
           texteBonus.setAttribute("visible", false);
-        }, 4000);
+        }, 2000);
 
       });
-      clearTimeout(removeText);
+    }
+  clearTimeout(removeText);
   }
 });
 
 // Question labyrinthe
 AFRAME.registerComponent('question_erreur', {
   init: function () {
-      document.getElementById('rep_Q1F').addEventListener('click', function (evt) {
+    var badA = document.getElementsByClassName('badA');
+    for(let i = 0; i < badA.length; i++) {
+      badA[i].addEventListener('click', function(evt) {
 
         var data = this.data; // valeurs des propriétés des composants.
         var el = this.el; // référence à l'entité du composant.
@@ -489,13 +494,14 @@ AFRAME.registerComponent('question_erreur', {
 
         // affichage d'un message temporaire dans la caméra du joueur
         texteErreur.setAttribute("visible", true);
-        // masquage du message au bout de 4s
+        // masquage du message au bout de 2s
 
         removeText = setTimeout(function () {
           texteErreur.setAttribute("visible", false);
-        }, 4000);
+        }, 2000);
 
       });
-      clearTimeout(removeText);
+    }
+    clearTimeout(removeText);
   }
 });
