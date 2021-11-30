@@ -1,6 +1,6 @@
-var nbTirs = 0;
 var removeText, removeBox, monInter;
-var tirAutorise = true;
+var nbTirs = 0;
+var tirAutorise, isDead = true;
 var tpAutorise, bombactive = false;
 var vie = 20;
 
@@ -15,6 +15,7 @@ AFRAME.registerComponent('startgame', {
     this.el.addEventListener('mouseleave', changeBack);
 
     this.el.addEventListener('click', () => {
+      $('scene').setAttribute('fog', 'color: #444');
       $('player').setAttribute("keyboard-controls", "enabled: true");
       this.el.remove();
     });
@@ -90,7 +91,12 @@ AFRAME.registerComponent('collision_piege', {
 
     if (abs((pos.x - posSphere.x) || (pos.x - posSphere1.x) || (pos.x - posSphere2.x) || (pos.x - posSphere3.x)) < 0.7) {
       if (abs(pos.z - posSphere.z) < 0.7 || abs(pos.z - posSphere1.z) < 0.7 || abs(pos.z - posSphere2.z) < 0.7 || abs(pos.z - posSphere3.z) < 0.7) {
-        die();
+        if (isDead) {
+          $('compteur').setAttribute('visible', false);
+          isDead = false;
+          die();
+          console.log("die");
+        }
       }
     }
   }
@@ -172,12 +178,16 @@ function isValidePosition(posInit) {
   document.querySelectorAll('a-box').forEach(function (el) {
     const posN = el.getAttribute('position');
     if (Math.abs(posN.x - posInit.x) < 2 && Math.abs(posN.z - posInit.z) < 2) {
-      console.log('false');
       bool = false;
       return;
     }
   })
   return bool;
+}
+
+function isDead() {
+  let flag = false;
+
 }
 
 function die() {
