@@ -82,8 +82,8 @@ AFRAME.registerComponent('collision_piege', {
     let posPiege2 = $("piege_2").getAttribute("position");
     let posPiege3 = $("piege_3").getAttribute("position");
 
-    if (Math.abs(pos.x - posSphere.x)  < 0.4 || Math.abs(pos.x - posSphere1.x) < 0.4 || Math.abs(pos.x - posSphere2.x) < 0.4 || Math.abs(pos.x - posSphere3.x) < 0.4) {
-      if (Math.abs(pos.z - posSphere.z) < 0.4 || Math.abs(pos.z - posSphere1.z) < 0.4 || Math.abs(pos.z - posSphere2.z) < 0.4 || Math.abs(pos.z - posSphere3.z) < 0.4) {
+    if (Math.abs(pos.x - posPiege.x)  < 0.4 || Math.abs(pos.x - posPiege1.x) < 0.4 || Math.abs(pos.x - posPiege2.x) < 0.4 || Math.abs(pos.x - posPiege3.x) < 0.4) {
+      if (Math.abs(pos.z - posPiege.z) < 0.4 || Math.abs(pos.z - posPiege1.z) < 0.4 || Math.abs(pos.z - posPiege2.z) < 0.4 || Math.abs(pos.z - posPiege3.z) < 0.4) {
         if (isDead) {
           if (document.body.contains($('compteur'))) {
             if ($('compteur').getAttribute('visible') == true) {
@@ -117,9 +117,9 @@ AFRAME.registerComponent("trackball", {
 
     let pos = this.el.getAttribute("position");
 
-    let posSphere = $("bombe").getAttribute("position");
-    if (Math.abs(pos.x - posSphere.x) < 4 &&
-      Math.abs(pos.z - posSphere.z) < 4
+    let posPiege = $("bombe").getAttribute("position");
+    if (Math.abs(pos.x - posPiege.x) < 4 &&
+      Math.abs(pos.z - posPiege.z) < 4
     ) {
       bombactive = true;
       $("musique").pause();
@@ -302,10 +302,10 @@ function randomIntFromInterval(min, max) {
 AFRAME.registerComponent('trackballfinish', {
   tick: function () {
     let pos = this.el.getAttribute("position");
-    let posSphere = $('fini2').getAttribute("position");
+    let posPiege = $('fini2').getAttribute("position");
 
-    if (Math.abs(pos.x - posSphere.x) < 2) {
-      if (Math.abs(pos.z - posSphere.z) < 2) {
+    if (Math.abs(pos.x - posPiege.x) < 2) {
+      if (Math.abs(pos.z - posPiege.z) < 2) {
         clearInterval(mainCounter);
         $('finishDialog').children[0].children[1].children[0].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
         $('finishDialog').style.display = "block";
