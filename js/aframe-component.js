@@ -161,6 +161,7 @@ AFRAME.registerComponent("trackball", {
       $("interrupteur2").addEventListener("click", function () {
         // stop le compteur pour éviter de continuer le calcul
         clearInterval(monInter);
+        $("tbombe").remove();
         $("countdown").pause();
         $("musique").play();
         if (document.contains($("compteur"))) {
