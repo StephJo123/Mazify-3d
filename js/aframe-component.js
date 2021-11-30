@@ -55,14 +55,11 @@ function musicPlay() {
 
 AFRAME.registerComponent("collision", {
   tick: function () {
-    function abs(val) {
-      return (val < 0) ? -val : val;
-    }
     let pos = this.el.getAttribute("position");
     let posTeleporteur = $("boxTp").getAttribute("position");
 
-    if (abs(pos.x - posTeleporteur.x) < 0.7) {
-      if (abs(pos.z - posTeleporteur.z) < 0.7) {
+    if (Math.abs(pos.x - posTeleporteur.x) < 0.7) {
+      if (Math.abs(pos.z - posTeleporteur.z) < 0.7) {
         if (tpAutorise) {
           this.el.setAttribute('position', {
             x: -2.76,
@@ -75,13 +72,9 @@ AFRAME.registerComponent("collision", {
   }
 });
 
-
 AFRAME.registerComponent('collision_piege', {
 
   tick: function () {
-    function abs(val) {
-      return (val < 0) ? -val : val;
-    }
     let pos = this.el.getAttribute("position");
 
     let posSphere = $("piege_0").getAttribute("position");
@@ -89,13 +82,16 @@ AFRAME.registerComponent('collision_piege', {
     let posSphere2 = $("piege_2").getAttribute("position");
     let posSphere3 = $("piege_3").getAttribute("position");
 
-    if (abs((pos.x - posSphere.x) || (pos.x - posSphere1.x) || (pos.x - posSphere2.x) || (pos.x - posSphere3.x)) < 0.7) {
-      if (abs(pos.z - posSphere.z) < 0.7 || abs(pos.z - posSphere1.z) < 0.7 || abs(pos.z - posSphere2.z) < 0.7 || abs(pos.z - posSphere3.z) < 0.7) {
+    if (Math.abs((pos.x - posSphere.x) || Math.abs(pos.x - posSphere1.x) || Math.abs(pos.x - posSphere2.x) || Math.abs(pos.x - posSphere3.x)) < 0.7) {
+      if (Math.abs(pos.z - posSphere.z) < 0.7 || Math.abs(pos.z - posSphere1.z) < 0.7 || Math.abs(pos.z - posSphere2.z) < 0.7 || Math.abs(pos.z - posSphere3.z) < 0.7) {
         if (isDead) {
-          $('compteur').setAttribute('visible', false);
+          if (document.body.contains($('compteur'))) {
+            if ($('compteur').getAttribute('visible') == true) {
+              $('compteur').remove();
+            }
+          }
           isDead = false;
           die();
-          console.log("die");
         }
       }
     }
@@ -136,7 +132,9 @@ AFRAME.registerComponent("trackball", {
           minutes,
           seconds;
         monInter = setInterval(function () {
-          $("compteur").setAttribute("text", "value: " + timer + ";");
+          if (document.body.contains($('compteur')))
+
+            $("compteur").setAttribute("text", "value: " + timer + ";");
           minutes = parseInt(timer / 60, 10);
           seconds = parseInt(timer % 60, 10);
 
@@ -152,6 +150,7 @@ AFRAME.registerComponent("trackball", {
             $("compteur").remove();
           }
         }, 1000);
+
       };
 
       startTimer(30, $("time2"));
@@ -183,11 +182,6 @@ function isValidePosition(posInit) {
     }
   })
   return bool;
-}
-
-function isDead() {
-  let flag = false;
-
 }
 
 function die() {
@@ -356,6 +350,7 @@ AFRAME.registerComponent("shoot-ennemy", {
     }, 1000);
   },
 });
+
 AFRAME.registerComponent('shoot-ennemy-boss', {
   init: function () {
     let enemy = this.el;
@@ -364,6 +359,7 @@ AFRAME.registerComponent('shoot-ennemy-boss', {
     }, 1800);
   }
 });
+
 AFRAME.registerComponent('shoot-ennemy-rafale', {
   init: function () {
     let enemy = this.el;
@@ -372,6 +368,7 @@ AFRAME.registerComponent('shoot-ennemy-rafale', {
     }, 2500);
   }
 });
+
 AFRAME.registerComponent('hit-handler-boss', {
   dependencies: ['material'],
 
