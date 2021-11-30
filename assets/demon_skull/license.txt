@@ -1,0 +1,11 @@
+Model Information:
+* title:	Demon Skull (Textured)
+* source:	https://sketchfab.com/3d-models/demon-skull-textured-0d80a357e2a4422883c6dc4b6095b7d3
+* author:	Cyril43 (https://sketchfab.com/Cyril43)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Demon Skull (Textured)" (https://sketchfab.com/3d-models/demon-skull-textured-0d80a357e2a4422883c6dc4b6095b7d3) by Cyril43 (https://sketchfab.com/Cyril43) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
