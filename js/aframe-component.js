@@ -319,7 +319,21 @@ AFRAME.registerComponent('trackballfinish', {
   }
 });
 
+AFRAME.registerComponent("ghost-collision-detect", {
+  tick: function () {
+    let ghost = this.el;
+    let ghostPos = ghost.getAttribute('position');
+    let playerPos = $('player').getAttribute('position');
+
+    if (Math.abs(ghostPos.x - playerPos.x) < 0.4 && Math.abs(ghostPos.z - playerPos.z) < 0.4) {
+      die();
+      ghost.remove();
+    }
+  }
+});
+
 AFRAME.registerComponent("hit-handler", {
+
   dependencies: ["material"],
 
   init: function () {
@@ -330,7 +344,9 @@ AFRAME.registerComponent("hit-handler", {
     });
     var el = this.el;
 
-    el.addEventListener("hit", () => {});
+    el.addEventListener("hit", () => {
+      console.log('hit');
+    });
 
     el.addEventListener("die", () => {
       var position = el.getAttribute("position");
