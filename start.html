@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Mazify - 3D LOSE MENU</title>
+    <title>Mazify - 3D START MENU</title>
     <meta name="description" content="Mazify - 3D START MENU" http-equiv="Content-Type"
         content="text/html;charset=UTF-8">
     <link rel="icon" type="image/png" href="assets/maze.png" />
@@ -15,7 +15,7 @@
             <a-entity class="link" geometry="primitive: plane; height: 1; width: 1" material="shader: flat; src: ${thumb}"
                 event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1"
                 sound="on: click; src: #click-sound"></a-entity>
-        </script>
+    </script>
 </head>
 
 <body>
@@ -35,7 +35,7 @@
         </a-sky>
 
         <!-- menu start -->
-        <a-entity id="links" layout="type: line; margin: 1.5" position="0 -1 -4" link="href: index.html">
+        <a-entity id="links" layout="type: line; margin: 1.5" position="0 -1 -4" onclick="loadPage();">
             <a-entity template=" src: #link" data-src="#city" data-thumb="#start-menu">
             </a-entity>
         </a-entity>
