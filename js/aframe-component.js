@@ -17,11 +17,11 @@ AFRAME.registerComponent('startgame', {
     this.el.addEventListener('click', () => {
       $('scene').setAttribute('fog', 'color: #444');
       $('player').setAttribute("keyboard-controls", "enabled: true");
+      $('ghost-model').setAttribute("ghost-follow", "");
       this.el.remove();
     });
   }
 });
-
 
 /* Permet de tirer */
 AFRAME.registerComponent('click-to-shoot', {
@@ -77,13 +77,13 @@ AFRAME.registerComponent('collision_piege', {
   tick: function () {
     let pos = this.el.getAttribute("position");
 
-    let posSphere = $("piege_0").getAttribute("position");
-    let posSphere1 = $("piege_1").getAttribute("position");
-    let posSphere2 = $("piege_2").getAttribute("position");
-    let posSphere3 = $("piege_3").getAttribute("position");
+    let posPiege = $("piege_0").getAttribute("position");
+    let posPiege1 = $("piege_1").getAttribute("position");
+    let posPiege2 = $("piege_2").getAttribute("position");
+    let posPiege3 = $("piege_3").getAttribute("position");
 
-    if (Math.abs((pos.x - posSphere.x) || Math.abs(pos.x - posSphere1.x) || Math.abs(pos.x - posSphere2.x) || Math.abs(pos.x - posSphere3.x)) < 0.7) {
-      if (Math.abs(pos.z - posSphere.z) < 0.7 || Math.abs(pos.z - posSphere1.z) < 0.7 || Math.abs(pos.z - posSphere2.z) < 0.7 || Math.abs(pos.z - posSphere3.z) < 0.7) {
+    if (Math.abs((pos.x - posPiege.x) || Math.abs(pos.x - posPiege1.x) || Math.abs(pos.x - posPiege2.x) || Math.abs(pos.x - posPiege3.x)) < 0.7) {
+      if (Math.abs(pos.z - posPiege.z) < 0.7 || Math.abs(pos.z - posPiege1.z) < 0.7 || Math.abs(pos.z - posPiege2.z) < 0.7 || Math.abs(pos.z - posPiege3.z) < 0.7) {
         if (isDead) {
           if (document.body.contains($('compteur'))) {
             if ($('compteur').getAttribute('visible') == true) {
@@ -319,7 +319,21 @@ AFRAME.registerComponent('trackballfinish', {
   }
 });
 
+AFRAME.registerComponent("ghost-collision-detect", {
+  tick: function () {
+    let ghost = this.el;
+    let ghostPos = ghost.getAttribute('position');
+    let playerPos = $('player').getAttribute('position');
+
+    if (Math.abs(ghostPos.x - playerPos.x) < 0.35 && Math.abs(ghostPos.z - playerPos.z) < 0.35) {
+      die();
+      ghost.remove();
+    }
+  }
+});
+
 AFRAME.registerComponent("hit-handler", {
+
   dependencies: ["material"],
 
   init: function () {
@@ -330,7 +344,9 @@ AFRAME.registerComponent("hit-handler", {
     });
     var el = this.el;
 
-    el.addEventListener("hit", () => {});
+    el.addEventListener("hit", () => {
+      console.log('hit');
+    });
 
     el.addEventListener("die", () => {
       var position = el.getAttribute("position");
@@ -358,25 +374,26 @@ AFRAME.registerComponent('munitions', {
 });
 
 AFRAME.registerComponent('ghost-follow', {
-  tick: function () {
+  init: function () {
     let ghost = this.el;
-    let posGhost = ghost.getAttribute('position');
-    let posPlayer = $('player').getAttribute('position');
-    let pas = 0.05,
-      signeX = 0,
-      signeZ = 0;
-    if (Math.abs(posGhost.x - posPlayer.x) > pas) {
-      signeX = (posGhost.x > posPlayer.x) ? -pas : pas;
-    }
-    if (Math.abs(posGhost.z - posPlayer.z) > pas) {
-      signeZ = (posGhost.z > posPlayer.z) ? -pas : pas;
-    }
-    ghost.setAttribute('position', {
-      x: posGhost.x + signeX,
-      y: 0,
-      z: posGhost.z + signeZ
-    });
-
+    setInterval(function () {
+      let posGhost = ghost.getAttribute('position');
+      let posPlayer = $('player').getAttribute('position');
+      let pas = 0.05,
+        signeX = 0,
+        signeZ = 0;
+      if (Math.abs(posGhost.x - posPlayer.x) > pas) {
+        signeX = (posGhost.x > posPlayer.x) ? -pas : pas;
+      }
+      if (Math.abs(posGhost.z - posPlayer.z) > pas) {
+        signeZ = (posGhost.z > posPlayer.z) ? -pas : pas;
+      }
+      ghost.setAttribute('position', {
+        x: posGhost.x + signeX,
+        y: 0,
+        z: posGhost.z + signeZ
+      });
+    }, 50);
   }
 });
 
