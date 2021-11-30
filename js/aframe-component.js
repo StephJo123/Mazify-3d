@@ -16,7 +16,7 @@ AFRAME.registerComponent('startgame', {
 
     this.el.addEventListener('click', () => {
       $('scene').setAttribute('fog', 'color: #444');
-      $('player').setAttribute("keyboard-controls", "enabled: true");
+      $('player').setAttribute("movement-controls", "enabled: true");
       $('ghost-model').setAttribute("ghost-follow", "");
       this.el.remove();
     });
@@ -82,7 +82,7 @@ AFRAME.registerComponent('collision_piege', {
     let posPiege2 = $("piege_2").getAttribute("position");
     let posPiege3 = $("piege_3").getAttribute("position");
 
-    if (Math.abs(pos.x - posPiege.x)  < 0.4 || Math.abs(pos.x - posPiege1.x) < 0.4 || Math.abs(pos.x - posPiege2.x) < 0.4 || Math.abs(pos.x - posPiege3.x) < 0.4) {
+    if (Math.abs(pos.x - posPiege.x) < 0.4 || Math.abs(pos.x - posPiege1.x) < 0.4 || Math.abs(pos.x - posPiege2.x) < 0.4 || Math.abs(pos.x - posPiege3.x) < 0.4) {
       if (Math.abs(pos.z - posPiege.z) < 0.4 || Math.abs(pos.z - posPiege1.z) < 0.4 || Math.abs(pos.z - posPiege2.z) < 0.4 || Math.abs(pos.z - posPiege3.z) < 0.4) {
         if (isDead) {
           if (document.body.contains($('compteur'))) {
@@ -333,32 +333,6 @@ AFRAME.registerComponent("ghost-collision-detect", {
   }
 });
 
-AFRAME.registerComponent("hit-handler", {
-
-  dependencies: ["material"],
-
-  init: function () {
-    var positionTmp = (this.positionTmp = this.positionTmp || {
-      x: 0,
-      y: 0,
-      z: 0,
-    });
-    var el = this.el;
-
-    el.addEventListener("hit", () => {
-      console.log('hit');
-    });
-
-    el.addEventListener("die", () => {
-      var position = el.getAttribute("position");
-      positionTmp.x = position.x + 0.1;
-      positionTmp.y = position.y - 100000;
-      positionTmp.z = position.z + 0.1;
-      el.setAttribute("position", positionTmp);
-    });
-  },
-});
-
 AFRAME.registerComponent("shoot-ennemy", {
   init: function () {
     let enemy = this.el;
@@ -453,7 +427,6 @@ AFRAME.registerComponent('delais', {
     }, 14400);
   }
 });
-
 
 function changeColor() {
   cursor.setAttribute('material', 'color: springgreen');

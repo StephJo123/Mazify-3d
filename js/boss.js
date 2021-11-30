@@ -86,7 +86,6 @@ AFRAME.registerComponent("auto-enter-vr", {
   }
 });
 
->>>>>>> b17bd3cb5f8b2b2fbd40622432ae490cf5558f2c
 AFRAME.registerComponent('shoot-ennemy-boss', {
   init: function () {
     let enemy = this.el;
@@ -103,6 +102,30 @@ AFRAME.registerComponent('shoot-ennemy-rafale', {
       enemy.emit('shoot');
     }, 2500);
   }
+});
+
+AFRAME.registerComponent("hit-handler", {
+
+  dependencies: ["material"],
+
+  init: function () {
+    var positionTmp = (this.positionTmp = this.positionTmp || {
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+    var el = this.el;
+
+    el.addEventListener("hit", () => {});
+
+    el.addEventListener("die", () => {
+      var position = el.getAttribute("position");
+      positionTmp.x = position.x + 0.1;
+      positionTmp.y = position.y - 100000;
+      positionTmp.z = position.z + 0.1;
+      el.setAttribute("position", positionTmp);
+    });
+  },
 });
 
 AFRAME.registerComponent('hit-handler-boss', {
