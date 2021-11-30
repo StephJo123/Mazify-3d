@@ -20,17 +20,17 @@
   <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
 
   <script id="link" type="text/html">
-          <a-entity class="link" geometry="primitive: plane; height: 1; width: 1" material="shader: flat; src: ${thumb}"
-              event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1"
-              sound="on: click; src: #click-sound"></a-entity>
+    <a-entity class="link" geometry="primitive: plane; height: 1; width: 1" material="shader: flat; src: ${thumb}"
+      event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1"
+      sound="on: click; src: #click-sound"></a-entity>
   </script>
 </head>
 
-<body style="background-color: #444">
+<body id="body" style="background-color: #444">
   <div id="loader" class="lds-dual-ring centered"></div>
-  <a-scene style="display: none;" inspector-plugin-recast
+  <a-scene id="scene" style="display: none;" inspector-plugin-recast
     renderer="colorManagement: true; highRefreshRate: true; antialias: true;"
-    fog="type: exponential; color: #444; density: 0.1">
+    fog="type: exponential; color: springgreen; density: 0.15">
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/sol.jpg" />
@@ -38,14 +38,13 @@
       <!-- <img id="plafond" src="assets/wall.jpg" /> -->
       <img id="start" src="assets/start.jpg" />
       <img id="finish" src="assets/finish.jpg" />
-      <!-- <img id="redsky" src="assets/sky.jpg"> -->
       <img id="texteBombe" src="assets/textebombe.png">
       <img id="texteInterrupteur" src="assets/texteInterrupteur.png">
       <img id="texteTeleportation" src="assets/textetp.png">
       <a-asset-item id="interrupteur" src="assets/light_switch/scene.gltf"></a-asset-item>
+      <a-asset-item id="ghost" src="assets/fantasma_ghost_phantom/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
       <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
-      <a-asset-item id="cyclops" src="assets/cyclops/scene.gltf"></a-asset-item>
       <a-asset-item id="bomb" src="assets/atomic_bomb/scene.gltf"></a-asset-item>
       <a-asset-item id="skull" src="assets/demon_skull/scene.gltf"></a-asset-item>
       <a-asset-item id="blade_trap" src="assets/blade_trap/scene.gltf"></a-asset-item>
@@ -57,6 +56,7 @@
       <img id="logoUCA" src="assets/logo_UCA.jpg">
       <img id="bullet" src="assets/bullets.png">
       <img id="start-menu" crossorigin="anonymous" src="assets/start-menu.jpg">
+      <img id="restart-menu" crossorigin="anonymous" src="assets/restart-menu.jpg">
       <audio id="click-sound" crossorigin="anonymous"
         src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
       <img id="city" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg">
@@ -64,16 +64,19 @@
 
     <!-- Environment -->
 
-    <!-- <a-sky src="#redsky">
-    </a-sky> -->
-
     <!-- plafond -->
     <!-- <a-plane material="src: #plafond; repeat: 25 25" rotation="90 0 0" position="0 3 0" height="100" width="100">
     </a-plane> -->
 
     <!-- start menu -->
-    <a-entity id="links" layout="type: line; margin: 1.5" position="-26.959 1.500 21.331" startgame>
+    <a-entity id="start" layout="type: line; margin: 1.5" position="-26.959 1.500 21.724" startgame>
       <a-entity template="src: #link" data-thumb="#start-menu">
+      </a-entity>
+    </a-entity>
+
+    <!-- dead/restart menu -->
+    <a-entity id="restart" layout="type: line; margin: 1.5" visible="false" look-at="#camera">
+      <a-entity template="src: #link" data-thumb="#restart-menu" link="href: index.html;">
       </a-entity>
     </a-entity>
 
@@ -118,8 +121,6 @@
     <a-entity gltf-model="#blade_trap" id="blade3" scale="0.8 0.7 0.8" position="-3.79382 0.4 -20" rotation="0 0 0">
     </a-entity>
     <a-box id="piege_3" position="-5.1 1 -20" scale="1.1 0 0"></a-box>
-
-
 
     <!-- texte bombe -->
     <a-image src="#texteBombe" id="tbombe" position="-0.711 2.387 -4.168" rotation="0 -45 0" scale="0.09 0.09 0.09"
@@ -175,16 +176,8 @@
     <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
     </a-entity>
 
-    <a-entity gltf-model="#cyclops" animation-mixer id="cyclops" scale="0.2 0.2 0.2" position="-1.198 0 23.962"
-      rotation="0 -90 0" animation="property: position; to: -22.5 0 23.962; loop: false; dur: 35000" look-at="#player"
-      target="healthPoints: 3" hit-handler>
-
-      <a-box shoot-ennemy shooter position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="340 -180 0"></a-box>
-    </a-entity>
-
-    <a-entity gltf-model="#cyclops" animation-mixer id="cyclops2" scale="0.2 0.2 0.2" position="-24 0 17.5" hit-handler>
-      <a-box position="0.118 12.3 3.370" scale="0.001 0.001 0.001" rotation="315 -180 0"></a-box>
-    </a-entity>
+    <a-entity gltf-model="#ghost" animation-mixer position="-1.198 0 24" scale="0.01 0.01 0.01" look-at="#player"
+      ghost-follow></a-entity>
 
     <!-- lootboxes models -->
     <a-entity gltf-model="#loot_box" id="lootbox1" openlootbox="id: lootbox1" scale="0.07 0.07 0.07"
@@ -195,30 +188,10 @@
     <!-- Maze -->
     <a-entity mazify> </a-entity>
 
-    <!-- Finish -->
-
   </a-scene>
 
   <div id="time2" style="display: block;"></div>
 
-  <!-- Model piège -->
-  <div id="trapDialog" class="modal mazify" style="display: none;">
-    <!-- Modal content -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="close" onclick='closeDialog(this)'>&times;</span>
-        <h2>Boom</h2>
-      </div>
-      <div class="modal-body">
-        <p>T'es mort</p>
-        <p id="temps"></p>
-      </div>
-      <div class="modal-footer">
-        <h3></h3>
-        <button class="button" onclick="reset()">Rejouer</button>
-      </div>
-    </div>
-  </div>
   <!-- Model Gagner -->
   <div id="finishDialog" class="modal mazify" style="display: none;">
     <!-- Modal content -->
@@ -237,26 +210,19 @@
       </div>
     </div>
   </div>
-  <!-- Model Bombe -->
-  <div id="BombeDialogue" class="modal mazify" style="display: none;">
-    <!-- Modal content -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="close" onclick="closeDialog(this)">&times;</span>
-        <h2>Perdu !</h2>
-      </div>
-      <div class="modal-body">
-        <p>La bombe a explosé...</p>
-        <p id="temps"></p>
-      </div>
-      <div class="modal-footer">
-        <h3></h3>
-        <button class="button" onclick="reset()">Rejouer</button>
-      </div>
-    </div>
-  </div>
   <script>
-    var mazeArr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, "f", 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, "s", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+    var mazeArr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1,
+      0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1,
+      1, 0, 1, 0, 1, "f", 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+      1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0,
+      0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0,
+      1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0,
+      1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0,
+      0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0,
+      1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0,
+      0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, "s", 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ];
     // compteur principal
     const departMinutes = 0.01
     let temps = departMinutes * 60

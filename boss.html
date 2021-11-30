@@ -10,67 +10,6 @@
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
   <script src="js/aframe-component.js"></script>
   <script src="js/boss.js"></script>
-  <script>
-
-    var boxx = -24
-    var boxz = 18
-    var boxx2 = 22
-
-    AFRAME.registerComponent("sallboss", {
-
-      init: function () {
-
-        let scene = document.querySelector('a-scene');
-
-        for (var i = 0; i < 25; i++) {
-          let boxe = document.createElement('a-box');
-          scene.appendChild(boxe);
-          boxe.setAttribute('position', { x: boxx, y: 2, z: 20 });
-          boxe.setAttribute('scale', { x: 2, y: 4, z: 2 });
-          boxe.setAttribute('material', 'src: #wall');
-
-          boxx = boxx + 2;
-
-        }
-        for (var i = 0; i < 24; i++) {
-          let boxe = document.createElement('a-box');
-          scene.appendChild(boxe);
-          boxe.setAttribute('position', { x: 24, y: 2, z: boxz });
-          boxe.setAttribute('scale', { x: 2, y: 4, z: 2 });
-          boxe.setAttribute('material', 'src: #wall');
-
-          boxz = boxz - 2;
-
-        }
-        for (var i = 0; i < 24; i++) {
-          let boxe = document.createElement('a-box');
-          scene.appendChild(boxe);
-          boxe.setAttribute('position', { x: boxx2, y: 2, z: -28 });
-          boxe.setAttribute('scale', { x: 2, y: 4, z: 2 });
-          boxe.setAttribute('material', 'src: #wall');
-
-          boxx2 = boxx2 - 2;
-
-        }
-        for (var i = 0; i < 25; i++) {
-          let boxe = document.createElement('a-box');
-          scene.appendChild(boxe);
-          boxe.setAttribute('position', { x: -24, y: 2, z: boxz });
-          boxe.setAttribute('scale', { x: 2, y: 4, z: 2 });
-          boxe.setAttribute('material', 'src: #wall');
-
-          boxz = boxz + 2;
-
-        }
-
-
-      }
-    });
-    
-   
-   
-
-  </script>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
@@ -101,9 +40,8 @@
       </a-entity>
       
       </a-entity>
-       
-    </a-entity>
 
+    </a-entity>
 
     <a-entity gltf-model="#my-nav-mesh" nav-mesh visible="false"></a-entity>
 
@@ -120,32 +58,33 @@
       <a-sphere id="sphere4" position="1.266 7.334 -17.92"  animation="property: position; to: 0.116 7.334 -13.61; loop: true; dur: 7000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
 
     <!-- <a-entity gltf-model="#lezard" position="-3 0 -3" rotation="0 230 0" animation-mixer scale="0.002 0.002 0.002"></a-entity> -->
-    <a-entity id="bullet2" bullet="name: normal; speed: 20.0; poolSize:100" geometry="primitive: icosahedron; radius: 0.2;detail:1"
+    <a-entity id="bullet2" bullet="name: normal; speed: 20.0; poolSize:100"
+      geometry="primitive: icosahedron; radius: 0.2;detail:1"
       material="color: red; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
 
-     
-      <a-entity gltf-model="#missile" id="missile2" scale="1 1 1" position="2.427 8.049 -13.77" rotation="-60 0 0" visible="false">
-      </a-entity>
-      <a-entity gltf-model="#barriere" id="barriere2" scale="2 1 1" position="-1.6 0 -4" rotation="0 0 0">
-      </a-entity>
-      <a-entity gltf-model="#barriere" id="barriere2" scale="3 1 1" position="-4.8 0 0.8" rotation="0 90 0">
-      </a-entity>
-      <a-entity gltf-model="#barriere" id="barriere3" scale="3 1 1" position="1.706 0 0.8" rotation="0 90 0">
-      </a-entity>
-      <a-entity gltf-model="#barriere" id="barriere4" scale="2 1 1" position="-1.6 0 5.4" rotation="0 0 0">
-      </a-entity>
+    <a-entity gltf-model="#missile" id="missile2" scale="1 1 1" position="2.427 8.049 -13.77" rotation="-60 0 0"
+      visible="false">
+    </a-entity>
+    <a-entity gltf-model="#barriere" id="barriere2" scale="2 1 1" position="-1.6 0 -4" rotation="0 0 0">
+    </a-entity>
+    <a-entity gltf-model="#barriere" id="barriere2" scale="3 1 1" position="-4.8 0 0.8" rotation="0 90 0">
+    </a-entity>
+    <a-entity gltf-model="#barriere" id="barriere3" scale="3 1 1" position="1.706 0 0.8" rotation="0 90 0">
+    </a-entity>
+    <a-entity gltf-model="#barriere" id="barriere4" scale="2 1 1" position="-1.6 0 5.4" rotation="0 0 0">
+    </a-entity>
 
-      <a-entity gltf-model="#shelter" id="shelter2" scale="2 2 4" position="-10.3 0 1" rotation="0 0 0">
-      </a-entity>
-     
-      <a-sphere id="sphere5" position="-2 15 -2.54" rotation="-90 0 0" shooter visible="false"></a-sphere>
-      <a-sphere id="sphere6" position="-3.82 15 0" rotation="-90 0 0" shooter visible="false"></a-sphere>
-      <a-sphere id="sphere7" position="-3.75 15 4.614" rotation="-90 0 0" shooter visible="false"></a-sphere>
-      <a-sphere id="sphere8" position="-1.90 15 7.575" rotation="-90 0 0" shooter visible="false"></a-sphere>
-      <a-sphere id="sphere9" position="1.154 15 7.117" rotation="-90 0 0" shooter visible="false"></a-sphere>
-      <a-sphere id="sphere10" position="1.787 15 4.570" rotation="-90 0 0" shooter visible="false"></a-sphere>
-      <a-sphere id="sphere11" position="2.331 15 0.945" rotation="-90 0 0" shooter visible="false"></a-sphere>
-      <a-sphere id="sphere12" position="0.797 15 -2.052" rotation="-90 0 0" shooter visible="false"></a-sphere>
+    <a-entity gltf-model="#shelter" id="shelter2" scale="2 2 4" position="-10.3 0 1" rotation="0 0 0">
+    </a-entity>
+
+    <a-sphere id="sphere5" position="-2 15 -2.54" rotation="-90 0 0" shooter visible="false"></a-sphere>
+    <a-sphere id="sphere6" position="-3.82 15 0" rotation="-90 0 0" shooter visible="false"></a-sphere>
+    <a-sphere id="sphere7" position="-3.75 15 4.614" rotation="-90 0 0" shooter visible="false"></a-sphere>
+    <a-sphere id="sphere8" position="-1.90 15 7.575" rotation="-90 0 0" shooter visible="false"></a-sphere>
+    <a-sphere id="sphere9" position="1.154 15 7.117" rotation="-90 0 0" shooter visible="false"></a-sphere>
+    <a-sphere id="sphere10" position="1.787 15 4.570" rotation="-90 0 0" shooter visible="false"></a-sphere>
+    <a-sphere id="sphere11" position="2.331 15 0.945" rotation="-90 0 0" shooter visible="false"></a-sphere>
+    <a-sphere id="sphere12" position="0.797 15 -2.052" rotation="-90 0 0" shooter visible="false"></a-sphere>
 
 
   </a-scene>
