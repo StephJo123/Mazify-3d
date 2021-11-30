@@ -293,7 +293,9 @@ AFRAME.registerComponent("hit-handler", {
     });
     var el = this.el;
 
-    el.addEventListener("hit", () => {});
+    el.addEventListener("hit", () => {
+      
+    });
 
     el.addEventListener("die", () => {
       var position = el.getAttribute("position");

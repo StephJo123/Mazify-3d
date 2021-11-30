@@ -8,6 +8,10 @@
   <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
   <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <script src="https://unpkg.com/super-hands@^3.0.1/dist/super-hands.min.js"></script>
+  <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
   <script src="js/mazify.js"></script>
   <script src="js/player.js"></script>
   <script src="js/aframe-component.js"></script>
@@ -31,8 +35,11 @@
       <img id="repQ1F" src="assets/repQ1F.png">
       <img id="texteQ2" src="assets/question2.png">
       <img id="repQ2" src="assets/repQ2.png">
-      <img id="repQ2F" src="assets/repQ2F.png">
+      <img id="reqQ2F" src="assets/reqQ2F.png">
+      <audio id="musique" src="assets/ambiance_sound.mp3"></audio>
       <a-asset-item id="my-nav-mesh" src="assets/navmeshLevel1.gltf"></a-asset-item>
+      <a-asset-item id="bunny" src="assets/bunny/scene.gltf"></a-asset-item>
+      <a-asset-item id="camp" src="assets/camp_fire/scene.gltf"></a-asset-item>
     </a-assets>
 
     <!-- Environment -->
@@ -44,27 +51,26 @@
     <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="100" width="100"></a-plane>
 
     <!-- Question 1 -->
-    <a-image src="#texteQ1" id="Q1" position="0 1.4 13.6" rotation="0 0 0" height="3"
-      width="2"></a-image>
+    <a-image src="#texteQ1" id="Q1" position="0 1.4 13.6" rotation="0 0 0" height="3" width="2"></a-image>
 
     <!-- Réponse Question 1 -->
     <a-image src="#repQ1" id="rep_Q1" position="-1.493 1.4 15.316" rotation="0 90 0" scale="0.09 0.13 0.09" height="8"
-    width="20" question_resolue></a-image>
+      width="20" question_resolue></a-image>
 
     <!-- Réponse Question 1F -->
     <a-image src="#repQ1F" id="rep_Q1F" position="1.499 1.4 15.316" rotation="0 270 0" scale="0.09 0.13 0.09" height="8"
-    width="20" question_erreur></a-image>
+      width="20" question_erreur></a-image>
 
     <!-- Question 2 -->
     <a-image src="#texteQ2" id="Q2" position="0 1.4 13.6" rotation="0 0 0" height="3" width="2"></a-image>
 
     <!-- Réponse Question 2 -->
     <a-image src="#repQ2" id="rep_Q2" position="-1.493 1.4 15.316" rotation="0 90 0" scale="0.09 0.13 0.09" height="8"
-        width="20" question_resolue></a-image>
+      width="20" question_resolue></a-image>
 
     <!-- Réponse Question 2F -->
     <a-image src="#repQ2F" id="rep_Q2F" position="1.499 1.4 15.316" rotation="0 270 0" scale="0.09 0.13 0.09" height="8"
-        width="20" question_erreur></a-image>
+      width="20" question_erreur></a-image>
 
     <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
     </a-entity>
@@ -75,21 +81,26 @@
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
         <a-cursor></a-cursor>
         <a-entity id="texteBonus" text="value: Bonne reponse !; color: yellow;" position="0.165 0.03 -0.3"
-        scale="0.5 0.5 0.5" visible="false"></a-entity>
+          scale="0.5 0.5 0.5" visible="false"></a-entity>
         <a-entity id="texteErreur" text="value: Mauvaise reponse !; color: yellow;" position="0.165 0.03 -0.3"
-        scale="0.5 0.5 0.5" visible="false"></a-entity>
+          scale="0.5 0.5 0.5" visible="false"></a-entity>
       </a-entity>
       <!-- Main gauche -->
       <a-entity oculus-touch-controls="hand: left" hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
       </a-entity>
       <!-- Main droite -->
       <a-entity oculus-touch-controls="hand: right"
-        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3"
-        position="0.5 -0.7 -1.2" class="vr-except">
+        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3" position="0.5 -0.7 -1.2"
+        class="vr-except">
       </a-entity>
     </a-entity>
 
 
+    <a-entity gltf-model="#bunny" id="bunny2" scale="0.06 0.06 0.06" position="-18 0 -16" look-at="#player">
+    </a-entity>
+    <a-entity gltf-model="#camp" id="camp2" scale="0.2 0.2 0.2" position="-18 0 17.6" >
+    </a-entity>
+    
     <!-- Maze -->
     <a-entity mazify> </a-entity>
 
