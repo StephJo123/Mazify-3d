@@ -3,6 +3,7 @@ var nbTirs = 0;
 var tirAutorise, isDead = true;
 var tpAutorise, bombactive = false;
 var vie = 20;
+var lesmurs;
 
 function $(v) {
   return document.getElementById(v);
@@ -20,6 +21,8 @@ AFRAME.registerComponent('startgame', {
       $('ghost-model').setAttribute("ghost-follow", "");
       this.el.remove();
     });
+
+    lesmurs = document.querySelectorAll('a-entity[mazify] a-box');
   }
 });
 
@@ -165,7 +168,7 @@ AFRAME.registerComponent("trackball", {
 
 function isValidePosition(posInit) {
   let bool = true;
-  document.querySelectorAll('a-entity[mazify] a-box').forEach(function (el) {
+  lesmurs.forEach(function (el) {
     const posN = el.object3D.position;
     if (Math.abs(posN.x - posInit.x) < 2 && Math.abs(posN.z - posInit.z) < 2) {
       bool = false;
@@ -343,20 +346,25 @@ AFRAME.registerComponent('munitions', {
 AFRAME.registerComponent('ghost-follow', {
   init: function () {
     let ghost = this.el;
+    function avance(ghost,pas) {
+        let rotation = ghost.object3D.rotation;
+        let pos = ghost.object3D.position;
+        if (Math.abs(rotation.y + 1.5708) < 0.2) {
+            ghost.object3D.position.set(pos.x - pas, pos.y, pos.z);
+        } else if (Math.abs(rotation.y - 1.5708) < 0.2) {
+            ghost.object3D.position.set(pos.x + pas, pos.y, pos.z);
+        } else {
+           ghost.object3D.position.set(pos.x,pos.y,pos.z += (rotation.z >= -0.2 && rotation.z <= 0.2) ? pas : -pas); 
+        }
+    }
     setInterval(function () {
-      let posGhost = ghost.object3D.position;
-      let posPlayer = $('player').object3D.position;
-      let pas = 0.05,
-        signeX = 0,
-        signeZ = 0;
-      if (Math.abs(posGhost.x - posPlayer.x) > pas) {
-        signeX = (posGhost.x > posPlayer.x) ? -pas : pas;
-      }
-      if (Math.abs(posGhost.z - posPlayer.z) > pas) {
-        signeZ = (posGhost.z > posPlayer.z) ? -pas : pas;
-      }
-      ghost.object3D.position.set(posGhost.x + signeX, 0, posGhost.z + signeZ);
-    }, 50);
+        avance(ghost,0.5); // on avance pour savoir si la position sera dans le mur
+        if (!isValidePosition(ghost.object3D.position)) { // s'il est dans un mur
+            avance(ghost,-0.5); // on revient avant de tourner
+            ghost.object3D.rotateY(1.5708); // on tourne
+        }
+    },1000);
+    ghost.object3D.rotation.set(0,-1.5708,0);
   }
 });
 
