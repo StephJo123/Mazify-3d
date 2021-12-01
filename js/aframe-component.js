@@ -176,7 +176,6 @@ function die(deathText) {
     $('ghost-model').remove();
   }
   if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible')) {
-    console.log("ok");
     $('compteur').remove();
     clearInterval(monInter);
   }
@@ -212,7 +211,6 @@ function die(deathText) {
 
   let currentRestartPos = $('restart').object3D.position;
   let newYpos = $('restart').object3D.position.y + 0.75;
-  deathText.setAttribute('position', currentRestartPos);
   deathText.setAttribute('position', {
     x: currentRestartPos.x,
     y: newYpos,
