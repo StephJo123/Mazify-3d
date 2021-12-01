@@ -363,23 +363,19 @@ AFRAME.registerComponent('ghost-follow', {
 AFRAME.registerComponent('delais', {
   init: function () {
     setTimeout(() => {
-      let blade1 = document.getElementById('blade1');
-      blade1.setAttribute('animation-mixer', '');
-      let blade3 = document.getElementById('blade3');
-      blade3.setAttribute('animation-mixer', '');
+      $('blade1').setAttribute('animation-mixer', '');
+      $('blade3').setAttribute('animation-mixer', '');
 
     }, 15000);
     setTimeout(() => {
-      let piege1 = document.getElementById('piege_1');
-      piege1.setAttribute('animation', {
+      $('piege_1').setAttribute('animation', {
         property: 'position',
         to: '-1.8 0.92838 -14.44684',
         loop: true,
         dur: '827,3',
         dir: 'alternate'
       });
-      let piege3 = document.getElementById('piege_3');
-      piege3.setAttribute('animation', {
+      $('piege_3').setAttribute('animation', {
         property: 'position',
         to: '-1.8 0.92838 -20',
         loop: true,
@@ -389,23 +385,19 @@ AFRAME.registerComponent('delais', {
     }, 14900);
 
     setTimeout(() => {
-      let blade = document.getElementById('blade');
-      blade.setAttribute('animation-mixer', '');
-      let blade2 = document.getElementById('blade2');
-      blade2.setAttribute('animation-mixer', '');
+      $('blade').setAttribute('animation-mixer', '');
+      $('blade2').setAttribute('animation-mixer', '');
     }, 14500);
 
     setTimeout(() => {
-      let piege = document.getElementById('piege_0');
-      piege.setAttribute('animation', {
+      $('piege_0').setAttribute('animation', {
         property: 'position',
         to: '-1.8 0.92838 -11',
         loop: true,
         dur: '827,3',
         dir: 'alternate'
       });
-      let piege2 = document.getElementById('piege_2');
-      piege2.setAttribute('animation', {
+      $('piege_2').setAttribute('animation', {
         property: 'position',
         to: '-1.8 0.92838 -17',
         loop: true,
