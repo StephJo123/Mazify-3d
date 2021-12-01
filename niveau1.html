@@ -18,18 +18,25 @@
   <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" href="assets/maze.png" />
+
+  <script id="link" type="text/html">
+    <a-entity class="link" geometry="primitive: plane; height: 1; width: 1" material="shader: flat; src: ${thumb}"
+      event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1"
+      sound="on: click; src: #click-sound"></a-entity>
+  </script>
 </head>
 
 <body style="background-color: #222222">
   <div id="loader" class="lds-dual-ring centered"></div>
-  <a-scene style="display: none;" inspector-plugin-recast renderer=" colorManagement: true;">
+  <a-scene id="scene" style="display: none;" inspector-plugin-recast
+  renderer="colorManagement: true; highRefreshRate: true; antialias: true;"
+  fog="type: exponential; color: #444; density: 0.15">    
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/sol.jpg" />
       <img id="wall" src="assets/wall.jpg" />
-      <img id="start" src="assets/start.jpg" />
+      <img id="start" position="-0.46899 0.9698 -3.13406" src="assets/start.jpg" />
       <img id="finish" src="assets/finish.jpg" />
-      <img id="redsky" src="assets/sky.jpg">
       <img id="texteQ1" src="assets/question1.png">
       <img id="repQ1" src="assets/repQ1.png">
       <img id="repQ1F" src="assets/repQ1F.png">
@@ -49,10 +56,6 @@
     </a-assets>
 
     <!-- Environment -->
-
-    <a-sky src="#redsky">
-    </a-sky>
-
     <a-light type="ambient" color="#fff" intensity="0.8"></a-light>
     <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="100" width="100"></a-plane>
 

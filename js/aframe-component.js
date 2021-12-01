@@ -3,6 +3,8 @@ var nbTirs = 0;
 var tirAutorise, isDead = true;
 var tpAutorise, bombactive = false;
 var vie = 20;
+var oui = true;
+var questionsArr = [];
 
 function $(v) {
   return document.getElementById(v);
@@ -460,19 +462,31 @@ AFRAME.registerComponent('question_resolue', {
     var goodA = document.getElementsByClassName('goodA');
     for(let i = 0; i < goodA.length; i++) {
       goodA[i].addEventListener('click', function(evt) {
-        console.log("bravo");
         var data = this.data; // valeurs des propriétés des composants.
         var el = this.el; // référence à l'entité du composant.
-        var texteBonus = document.getElementById("texteBonus"); 
 
-        // affichage d'un message temporaire dans la caméra du joueur
-        texteBonus.setAttribute("visible", true);
-        // masquage du message au bout de 2s
+        for(let j = 0; j <= questionsArr.length; j++) {
+            if(goodA[i].id == questionsArr[j]) {
+              oui = false;
+              break;
+            }
+            else if(j == questionsArr.length) {
+              oui = true;
+            }
+        }
+        
+        if(oui == true) {
+          questionsArr.push(goodA[i].id);
+          var texteBonus = $("texteBonus"); 
 
-        removeText = setTimeout(function () {
-          texteBonus.setAttribute("visible", false);
-        }, 2000);
-
+          // affichage d'un message temporaire dans la caméra du joueur
+          texteBonus.setAttribute("visible", true);
+          // masquage du message au bout de 2s
+      
+          removeText = setTimeout(function () {
+            texteBonus.setAttribute("visible", false);
+          }, 2000);    
+        }  
       });
     }
   clearTimeout(removeText);
