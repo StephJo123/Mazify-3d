@@ -1,9 +1,10 @@
 var removeText, removeBox, monInter;
 var nbTirs = 0;
-var tirAutorise, isDead = true;
+var tirAutorise, isDead, existantG, existantB = true;
 var tpAutorise, bombactive = false;
 var vie = 20;
-
+var questionsArr = [];
+var questionsArrB = [];
 function $(v) {
   return document.getElementById(v);
 }
@@ -15,6 +16,7 @@ AFRAME.registerComponent('startgame', {
     this.el.addEventListener('mouseleave', changeBack);
 
     this.el.addEventListener('click', () => {
+      document.querySelector('a-scene').enterVR();
       $('scene').setAttribute('fog', 'color: #444');
       $('player').setAttribute("keyboard-controls", "enabled: true");
       this.el.remove();
@@ -457,19 +459,29 @@ AFRAME.registerComponent('question_resolue', {
     var goodA = document.getElementsByClassName('goodA');
     for(let i = 0; i < goodA.length; i++) {
       goodA[i].addEventListener('click', function(evt) {
-        console.log("bravo");
-        var data = this.data; // valeurs des propriétés des composants.
-        var el = this.el; // référence à l'entité du composant.
-        var texteBonus = document.getElementById("texteBonus"); 
 
-        // affichage d'un message temporaire dans la caméra du joueur
-        texteBonus.setAttribute("visible", true);
-        // masquage du message au bout de 2s
+        for(let j = 0; j <= questionsArr.length; j++) {
+            if(goodA[i].id == questionsArr[j]) {
+              existantG = false;
+              break;
+            }
+            else if(j == questionsArr.length) {
+              existantG = true;
+            }
+        }
+        
+        if(existantG == true) {
+          questionsArr.push(goodA[i].id);
+          var texteBonus = $("texteBonus"); 
 
-        removeText = setTimeout(function () {
-          texteBonus.setAttribute("visible", false);
-        }, 2000);
-
+          // affichage d'un message temporaire dans la caméra du joueur
+          texteBonus.setAttribute("visible", true);
+          // masquage du message au bout de 2s
+      
+          removeText = setTimeout(function () {
+            texteBonus.setAttribute("visible", false);
+          }, 2000);    
+        }  
       });
     }
   clearTimeout(removeText);
@@ -483,18 +495,28 @@ AFRAME.registerComponent('question_erreur', {
     for(let i = 0; i < badA.length; i++) {
       badA[i].addEventListener('click', function(evt) {
 
-        var data = this.data; // valeurs des propriétés des composants.
-        var el = this.el; // référence à l'entité du composant.
-        var texteErreur = document.getElementById("texteErreur"); 
+        for(let j = 0; j <= questionsArrB.length; j++) {
+          if(badA[i].id == questionsArrB[j]) {
+            existantB = false;
+            break;
+          }
+          else if(j == questionsArrB.length) {
+            existantB = true;
+          }
+        }
 
-        // affichage d'un message temporaire dans la caméra du joueur
-        texteErreur.setAttribute("visible", true);
-        // masquage du message au bout de 2s
+        if(existantB == true) {
+          questionsArrB.push(badA[i].id);
+          var texteErreur = $("texteErreur"); 
 
-        removeText = setTimeout(function () {
-          texteErreur.setAttribute("visible", false);
-        }, 2000);
+          // affichage d'un message temporaire dans la caméra du joueur
+          texteErreur.setAttribute("visible", true);
+          // masquage du message au bout de 2s
 
+          removeText = setTimeout(function () {
+            texteErreur.setAttribute("visible", false);
+          }, 2000);
+        }
       });
     }
     clearTimeout(removeText);
