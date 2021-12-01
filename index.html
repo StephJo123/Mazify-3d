@@ -11,19 +11,18 @@
   <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
   <script src="https://unpkg.com/aframe-event-set-component@4.1.2/dist/aframe-event-set-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
   <script src="js/mazify.js"></script>
   <script src="js/player.js"></script>
   <script src="js/aframe-component.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" type="image/png" href="assets/maze.png" />
-  <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
-
   <script id="link" type="text/html">
     <a-entity class="link" geometry="primitive: plane; height: 1; width: 1" material="shader: flat; src: ${thumb}"
       event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1"
       sound="on: click; src: #click-sound"></a-entity>
   </script>
+  <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="assets/maze.png" />
 </head>
 
 <body id="body" style="background-color: #444">
@@ -59,7 +58,6 @@
       <img id="restart-menu" crossorigin="anonymous" src="assets/restart-menu.jpg">
       <audio id="click-sound" crossorigin="anonymous"
         src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
-      <img id="city" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg">
     </a-assets>
 
     <!-- Environment -->
