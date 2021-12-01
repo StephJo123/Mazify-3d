@@ -16,6 +16,7 @@ AFRAME.registerComponent('startgame', {
     this.el.addEventListener('mouseleave', changeBack);
 
     this.el.addEventListener('click', () => {
+      document.querySelector('a-scene').enterVR();
       $('scene').setAttribute('fog', 'color: #444');
       $('player').setAttribute("keyboard-controls", "enabled: true");
       this.el.remove();
@@ -461,8 +462,6 @@ AFRAME.registerComponent('question_resolue', {
     var goodA = document.getElementsByClassName('goodA');
     for(let i = 0; i < goodA.length; i++) {
       goodA[i].addEventListener('click', function(evt) {
-        var data = this.data; // valeurs des propriétés des composants.
-        var el = this.el; // référence à l'entité du composant.
 
         for(let j = 0; j <= questionsArr.length; j++) {
             if(goodA[i].id == questionsArr[j]) {
@@ -498,9 +497,6 @@ AFRAME.registerComponent('question_erreur', {
     var badA = document.getElementsByClassName('badA');
     for(let i = 0; i < badA.length; i++) {
       badA[i].addEventListener('click', function(evt) {
-
-        var data = this.data; // valeurs des propriétés des composants.
-        var el = this.el; // référence à l'entité du composant.
 
         for(let j = 0; j <= questionsArrB.length; j++) {
           if(badA[i].id == questionsArrB[j]) {

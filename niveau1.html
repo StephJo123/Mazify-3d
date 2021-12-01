@@ -11,7 +11,7 @@
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
   <script src="https://unpkg.com/super-hands@^3.0.1/dist/super-hands.min.js"></script>
   <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+  <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
   <script src="js/mazify.js"></script>
   <script src="js/player.js"></script>
   <script src="js/aframe-component.js"></script>
@@ -30,12 +30,13 @@
   <div id="loader" class="lds-dual-ring centered"></div>
   <a-scene id="scene" style="display: none;" inspector-plugin-recast
   renderer="colorManagement: true; highRefreshRate: true; antialias: true;"
-  fog="type: exponential; color: #444; density: 0.15">    
+  fog="type: exponential; color: springgreen; density: 0.15">    
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/sol.jpg" />
       <img id="wall" src="assets/wall.jpg" />
       <img id="start" position="-0.46899 0.9698 -3.13406" src="assets/start.jpg" />
+      <img id="start-menu" crossorigin="anonymous" src="assets/start-menu.jpg">
       <img id="finish" src="assets/finish.jpg" />
       <img id="texteQ1" src="assets/question1.png">
       <img id="repQ1" src="assets/repQ1.png">
@@ -53,11 +54,18 @@
       <a-asset-item id="my-nav-mesh" src="assets/navmeshLevel1.gltf"></a-asset-item>
       <a-asset-item id="bunny" src="assets/bunny/scene.gltf"></a-asset-item>
       <a-asset-item id="camp" src="assets/camp_fire/scene.gltf"></a-asset-item>
+      <a-asset-item id="spike_trap" src="assets/spike_trap/scene.gltf"></a-asset-item>
     </a-assets>
 
     <!-- Environment -->
     <a-light type="ambient" color="#fff" intensity="0.8"></a-light>
     <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="100" width="100"></a-plane>
+    
+    <!-- start menu -->
+    <a-entity id="start" layout="type: line; margin: 1.5" position="0 1.500 -2" startgame>
+      <a-entity template="src: #link" data-thumb="#start-menu">
+      </a-entity>
+    </a-entity>
 
     <!-- Question 1 -->
     <a-image src="#texteQ1" id="Q1" position="0 1.4 13.6" rotation="0 0 0" height="3" width="2"></a-image>
@@ -107,10 +115,12 @@
     </a-entity>
 
     <!-- Caméra Rig -->
-    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true">
+    <a-entity id="player" player listener keyboard-controls="enabled: false" movement-controls="constrainToNavMesh: true">
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
-        <a-cursor></a-cursor>
+        <a-cursor id="cursor" color="white;" position="0 0 -0.2" scale="0.25 0.25 0.25"
+          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 0.25 0.25 0.25; dur: 150">
+        </a-cursor>
         <a-entity id="texteBonus" text="value: Bonne reponse !; color: yellow;" position="0.165 0.03 -0.3"
           scale="0.5 0.5 0.5" visible="false"></a-entity>
         <a-entity id="texteErreur" text="value: Mauvaise reponse !; color: yellow;" position="0.165 0.03 -0.3"
