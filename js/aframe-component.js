@@ -68,11 +68,7 @@ AFRAME.registerComponent("collision", {
     if (Math.abs(pos.x - posTeleporteur.x) < 0.7) {
       if (Math.abs(pos.z - posTeleporteur.z) < 0.7) {
         if (tpAutorise) {
-          this.el.setAttribute('position', {
-            x: -2.76,
-            y: 1.6,
-            z: -2.1
-          });
+          this.el.object3D.position.set(6, 0, -9);
         }
       }
     }
@@ -111,9 +107,9 @@ AFRAME.registerComponent('tpsalleboss', {
     $('skull2').addEventListener('click', function () {
       $('skull2').setAttribute('animation', {
         property: 'position',
-        to: '25.4 1.8 -13.417'
+        to: '16.312 2.2 -20.9'
       });
-      $('skull2').setAttribute('link', 'href:boss.html')
+      $('skull2').setAttribute('link', 'href:niveau1.html')
     });
   }
 });
@@ -174,6 +170,7 @@ AFRAME.registerComponent("trackball", {
           $("compteur").remove();
         }
         $("tinterrupteur").setAttribute("visible", "true");
+        tpAutorise = true;
       });
     }
   },
@@ -338,7 +335,7 @@ AFRAME.registerComponent("hit-handler", {
     var el = this.el;
 
     el.addEventListener("hit", () => {
-      
+      console.log('coucou')
     });
 
     el.addEventListener("die", () => {

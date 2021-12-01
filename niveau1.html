@@ -9,9 +9,6 @@
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
   <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-  <script src="https://unpkg.com/super-hands@^3.0.1/dist/super-hands.min.js"></script>
-  <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
   <script src="js/mazify.js"></script>
   <script src="js/player.js"></script>
   <script src="js/aframe-component.js"></script>
@@ -46,6 +43,7 @@
       <a-asset-item id="my-nav-mesh" src="assets/navmeshLevel1.gltf"></a-asset-item>
       <a-asset-item id="bunny" src="assets/bunny/scene.gltf"></a-asset-item>
       <a-asset-item id="camp" src="assets/camp_fire/scene.gltf"></a-asset-item>
+      <a-asset-item id="voiture" src="assets/peugeot206/scene.gltf"></a-asset-item>
     </a-assets>
 
     <!-- Environment -->
@@ -127,6 +125,8 @@
     <a-entity gltf-model="#bunny" id="bunny2" scale="0.06 0.06 0.06" position="-18 0 -16" look-at="#player">
     </a-entity>
     <a-entity gltf-model="#camp" id="camp2" scale="0.2 0.2 0.2" position="-18 0 17.6" >
+    </a-entity>
+    <a-entity gltf-model="#voiture" id="peugeot" scale="2.5 2.5 2.5" position="18 0 16.7" rotation="0 180 0">
     </a-entity>
     
     <!-- Maze -->

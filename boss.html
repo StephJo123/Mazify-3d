@@ -21,7 +21,7 @@
       <audio id="musique" src="assets/ambiance_sound.mp3"></audio>
       <audio id="roar" src="assets/monsterRoar.mp3"></audio>
       <a-asset-item id="boss" src="assets/boss/scene.gltf"></a-asset-item>
-      <a-asset-item id="my-nav-mesh" src="assets/navmesh6.gltf"></a-asset-item>
+      <a-asset-item id="my-nav-mesh" src="assets/navmeshBoss.gltf"></a-asset-item>
       <a-asset-item id="missile" src="assets/missile/scene.gltf"></a-asset-item>
       <a-asset-item id="barriere" src="assets/barriere/scene.gltf"></a-asset-item>
       <a-asset-item id="shelter" src="assets/shelter/scene.gltf"></a-asset-item>
@@ -33,9 +33,9 @@
     <a-entity sallboss></a-entity>
 
     <!-- Caméra Rig -->
-    <a-entity id="player" movement-controls="constrainToNavMesh: true" target="healthPoints: 100" hit-handler >
+    <a-entity id="player2" movement-controls="constrainToNavMesh: true" hit-handler-player position="0 0 0">
       <!-- Caméra -->
-      <a-entity  camera position="0 1.6 0" look-controls id="camera" click-to-shoot-boss shooter>
+      <a-entity  camera position="0 1.6 0" look-controls id="camera" click-to-shoot-boss shooter >
         <a-cursor></a-cursor>
       </a-entity>
       
@@ -47,31 +47,31 @@
 
 
     <a-entity gltf-model="#boss" id="boss2" scale="0.006 0.006 0.006" 
-      position="0 1.6 -22" rotation="33 0 0" animation="property: position; to: -1 1.6 -18; loop: true; dur: 7000; dir: alternate"
+      position="0 1.6 -22" rotation="33 0 0" animation="property: position; to: -1 1.6 -16; loop: true; dur: 4000; dir: alternate"
       target="healthPoints: 10000" hit-handler-boss>
       <a-entity id="bosslife" geometry="primitive: box; width: 20; height: 0.3; depth: 0.3" material="color: green"
         position="-7.35 1330 -318.5" rotation="45 0 0" scale="100 100 100"></a-entity>
     </a-entity>
-    <a-sphere id="sphere1" position="-1.18 7.405 -17.99"  animation="property: position; to: -2.18 7.405 -13.78; loop: true; dur: 7000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
-      <a-sphere id="sphere2" position="-0.51 7.627 -17.75"  animation="property: position; to: -1.52 7.627 -13.72; loop: true; dur: 7000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
-      <a-sphere id="sphere3" position="0.362 7.676 -17.77"  animation="property: position; to: -0.68 7.676 -13.39; loop: true; dur: 7000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
-      <a-sphere id="sphere4" position="1.266 7.334 -17.92"  animation="property: position; to: 0.116 7.334 -13.61; loop: true; dur: 7000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
+    <a-sphere id="sphere1" position="-1.18 7.405 -17.99"  animation="property: position; to: -2.18 7.405 -11.88; loop: true; dur: 4000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
+      <a-sphere id="sphere2" position="-0.51 7.627 -17.75"  animation="property: position; to: -1.24 7.627 -11.72; loop: true; dur: 4000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
+      <a-sphere id="sphere3" position="0.362 7.676 -17.77"  animation="property: position; to: -0.62 7.676 -11.71; loop: true; dur: 4000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
+      <a-sphere id="sphere4" position="1.266 7.334 -17.92"  animation="property: position; to: 0.183 7.334 -11.98; loop: true; dur: 4000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
 
     <!-- <a-entity gltf-model="#lezard" position="-3 0 -3" rotation="0 230 0" animation-mixer scale="0.002 0.002 0.002"></a-entity> -->
     <a-entity id="bullet2" bullet="name: normal; speed: 20.0; poolSize:100"
-      geometry="primitive: icosahedron; radius: 0.2;detail:1"
+      geometry="primitive: icosahedron; radius: 0.17;detail:1"
       material="color: red; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
 
     <a-entity gltf-model="#missile" id="missile2" scale="1 1 1" position="2.427 8.049 -13.77" rotation="-60 0 0"
       visible="false">
     </a-entity>
-    <a-entity gltf-model="#barriere" id="barriere2" scale="2 1 1" position="-1.6 0 -4" rotation="0 0 0">
+    <a-entity gltf-model="#barriere" id="barriere1" scale="1.5 0.5 1" position="-0.77 0 -4" rotation="0 0 0">
     </a-entity>
-    <a-entity gltf-model="#barriere" id="barriere2" scale="3 1 1" position="-4.8 0 0.8" rotation="0 90 0">
+    <a-entity gltf-model="#barriere" id="barriere2" scale="2.5 0.5 1" position="-3.26 0 0.034" rotation="0 90 0">
     </a-entity>
-    <a-entity gltf-model="#barriere" id="barriere3" scale="3 1 1" position="1.706 0 0.8" rotation="0 90 0">
+    <a-entity gltf-model="#barriere" id="barriere3" scale="2.5 0.5 1" position="1.706 0 0.021" rotation="0 90 0">
     </a-entity>
-    <a-entity gltf-model="#barriere" id="barriere4" scale="2 1 1" position="-1.6 0 5.4" rotation="0 0 0">
+    <a-entity gltf-model="#barriere" id="barriere4" scale="1.5 0.5 1" position="-0.77 0 4.032" rotation="0 0 0">
     </a-entity>
 
     <a-entity gltf-model="#shelter" id="shelter2" scale="2 2 4" position="-10.3 0 1" rotation="0 0 0">
