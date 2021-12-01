@@ -522,3 +522,21 @@ AFRAME.registerComponent('question_erreur', {
     clearTimeout(removeText);
   }
 });
+AFRAME.registerComponent('hit-handler-ghost', {
+  dependencies: ['material'],
+
+  init: function () {
+    var el = this.el.getAttribute("position");
+    var mur = document.querySelectorAll('a-box').getAttribute("position");
+    
+    function abs(val) {
+      return (val < 0) ? -val : val;
+    }
+
+    if (abs(el.x - mur.x) < 1.5 &&
+      abs(el.z - mur.z) < 1.5) {
+        console.log('coucou')
+    }
+  },
+  
+});

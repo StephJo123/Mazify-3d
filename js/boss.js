@@ -20,6 +20,7 @@ AFRAME.registerComponent("sallboss", {
         z: 2
       });
       boxe.setAttribute('material', 'src: #wall');
+      boxe.setAttribute('color', '#336699');
       boxx += 2;
     }
     for (var i = 0; i < 24; i++) {
@@ -36,6 +37,7 @@ AFRAME.registerComponent("sallboss", {
         z: 2
       });
       boxe.setAttribute('material', 'src: #wall');
+      boxe.setAttribute('color', '#336699');
 
       boxz -= 2;
 
@@ -54,6 +56,7 @@ AFRAME.registerComponent("sallboss", {
         z: 2
       });
       boxe.setAttribute('material', 'src: #wall');
+      boxe.setAttribute('color', '#336699');
 
       boxx2 -= 2;
 
@@ -72,6 +75,7 @@ AFRAME.registerComponent("sallboss", {
         z: 2
       });
       boxe.setAttribute('material', 'src: #wall');
+      boxe.setAttribute('color', '#336699');
 
       boxz += 2;
     }
@@ -156,10 +160,10 @@ AFRAME.registerComponent('hit-handler-boss', {
       }
       if (vie < 0) {
         el.parentNode.remove(el);
-        sphere1.parentNode.remove(sphere1);
-        sphere2.parentNode.remove(sphere2);
-        sphere3.parentNode.remove(sphere3);
-        sphere4.parentNode.remove(sphere4);
+        sphere1.removeAttribute('shooter');
+        sphere2.removeAttribute('shooter');
+        sphere3.removeAttribute('shooter');
+        sphere4.removeAttribute('shooter');
 
       }
       vie = vie - 0.06
@@ -176,21 +180,6 @@ AFRAME.registerComponent('hit-handler-boss', {
       el.setAttribute('position', rotationTmp);
     });
   }
-});
-AFRAME.registerComponent('hit-handler-player', {
-  tick: function () {
-    var player = $("player2").getAttribute("position");
-    var bullet =  $("bullet2").getAttribute("position");
-
-    function abs(val) {
-      return (val < 0) ? -val : val;
-    }
-
-    if (abs(player.x - bullet.x) < 1.5 &&
-      abs(player.z - bullet.z) < 1.5) {
-        console.log('coucou')
-    }
-  },
 });
 AFRAME.registerComponent('monster-roar', {
   init: function () {

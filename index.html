@@ -141,7 +141,7 @@
 
     <!-- Caméra Rig -->
     <a-entity id="player" player listener movement-controls="constrainToNavMesh: true"
-      keyboard-controls="enabled: false" position="0 1.6 0" trackball trackballfinish collision collision_piege>
+      keyboard-controls="enabled: false" position="0 1.6 0" trackball trackballfinish collision collision_piege hit-handler-ghost>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
         <a-cursor id="cursor" color="white;" position="0 0 -0.2" scale="0.25 0.25 0.25"
@@ -191,7 +191,7 @@
       position="17 2.2 -20.9" rotation="0 90 0" tpsalleboss></a-entity>
 
     <!-- Maze -->
-    <a-entity mazify> </a-entity>
+    <a-entity id="mazify" mazify> </a-entity>
 
   </a-scene>
 
