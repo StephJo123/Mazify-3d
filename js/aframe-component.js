@@ -346,6 +346,7 @@ AFRAME.registerComponent('munitions', {
 AFRAME.registerComponent('ghost-follow', {
   init: function () {
     let ghost = this.el;
+    let nbRotate = 0;
     function avance(ghost,pas) {
         let rotation = ghost.object3D.rotation;
         let pos = ghost.object3D.position;
@@ -358,12 +359,12 @@ AFRAME.registerComponent('ghost-follow', {
         }
     }
     setInterval(function () {
-        avance(ghost,0.5); // on avance pour savoir si la position sera dans le mur
+        avance(ghost,1); // on avance pour savoir si la position sera dans le mur
         if (!isValidePosition(ghost.object3D.position)) { // s'il est dans un mur
-            avance(ghost,-0.5); // on revient avant de tourner
-            ghost.object3D.rotateY(1.5708); // on tourne
+            avance(ghost,-1); // on revient avant de tourner
+            ghost.object3D.rotateY((Math.random() <= 0.5) ? 1.5708 : -1.5708); // on tourne
         }
-    },1000);
+    },500);
     ghost.object3D.rotation.set(0,-1.5708,0);
   }
 });
