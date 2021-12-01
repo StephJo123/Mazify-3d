@@ -55,17 +55,13 @@ function musicPlay() {
 
 AFRAME.registerComponent("collision", {
   tick: function () {
-    let pos = this.el.getAttribute("position");
-    let posTeleporteur = $("boxTp").getAttribute("position");
+    let pos = this.el.object3D.position;
+    let posTeleporteur = $("boxTp").object3D.position;
 
     if (Math.abs(pos.x - posTeleporteur.x) < 0.7) {
       if (Math.abs(pos.z - posTeleporteur.z) < 0.7) {
         if (tpAutorise) {
-          this.el.setAttribute('position', {
-            x: -2.76,
-            y: 1.6,
-            z: -2.1
-          });
+          this.el.object3D.position.set(-2.76, 1.6, -2.1);
         }
       }
     }
@@ -75,12 +71,12 @@ AFRAME.registerComponent("collision", {
 AFRAME.registerComponent('collision_piege', {
 
   tick: function () {
-    let pos = this.el.getAttribute("position");
+    let pos = this.el.object3D.position;
 
-    let posPiege = $("piege_0").getAttribute("position");
-    let posPiege1 = $("piege_1").getAttribute("position");
-    let posPiege2 = $("piege_2").getAttribute("position");
-    let posPiege3 = $("piege_3").getAttribute("position");
+    let posPiege = $("piege_0").object3D.position;
+    let posPiege1 = $("piege_1").object3D.position;
+    let posPiege2 = $("piege_2").object3D.position;
+    let posPiege3 = $("piege_3").object3D.position;
 
     if (Math.abs(pos.x - posPiege.x) < 0.4 || Math.abs(pos.x - posPiege1.x) < 0.4 || Math.abs(pos.x - posPiege2.x) < 0.4 || Math.abs(pos.x - posPiege3.x) < 0.4) {
       if (Math.abs(pos.z - posPiege.z) < 0.4 || Math.abs(pos.z - posPiege1.z) < 0.4 || Math.abs(pos.z - posPiege2.z) < 0.4 || Math.abs(pos.z - posPiege3.z) < 0.4) {
@@ -115,9 +111,9 @@ AFRAME.registerComponent("trackball", {
   tick: function () {
     if (bombactive) return;
 
-    let pos = this.el.getAttribute("position");
+    let pos = this.el.object3D.position;
 
-    let posPiege = $("bombe").getAttribute("position");
+    let posPiege = $("bombe").object3D.position;
     if (Math.abs(pos.x - posPiege.x) < 4 &&
       Math.abs(pos.z - posPiege.z) < 4
     ) {
@@ -176,7 +172,7 @@ AFRAME.registerComponent("trackball", {
 function isValidePosition(posInit) {
   let bool = true;
   document.querySelectorAll('a-entity[mazify] a-box').forEach(function (el) {
-    const posN = el.getAttribute('position');
+    const posN = el.object3D.position;
     if (Math.abs(posN.x - posInit.x) < 2 && Math.abs(posN.z - posInit.z) < 2) {
       bool = false;
       return;
@@ -194,19 +190,19 @@ function die() {
   $('scene').setAttribute('fog', 'color: red');
   cursor.setAttribute('material', 'color: red');
 
-  $('restart').setAttribute('position', player.getAttribute('position'));
+  $('restart').setAttribute('position', player.object3D.position);
   $('restart').object3D.position.x += 2;
 
-  let posRestart = $('restart').getAttribute('position');
+  let posRestart = $('restart').object3D.position;
 
   if (!isValidePosition(posRestart)) {
-    $('restart').setAttribute('position', player.getAttribute('position'));
+    $('restart').setAttribute('position', player.object3D.position);
     $('restart').object3D.position.z -= 2;
     if (!isValidePosition(posRestart)) {
-      $('restart').setAttribute('position', player.getAttribute('position'));
+      $('restart').setAttribute('position', player.object3D.position);
       $('restart').object3D.position.z += 2;
       if (!isValidePosition(posRestart)) {
-        $('restart').setAttribute('position', player.getAttribute('position'));
+        $('restart').setAttribute('position', player.object3D.position);
         $('restart').object3D.position.x -= 2;
       }
     }
@@ -225,11 +221,7 @@ function addAmmo(munitionsBonus) {
     camera.appendChild(balle);
     balle.setAttribute('src', '#bullet');
     balle.setAttribute('id', 'balle' + (nbTirs + i));
-    balle.setAttribute('position', {
-      x: posBalleX,
-      y: -0.07,
-      z: -0.2
-    });
+    balle.object3D.position.set(posBalleX, -0.07, -0.2);
     balle.setAttribute('scale', {
       x: 0.005,
       y: 0.005,
@@ -302,8 +294,8 @@ function randomIntFromInterval(min, max) {
 
 AFRAME.registerComponent('trackballfinish', {
   tick: function () {
-    let pos = this.el.getAttribute("position");
-    let posPiege = $('fini2').getAttribute("position");
+    let pos = this.el.object3D.position;
+    let posPiege = $('fini2').object3D.position;
 
     if (Math.abs(pos.x - posPiege.x) < 2) {
       if (Math.abs(pos.z - posPiege.z) < 2) {
@@ -323,10 +315,10 @@ AFRAME.registerComponent('trackballfinish', {
 AFRAME.registerComponent("ghost-collision-detect", {
   tick: function () {
     let ghost = this.el;
-    let ghostPos = ghost.getAttribute('position');
-    let playerPos = $('player').getAttribute('position');
+    let ghostPos = ghost.object3D.position;
+    let playerPos = $('player').object3D.position;
 
-    if (Math.abs(ghostPos.x - playerPos.x) < 0.35 && Math.abs(ghostPos.z - playerPos.z) < 0.35) {
+    if (Math.abs(ghostPos.x - playerPos.x) < 0.40 && Math.abs(ghostPos.z - playerPos.z) < 0.40) {
       die();
       ghost.remove();
     }
@@ -352,8 +344,8 @@ AFRAME.registerComponent('ghost-follow', {
   init: function () {
     let ghost = this.el;
     setInterval(function () {
-      let posGhost = ghost.getAttribute('position');
-      let posPlayer = $('player').getAttribute('position');
+      let posGhost = ghost.object3D.position;
+      let posPlayer = $('player').object3D.position;
       let pas = 0.05,
         signeX = 0,
         signeZ = 0;
@@ -363,11 +355,7 @@ AFRAME.registerComponent('ghost-follow', {
       if (Math.abs(posGhost.z - posPlayer.z) > pas) {
         signeZ = (posGhost.z > posPlayer.z) ? -pas : pas;
       }
-      ghost.setAttribute('position', {
-        x: posGhost.x + signeX,
-        y: 0,
-        z: posGhost.z + signeZ
-      });
+      ghost.object3D.position.set(posGhost.x + signeX, 0, posGhost.z + signeZ);
     }, 50);
   }
 });
