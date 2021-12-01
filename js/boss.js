@@ -162,7 +162,7 @@ AFRAME.registerComponent('hit-handler-boss', {
         sphere4.parentNode.remove(sphere4);
 
       }
-      vie = vie - 0.04
+      vie = vie - 0.06
 
 
     });
@@ -176,6 +176,21 @@ AFRAME.registerComponent('hit-handler-boss', {
       el.setAttribute('position', rotationTmp);
     });
   }
+});
+AFRAME.registerComponent('hit-handler-player', {
+  tick: function () {
+    var player = $("player2").getAttribute("position");
+    var bullet =  $("bullet2").getAttribute("position");
+
+    function abs(val) {
+      return (val < 0) ? -val : val;
+    }
+
+    if (abs(player.x - bullet.x) < 1.5 &&
+      abs(player.z - bullet.z) < 1.5) {
+        console.log('coucou')
+    }
+  },
 });
 AFRAME.registerComponent('monster-roar', {
   init: function () {

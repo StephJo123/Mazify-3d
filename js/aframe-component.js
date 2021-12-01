@@ -70,11 +70,7 @@ AFRAME.registerComponent("collision", {
     if (Math.abs(pos.x - posTeleporteur.x) < 0.7) {
       if (Math.abs(pos.z - posTeleporteur.z) < 0.7) {
         if (tpAutorise) {
-          this.el.setAttribute('position', {
-            x: -2.76,
-            y: 1.6,
-            z: -2.1
-          });
+          this.el.object3D.position.set(6, 0, -9);
         }
       }
     }
@@ -113,9 +109,9 @@ AFRAME.registerComponent('tpsalleboss', {
     $('skull2').addEventListener('click', function () {
       $('skull2').setAttribute('animation', {
         property: 'position',
-        to: '25.4 1.8 -13.417'
+        to: '16.312 2.2 -20.9'
       });
-      $('skull2').setAttribute('link', 'href:boss.html')
+      $('skull2').setAttribute('link', 'href:niveau1.html')
     });
   }
 });
@@ -176,6 +172,7 @@ AFRAME.registerComponent("trackball", {
           $("compteur").remove();
         }
         $("tinterrupteur").setAttribute("visible", "true");
+        tpAutorise = true;
       });
     }
   },
@@ -340,7 +337,7 @@ AFRAME.registerComponent("hit-handler", {
     var el = this.el;
 
     el.addEventListener("hit", () => {
-      
+      console.log('coucou')
     });
 
     el.addEventListener("die", () => {
@@ -512,9 +509,7 @@ AFRAME.registerComponent('question_erreur', {
           questionsArrB.push(badA[i].id);
           var texteErreur = $("texteErreur"); 
 
-          // affichage d'un message temporaire dans la caméra du joueur
           texteErreur.setAttribute("visible", true);
-          // masquage du message au bout de 2s
 
           removeText = setTimeout(function () {
             texteErreur.setAttribute("visible", false);
@@ -523,5 +518,33 @@ AFRAME.registerComponent('question_erreur', {
       });
     }
     clearTimeout(removeText);
+  }
+});
+
+AFRAME.registerComponent('collision_piege_niveau2', {
+
+  tick: function () {
+
+    let pos = this.el.getAttribute("position");
+    let posTrap = $("spike").getAttribute("position");
+    let posTrap2 = $("spike2").getAttribute("position");
+    let posTrap3 = $("spike3").getAttribute("position");
+    let posTrap4 = $("spike4").getAttribute("position");
+
+    console.log("camera x : " + pos.x + " camera spike : " + posTrap.x);
+    // console.log("camera y : " + pos.y + " camera spike3 : " + posTrap3.y);
+    console.log("camera z : " + pos.z + " camera spike : " + posTrap.z);
+
+    if (
+      (Math.abs(pos.y - posTrap.y) < 0.7) && (Math.abs(pos.z - posTrap.z) < 0.1)
+      ||
+      (Math.abs(pos.y - posTrap2.y) < 0.7) && (Math.abs(pos.z - posTrap2.z) < 0.1)
+      ||
+      (Math.abs(pos.x - posTrap3.x) < 0.7) && (Math.abs(pos.z - posTrap3.z) < 0.1)
+      ||
+      (Math.abs(pos.x - posTrap4.x) < 0.7) && (Math.abs(pos.z - posTrap4.z) < 0.1)
+    ) {
+      $('scene').setAttribute('fog', 'color: red');
+    }
   }
 });
