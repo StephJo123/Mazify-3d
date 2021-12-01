@@ -11,21 +11,23 @@
   <script src="js/aframe-component.js"></script>
   <script src="js/boss.js"></script>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="assets/images/maze.png" />
 </head>
 
 <body onload="enterVR()">
   <a-scene inspector-plugin-recast renderer="colorManagement: true;" loading-screen auto-enter-vr>
     <a-assets>
-      <img id="ground" src="assets/sol.jpg" />
-      <img id="wall" src="assets/test.jpg" />
-      <audio id="musique" src="assets/critical-tension-drama-tension-suspense-music-brulik-entertainment.mp3"></audio>
-      <audio id="roar" src="assets/monsterRoar.mp3"></audio>
-      <a-asset-item id="boss" src="assets/boss/scene.gltf"></a-asset-item>
+      <img id="ground" src="assets/images/sol.jpg" />
+      <img id="wall" src="assets/images/test.jpg" />
+      <audio id="musique"
+        src="assets/sounds/critical-tension-drama-tension-suspense-music-brulik-entertainment.mp3"></audio>
+      <audio id="roar" src="assets/sounds/monsterRoar.mp3"></audio>
+      <a-asset-item id="boss" src="assets/models/boss/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmesh6.gltf"></a-asset-item>
-      <a-asset-item id="missile" src="assets/missile/scene.gltf"></a-asset-item>
-      <a-asset-item id="barriere" src="assets/barriere/scene.gltf"></a-asset-item>
-      <a-asset-item id="shelter" src="assets/shelter/scene.gltf"></a-asset-item>
-      <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
+      <a-asset-item id="missile" src="assets/models/missile/scene.gltf"></a-asset-item>
+      <a-asset-item id="barriere" src="assets/models/barriere/scene.gltf"></a-asset-item>
+      <a-asset-item id="shelter" src="assets/models/shelter/scene.gltf"></a-asset-item>
+      <a-asset-item id="gun" src="assets/models/sci-fi_revolver/scene.gltf"></a-asset-item>
     </a-assets>
     <a-sky></a-sky>
     <a-plane material="src: #ground; repeat: 25 25" position="0 0 -4" rotation="-90 0 0" width="50" height="50"
