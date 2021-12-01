@@ -531,10 +531,6 @@ AFRAME.registerComponent('collision_piege_niveau2', {
     let posTrap3 = $("spike3").getAttribute("position");
     let posTrap4 = $("spike4").getAttribute("position");
 
-    console.log("camera x : " + pos.x + " camera spike : " + posTrap.x);
-    // console.log("camera y : " + pos.y + " camera spike3 : " + posTrap3.y);
-    console.log("camera z : " + pos.z + " camera spike : " + posTrap.z);
-
     if (
       (Math.abs(pos.y - posTrap.y) < 0.7) && (Math.abs(pos.z - posTrap.z) < 0.1)
       ||
