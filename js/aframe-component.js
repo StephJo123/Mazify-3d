@@ -1,11 +1,10 @@
 var removeText, removeBox, monInter;
 var nbTirs = 0;
-var tirAutorise, isDead = true;
+var tirAutorise, isDead, existantG, existantB = true;
 var tpAutorise, bombactive = false;
 var vie = 20;
-var oui = true;
 var questionsArr = [];
-
+var questionsArrB = [];
 function $(v) {
   return document.getElementById(v);
 }
@@ -467,15 +466,15 @@ AFRAME.registerComponent('question_resolue', {
 
         for(let j = 0; j <= questionsArr.length; j++) {
             if(goodA[i].id == questionsArr[j]) {
-              oui = false;
+              existantG = false;
               break;
             }
             else if(j == questionsArr.length) {
-              oui = true;
+              existantG = true;
             }
         }
         
-        if(oui == true) {
+        if(existantG == true) {
           questionsArr.push(goodA[i].id);
           var texteBonus = $("texteBonus"); 
 
@@ -502,16 +501,29 @@ AFRAME.registerComponent('question_erreur', {
 
         var data = this.data; // valeurs des propriétés des composants.
         var el = this.el; // référence à l'entité du composant.
-        var texteErreur = document.getElementById("texteErreur"); 
 
-        // affichage d'un message temporaire dans la caméra du joueur
-        texteErreur.setAttribute("visible", true);
-        // masquage du message au bout de 2s
+        for(let j = 0; j <= questionsArrB.length; j++) {
+          if(badA[i].id == questionsArrB[j]) {
+            existantB = false;
+            break;
+          }
+          else if(j == questionsArrB.length) {
+            existantB = true;
+          }
+        }
 
-        removeText = setTimeout(function () {
-          texteErreur.setAttribute("visible", false);
-        }, 2000);
+        if(existantB == true) {
+          questionsArrB.push(badA[i].id);
+          var texteErreur = $("texteErreur"); 
 
+          // affichage d'un message temporaire dans la caméra du joueur
+          texteErreur.setAttribute("visible", true);
+          // masquage du message au bout de 2s
+
+          removeText = setTimeout(function () {
+            texteErreur.setAttribute("visible", false);
+          }, 2000);
+        }
       });
     }
     clearTimeout(removeText);
