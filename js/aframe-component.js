@@ -81,11 +81,6 @@ AFRAME.registerComponent('collision_piege', {
     if (Math.abs(pos.x - posPiege.x) < 0.4 || Math.abs(pos.x - posPiege1.x) < 0.4 || Math.abs(pos.x - posPiege2.x) < 0.4 || Math.abs(pos.x - posPiege3.x) < 0.4) {
       if (Math.abs(pos.z - posPiege.z) < 0.4 || Math.abs(pos.z - posPiege1.z) < 0.4 || Math.abs(pos.z - posPiege2.z) < 0.4 || Math.abs(pos.z - posPiege3.z) < 0.4) {
         if (isDead) {
-          if (document.body.contains($('compteur'))) {
-            if ($('compteur').getAttribute('visible') == true) {
-              $('compteur').remove();
-            }
-          }
           isDead = false;
           die();
         }
@@ -143,7 +138,6 @@ AFRAME.registerComponent("trackball", {
             $("countdown").pause();
             die();
             clearInterval(monInter);
-            $("compteur").remove();
           }
         }, 1000);
 
@@ -182,6 +176,13 @@ function isValidePosition(posInit) {
 }
 
 function die() {
+  if (document.body.contains($('ghost-model'))) {
+    $('ghost-model').remove();
+  }
+  if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible') == true) {
+    $('compteur').remove();
+  }
+
   // blocage des controles du joueur
   $('player').setAttribute("keyboard-controls", "enabled: false");
 
@@ -320,7 +321,6 @@ AFRAME.registerComponent("ghost-collision-detect", {
 
     if (Math.abs(ghostPos.x - playerPos.x) < 0.40 && Math.abs(ghostPos.z - playerPos.z) < 0.40) {
       die();
-      ghost.remove();
     }
   }
 });
