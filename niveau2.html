@@ -20,23 +20,19 @@
 
 <body style="background-color: #222222">
   <div id="loader" class="lds-dual-ring centered"></div>
-  <a-scene style="display: none;" inspector-plugin-recast renderer=" colorManagement: true;">
+  <a-scene style="display: none;" inspector-plugin-recast renderer=" colorManagement: true;" background="color: #444">
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/images/sol.jpg" />
       <img id="wall" src="assets/images/wall.jpg" />
       <img id="start" src="assets/images/start.jpg" />
       <img id="finish" src="assets/images/finish.jpg" />
-      <img id="redsky" src="assets/images/sky.jpg">
       <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
       <a-asset-item id="gun" src="assets/models/sci-fi_revolver/scene.gltf"></a-asset-item>
       <img id="bullet" src="assets/images/bullets.png">
     </a-assets>
 
     <!-- Environment -->
-
-    <a-sky src="#redsky">
-    </a-sky>
 
     <a-light type="ambient" color="#fff" intensity="0.8"></a-light>
     <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="100" width="100"></a-plane>

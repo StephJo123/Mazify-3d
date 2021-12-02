@@ -172,6 +172,8 @@ function removeIfExist(element) {
 
 function die(deathText) {
 
+  $('scene').setAttribute('background', 'color: red')
+
   removeIfExist($('ghost-model'));
 
   if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible')) {
