@@ -1,20 +1,4 @@
-/* début du jeu */
-AFRAME.registerComponent('startgame', {
-  init: function () {
-    this.el.addEventListener('mouseenter', changeColor);
-    this.el.addEventListener('mouseleave', changeBack);
-
-    this.el.addEventListener('click', () => {
-      document.querySelector('a-scene').enterVR();
-      $('scene').setAttribute('fog', 'color: #444');
-      $('player').setAttribute("movement-controls", "enabled: true");
-      this.el.remove();
-    });
-
-    lesmurs = document.querySelectorAll('a-entity[mazify] a-box');
-  }
-});
-
+lesmurs = document.querySelectorAll('a-entity[mazify] a-box');
 
 // Question labyrinthe
 AFRAME.registerComponent('question_resolue', {
