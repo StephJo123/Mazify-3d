@@ -326,7 +326,7 @@ AFRAME.registerComponent("ghost-collision-detect", {
     let ghostPos = ghost.object3D.position;
     let playerPos = $('player').object3D.position;
 
-    if (Math.abs(ghostPos.x - playerPos.x) < 0.40 && Math.abs(ghostPos.z - playerPos.z) < 0.40) {
+    if (Math.abs(ghostPos.x - playerPos.x) < 0.80 && Math.abs(ghostPos.z - playerPos.z) < 0.80) {
       die($('ghost-msg'));
     }
   }
