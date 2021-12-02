@@ -26,3 +26,14 @@ AFRAME.registerComponent("collect-bunny", {
     }
   },
 });
+
+/* Son du lapin à sa collecte */
+AFRAME.registerComponent('collect_sound', {
+  init: function () {
+    document.body.addEventListener('click', () => {
+      let audio = $('collect');
+      audio.play();
+      audio.currentTime = 0;
+    });
+  }
+});
