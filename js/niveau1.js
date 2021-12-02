@@ -95,13 +95,13 @@ AFRAME.registerComponent('collision_piege_niveau2', {
     let posTrap4 = $("spike4").getAttribute("position");
 
     if (
-      (Math.abs(pos.y - posTrap.y) < 0.7) && (Math.abs(pos.z - posTrap.z) < 0.1)
+      (Math.abs(pos.x - posTrap.x) < 0.4) && (Math.abs(pos.z - posTrap.z) < 0.1)
       ||
-      (Math.abs(pos.y - posTrap2.y) < 0.7) && (Math.abs(pos.z - posTrap2.z) < 0.1)
+      (Math.abs(pos.x - posTrap2.x) < 0.4) && (Math.abs(pos.z - posTrap2.z) < 0.1)
       ||
-      (Math.abs(pos.x - posTrap3.x) < 0.7) && (Math.abs(pos.z - posTrap3.z) < 0.1)
+      (Math.abs(pos.x - posTrap3.x) < 0.4) && (Math.abs(pos.z - posTrap3.z) < 0.1) 
       ||
-      (Math.abs(pos.x - posTrap4.x) < 0.7) && (Math.abs(pos.z - posTrap4.z) < 0.1)
+      (Math.abs(pos.x - posTrap4.x) < 0.4) && (Math.abs(pos.z - posTrap4.z) < 0.1)
     ) {
       $('scene').setAttribute('fog', 'color: red');
     }
