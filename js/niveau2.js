@@ -1,6 +1,10 @@
 var removeBunny;
 var nbLapins = 0;
 
+function $(v) {
+  return document.getElementById(v);
+}
+
 AFRAME.registerComponent("collect-bunny", {
   schema: {
     id: {},
@@ -16,8 +20,7 @@ AFRAME.registerComponent("collect-bunny", {
         "click",
         () => {
           nbLapins++;
-          document.getElementById('collectedBunnies').setAttribute('visible', true);
-          document.getElementById('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
+          $('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
           el.remove();
         }, {
           once: true,
