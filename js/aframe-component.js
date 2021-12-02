@@ -1,10 +1,8 @@
 var removeText, removeBox, monInter;
 var nbTirs = 0;
-var tirAutorise, isDead, existantG, existantB = true;
+var tirAutorise, isDead = true;
 var tpAutorise, bombactive = false;
 var vie = 20;
-var questionsArr = [];
-var questionsArrB = [];
 var lesmurs;
 
 function $(v) {

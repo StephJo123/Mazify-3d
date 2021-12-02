@@ -36,6 +36,9 @@
       <img id="wall" src="assets/images/wall.jpg" />
       <img id="start" position="-0.46899 0.9698 -3.13406" src="assets/images/start.jpg" />
       <img id="start-menu" crossorigin="anonymous" src="assets/images/start-menu.jpg">
+      <img id="restart-menu" crossorigin="anonymous" src="assets/images/restart-menu.jpg">
+      <img id="trap-text" src="assets/images/trap-text.png">
+      <img id="badanswer-text" src="assets/images/badanswer-text.png">
       <img id="finish" src="assets/images/finish.jpg" />
       <img id="texteQ1" src="assets/images/question1.png">
       <img id="repQ1" src="assets/images/repQ1.png">
@@ -64,6 +67,18 @@
     <!-- start menu -->
     <a-entity id="start" layout="type: line; margin: 1.5" position="0 1.500 -2" startgame>
       <a-entity template="src: #link" data-thumb="#start-menu">
+      </a-entity>
+    </a-entity>
+
+    <!-- messages de mort -->
+    <a-image id="trap-msg" width="4" height="0.4" src="#trap-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
+    <a-image id="badanswer-msg" width="4" height="0.4" src="#badanswer-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
+
+    <!-- dead/restart menu -->
+    <a-entity id="restart" layout="type: line; margin: 1.5" visible="false" look-at="#camera">
+      <a-entity template="src: #link" data-thumb="#restart-menu" link="href: niveau1.html;">
       </a-entity>
     </a-entity>
 
@@ -143,8 +158,6 @@
         </a-cursor>
         <a-entity id="texteBonus" text="value: Bonne reponse !; color: yellow;" position="0.165 0.03 -0.3"
           scale="0.5 0.5 0.5" visible="false"></a-entity>
-        <a-entity id="texteErreur" text="value: Mauvaise reponse !; color: yellow;" position="0.165 0.03 -0.3"
-          scale="0.5 0.5 0.5" visible="false"></a-entity>
       </a-entity>
       <!-- Main gauche -->
       <a-entity oculus-touch-controls="hand: left" hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
@@ -161,7 +174,7 @@
     </a-entity>
     <a-entity gltf-model="#camp" id="camp2" scale="0.2 0.2 0.2" position="-18 0 17.6" >
     </a-entity>
-    <a-entity gltf-model="#voiture" id="peugeot" scale="2.5 2.5 2.5" position="18 0 16.7" rotation="0 180 0">
+    <a-entity gltf-model="#voiture" id="peugeot" scale="0.5 0.5 0.5" position="18 0 17.5" rotation="0 180 0">
     </a-entity>
     
     <!-- Maze -->

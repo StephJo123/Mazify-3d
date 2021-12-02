@@ -1,3 +1,6 @@
+var existantG = true;
+var questionsArr = [];
+
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
     init: function () {
@@ -57,30 +60,9 @@ AFRAME.registerComponent('question_erreur', {
     var badA = document.getElementsByClassName('badA');
     for(let i = 0; i < badA.length; i++) {
       badA[i].addEventListener('click', function(evt) {
-
-        for(let j = 0; j <= questionsArrB.length; j++) {
-          if(badA[i].id == questionsArrB[j]) {
-            existantB = false;
-            break;
-          }
-          else if(j == questionsArrB.length) {
-            existantB = true;
-          }
-        }
-
-        if(existantB == true) {
-          questionsArrB.push(badA[i].id);
-          var texteErreur = $("texteErreur"); 
-
-          texteErreur.setAttribute("visible", true);
-
-          removeText = setTimeout(function () {
-            texteErreur.setAttribute("visible", false);
-          }, 2000);
-        }
+          dieNiveau2($('badanswer-msg'));
       });
     }
-    clearTimeout(removeText);
   }
 });
 
@@ -103,7 +85,47 @@ AFRAME.registerComponent('collision_piege_niveau2', {
       ||
       (Math.abs(pos.x - posTrap4.x) < 0.4) && (Math.abs(pos.z - posTrap4.z) < 0.1)
     ) {
-      $('scene').setAttribute('fog', 'color: red');
+      //$('scene').setAttribute('fog', 'color: red');
+      dieNiveau2($('trap-msg'));
     }
   }
 });
+
+function dieNiveau2(deathText) {
+  // blocage des controles du joueur
+  $('player').setAttribute("movement-controls", "enabled: false");
+
+  // inversion de couleur
+  $('scene').setAttribute('fog', 'color: red');
+  cursor.setAttribute('material', 'color: red');
+
+  $('restart').setAttribute('position', player.object3D.position);
+  $('restart').object3D.position.x += 2;
+
+  let posRestart = $('restart').object3D.position;
+
+  if (!isValidePosition(posRestart)) {
+    $('restart').setAttribute('position', player.object3D.position);
+    $('restart').object3D.position.z -= 2;
+    if (!isValidePosition(posRestart)) {
+      $('restart').setAttribute('position', player.object3D.position);
+      $('restart').object3D.position.z += 2;
+      if (!isValidePosition(posRestart)) {
+        $('restart').setAttribute('position', player.object3D.position);
+        $('restart').object3D.position.x -= 2;
+      }
+    }
+  }
+  $('restart').object3D.position.y += 1;
+
+  let currentRestartPos = $('restart').object3D.position;
+  let newYpos = $('restart').object3D.position.y + 0.75;
+  deathText.setAttribute('position', {
+    x: currentRestartPos.x,
+    y: newYpos,
+    z: currentRestartPos.z
+  });
+
+  $('restart').setAttribute('visible', true);
+  deathText.setAttribute('visible', true);
+}
