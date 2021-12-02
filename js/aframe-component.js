@@ -144,9 +144,7 @@ AFRAME.registerComponent("trackball", {
         $("tbombe").remove();
         $("countdown").pause();
         $("musique").play();
-        if (document.contains($("compteur"))) {
-          $("compteur").remove();
-        }
+        removeIfExist($("compteur"));
         $("tinterrupteur").setAttribute("visible", "true");
         tpAutorise = true;
       });
@@ -166,16 +164,22 @@ function isValidePosition(posInit) {
   return bool;
 }
 
+function removeIfExist(element) {
+  if (document.body.contains(element)) {
+    element.remove();
+  }
+}
+
 function die(deathText) {
 
-  if (document.body.contains($('ghost-model'))) {
-    $('ghost-model').remove();
-  }
+  removeIfExist($('ghost-model'));
+
   if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible')) {
     $('compteur').remove();
     clearInterval(monInter);
   }
 
+  removeIfExist($('tbombe'));
 
   // blocage des controles du joueur
   $('player').setAttribute("movement-controls", "enabled: false");
@@ -309,9 +313,7 @@ AFRAME.registerComponent('trackballfinish', {
         $('finishDialog').children[0].children[1].children[0].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
         $('finishDialog').style.display = "block";
         clearInterval(monInter);
-        if (document.contains($("compteur"))) {
-          $("compteur").remove();
-        }
+        removeIfExist($("compteur"));
         document.querySelector('a-scene').exitVR();
       }
     }
