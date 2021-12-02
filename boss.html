@@ -15,12 +15,11 @@
 </head>
 
 <body>
-  <a-scene inspector-plugin-recast renderer="colorManagement: true;" loading-screen>
+  <a-scene inspector-plugin-recast renderer="colorManagement: true;" background="color: #444" loading-screen>
     <a-assets>
       <img id="ground" src="assets/images/sol.jpg" />
       <img id="wall" src="assets/images/wall.jpg" />
-      <audio id="musique"
-        src="assets/sounds/ambiance_sound.mp3"></audio>
+      <audio id="musique" src="assets/sounds/ambiance_sound.mp3"></audio>
       <audio id="roar" src="assets/sounds/monsterRoar.mp3"></audio>
       <a-asset-item id="boss" src="assets/models/boss/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmeshBoss.gltf"></a-asset-item>
@@ -37,27 +36,35 @@
     <!-- Caméra Rig -->
     <a-entity id="player2" movement-controls="constrainToNavMesh: true" hit-handler-player position="0 0 0">
       <!-- Caméra -->
-      <a-entity  camera position="0 1.6 0" look-controls id="camera" click-to-shoot-boss shooter >
+      <a-entity camera position="0 1.6 0" look-controls id="camera" click-to-shoot-boss shooter>
         <a-cursor></a-cursor>
       </a-entity>
-      
-      </a-entity>
+
+    </a-entity>
 
     </a-entity>
 
     <a-entity gltf-model="#my-nav-mesh" nav-mesh visible="false"></a-entity>
 
 
-    <a-entity gltf-model="#boss" id="boss2" scale="0.006 0.006 0.006" 
-      position="0 1.6 -22" rotation="33 0 0" animation="property: position; to: -1 1.6 -16; loop: true; dur: 4000; dir: alternate"
-      target="healthPoints: 10000" hit-handler-boss>
+    <a-entity gltf-model="#boss" id="boss2" scale="0.006 0.006 0.006" position="0 1.6 -22" rotation="33 0 0"
+      animation="property: position; to: -1 1.6 -16; loop: true; dur: 4000; dir: alternate" target="healthPoints: 10000"
+      hit-handler-boss>
       <a-entity id="bosslife" geometry="primitive: box; width: 20; height: 0.3; depth: 0.3" material="color: green"
         position="-7.35 1330 -318.5" rotation="45 0 0" scale="100 100 100"></a-entity>
     </a-entity>
-    <a-sphere id="sphere1" position="-1.18 7.405 -17.99"  animation="property: position; to: -2.18 7.405 -11.88; loop: true; dur: 4000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
-      <a-sphere id="sphere2" position="-0.51 7.627 -17.75"  animation="property: position; to: -1.24 7.627 -11.72; loop: true; dur: 4000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
-      <a-sphere id="sphere3" position="0.362 7.676 -17.77"  animation="property: position; to: -0.62 7.676 -11.71; loop: true; dur: 4000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
-      <a-sphere id="sphere4" position="1.266 7.334 -17.92"  animation="property: position; to: 0.183 7.334 -11.98; loop: true; dur: 4000; dir: alternate" rotation="205 0 0" scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
+    <a-sphere id="sphere1" position="-1.18 7.405 -17.99"
+      animation="property: position; to: -2.18 7.405 -11.88; loop: true; dur: 4000; dir: alternate" rotation="205 0 0"
+      scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
+    <a-sphere id="sphere2" position="-0.51 7.627 -17.75"
+      animation="property: position; to: -1.24 7.627 -11.72; loop: true; dur: 4000; dir: alternate" rotation="205 0 0"
+      scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
+    <a-sphere id="sphere3" position="0.362 7.676 -17.77"
+      animation="property: position; to: -0.62 7.676 -11.71; loop: true; dur: 4000; dir: alternate" rotation="205 0 0"
+      scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
+    <a-sphere id="sphere4" position="1.266 7.334 -17.92"
+      animation="property: position; to: 0.183 7.334 -11.98; loop: true; dur: 4000; dir: alternate" rotation="205 0 0"
+      scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
 
     <!-- <a-entity gltf-model="#lezard" position="-3 0 -3" rotation="0 230 0" animation-mixer scale="0.002 0.002 0.002"></a-entity> -->
     <a-entity id="bullet2" bullet="name: normal; speed: 20.0; poolSize:100"
