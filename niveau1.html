@@ -12,10 +12,11 @@
   <script src="js/mazify.js"></script>
   <script src="js/player.js"></script>
   <script src="js/aframe-component.js"></script>
+  <script src="js/niveau1.js"></script>
   <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" type="image/png" href="assets/maze.png" />
+  <link rel="icon" type="image/png" href="assets/images/maze.png" />
 
   <script id="link" type="text/html">
     <a-entity class="link" geometry="primitive: plane; height: 1; width: 1" material="shader: flat; src: ${thumb}"
@@ -31,29 +32,29 @@
   fog="type: exponential; color: springgreen; density: 0.15">    
     <!-- Assets -->
     <a-assets>
-      <img id="ground" src="assets/sol.jpg" />
-      <img id="wall" src="assets/wall.jpg" />
-      <img id="start" position="-0.46899 0.9698 -3.13406" src="assets/start.jpg" />
-      <img id="start-menu" crossorigin="anonymous" src="assets/start-menu.jpg">
-      <img id="finish" src="assets/finish.jpg" />
-      <img id="texteQ1" src="assets/question1.png">
-      <img id="repQ1" src="assets/repQ1.png">
-      <img id="repQ1F" src="assets/repQ1F.png">
-      <img id="texteQ2" src="assets/question2.png">
-      <img id="repQ2" src="assets/repQ2.png">
-      <img id="repQ2F" src="assets/reqQ2F.png">
-      <img id="texteQ3" src="assets/question3.png">
-      <img id="repQ3" src="assets/repQ3.png">
-      <img id="repQ3F" src="assets/repQ3F.png">
-      <img id="texteQ4" src="assets/question4.png">
-      <img id="repQ4" src="assets/repQ4.png">
-      <img id="repQ4F" src="assets/repQ4F.png">
-      <audio id="musique" src="assets/ambiance_sound.mp3"></audio>
+      <img id="ground" src="assets/images/sol.jpg" />
+      <img id="wall" src="assets/images/wall.jpg" />
+      <img id="start" position="-0.46899 0.9698 -3.13406" src="assets/images/start.jpg" />
+      <img id="start-menu" crossorigin="anonymous" src="assets/images/start-menu.jpg">
+      <img id="finish" src="assets/images/finish.jpg" />
+      <img id="texteQ1" src="assets/images/question1.png">
+      <img id="repQ1" src="assets/images/repQ1.png">
+      <img id="repQ1F" src="assets/images/repQ1F.png">
+      <img id="texteQ2" src="assets/images/question2.png">
+      <img id="repQ2" src="assets/images/repQ2.png">
+      <img id="repQ2F" src="assets/images/reqQ2F.png">
+      <img id="texteQ3" src="assets/images/question3.png">
+      <img id="repQ3" src="assets/images/repQ3.png">
+      <img id="repQ3F" src="assets/images/repQ3F.png">
+      <img id="texteQ4" src="assets/images/question4.png">
+      <img id="repQ4" src="assets/images/repQ4.png">
+      <img id="repQ4F" src="assets/images/repQ4F.png">
+      <audio id="musique" src="assets/sounds/ambiance_sound.mp3"></audio>
       <a-asset-item id="my-nav-mesh" src="assets/navmeshLevel1.gltf"></a-asset-item>
-      <a-asset-item id="bunny" src="assets/bunny/scene.gltf"></a-asset-item>
-      <a-asset-item id="camp" src="assets/camp_fire/scene.gltf"></a-asset-item>
-      <a-asset-item id="voiture" src="assets/peugeot206/scene.gltf"></a-asset-item>
-      <a-asset-item id="spike_trap" src="assets/spike_trap/scene.gltf"></a-asset-item>
+      <a-asset-item id="bunny" src="assets/models/bunny/scene.gltf"></a-asset-item>
+      <a-asset-item id="camp" src="assets/models/camp_fire/scene.gltf"></a-asset-item>
+      <a-asset-item id="spike_trap" src="assets/models/spike_trap/scene.gltf"></a-asset-item>
+      <a-asset-item id="voiture" src="assets/models/peugeot206/scene.gltf"></a-asset-item>
     </a-assets>
 
     <!-- Environment -->
@@ -77,6 +78,11 @@
     <a-image src="#repQ1F" id="rep_Q1F" class="badA" position="1.499 1.4 15.316" rotation="0 270 0" scale="0.09 0.13 0.09" height="8"
     width="20" question_erreur></a-image>
 
+    <!--Blade trap-->
+    <a-entity gltf-model="#spike_trap" id="spike" scale="25 15 15" position="0 -3 -19"
+    animation="property: position; to: 0 0 -19; loop: true; dur: 750; dir: alternate">
+    </a-entity>
+
     <!-- Question 2 -->
     <a-image src="#texteQ2" id="Q2" position="0 1.4 -13.6" rotation="0 180 0" height="3" width="2"></a-image>
 
@@ -87,6 +93,11 @@
     <!-- Réponse Question 2F -->
     <a-image src="#repQ2F" id="rep_Q2F" class="badA" position="1.499 1.4 -15.316" rotation="0 270 0" scale="0.09 0.13 0.09" height="8"
         width="20" question_erreur></a-image>
+
+    <!--Blade trap2-->
+    <a-entity gltf-model="#spike_trap" id="spike2" scale="25 15 15" position="0 -3 19"
+    animation="property: position; to: 0 0 19; loop: true; dur: 750; dir: alternate">
+    </a-entity>
 
     <!-- Question 3 -->
     <a-image src="#texteQ3" id="Q3" position="-13.53118 1.4 0" rotation="0 270 0" height="3" width="2"></a-image>
@@ -99,22 +110,32 @@
     <a-image src="#repQ3F" id="rep_Q3F" class="badA" position="-15.316 1.4 1.41064" rotation="0 180 0" scale="0.09 0.13 0.09" height="8"
         width="20" question_erreur></a-image>
 
-    <!-- Question  -->
+    <!--Blade trap3-->
+    <a-entity gltf-model="#spike_trap" id="spike3" scale="15 15 25" position="19 -3 0"
+    animation="property: position; to: 19 0 0; loop: true; dur: 750; dir: alternate">
+    </a-entity>
+
+    <!-- Question4 -->
     <a-image src="#texteQ4" id="Q4" position="13.52522 1.4 0" rotation="0 90 0" height="3" width="2"></a-image>
 
-    <!-- Réponse Question 3 -->
+    <!-- Réponse Question 4 -->
     <a-image src="#repQ4" id="rep_Q4" class="goodA" position="15.316 1.4 -1.46672" rotation="0 0 0" scale="0.09 0.13 0.09" height="8"
         width="20" question_resolue></a-image>
 
-    <!-- Réponse Question 3F -->
+    <!-- Réponse Question 4F -->
     <a-image src="#repQ4F" id="rep_Q4F" class="badA" position="15.316 1.4 1.41064" rotation="0 180 0" scale="0.09 0.13 0.09" height="8"
         width="20" question_erreur></a-image>
+
+    <!--Blade trap4-->
+    <a-entity gltf-model="#spike_trap" id="spike4" scale="15 15 25" position="-19 -3 0"
+    animation="property: position; to: -19 0 0; loop: true; dur: 750; dir: alternate">
+    </a-entity>
 
     <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
     </a-entity>
 
     <!-- Caméra Rig -->
-    <a-entity id="player" player listener keyboard-controls="enabled: false" movement-controls="constrainToNavMesh: true">
+    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true; enabled:false" collision_piege_niveau2>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
         <a-cursor id="cursor" color="white;" position="0 0 -0.2" scale="0.25 0.25 0.25"

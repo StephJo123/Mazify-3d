@@ -108,6 +108,30 @@ AFRAME.registerComponent('shoot-ennemy-rafale', {
   }
 });
 
+AFRAME.registerComponent("hit-handler", {
+
+  dependencies: ["material"],
+
+  init: function () {
+    var positionTmp = (this.positionTmp = this.positionTmp || {
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+    var el = this.el;
+
+    el.addEventListener("hit", () => {});
+
+    el.addEventListener("die", () => {
+      var position = el.getAttribute("position");
+      positionTmp.x = position.x + 0.1;
+      positionTmp.y = position.y - 100000;
+      positionTmp.z = position.z + 0.1;
+      el.setAttribute("position", positionTmp);
+    });
+  },
+});
+
 AFRAME.registerComponent('hit-handler-boss', {
   dependencies: ['material'],
 
@@ -181,6 +205,7 @@ AFRAME.registerComponent('hit-handler-boss', {
     });
   }
 });
+
 AFRAME.registerComponent('monster-roar', {
   init: function () {
     setInterval(function () {
