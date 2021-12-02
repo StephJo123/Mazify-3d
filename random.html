@@ -23,7 +23,7 @@
   </script>
   <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" type="image/png" href="assets/maze.png" />
+  <link rel="icon" type="image/png" href="assets/images/maze.png" />
 </head>
 
 <body id="body" style="background-color: #444">
@@ -33,29 +33,33 @@
     fog="type: exponential; color: springgreen; density: 0.15">
     <!-- Assets -->
     <a-assets>
-      <img id="ground" src="assets/sol.jpg" />
-      <img id="wall" src="assets/wall.jpg" />
-      <!-- <img id="plafond" src="assets/wall.jpg" /> -->
-      <img id="start" src="assets/start.jpg" />
-      <img id="finish" src="assets/finish.jpg" />
-      <img id="texteBombe" src="assets/textebombe.png">
-      <img id="texteInterrupteur" src="assets/texteInterrupteur.png">
-      <img id="texteTeleportation" src="assets/textetp.png">
-      <a-asset-item id="interrupteur" src="assets/light_switch/scene.gltf"></a-asset-item>
-      <a-asset-item id="ghost" src="assets/fantasma_ghost_phantom/scene.gltf"></a-asset-item>
-      <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
-      <a-asset-item id="bomb" src="assets/atomic_bomb/scene.gltf"></a-asset-item>
-      <a-asset-item id="skull" src="assets/demon_skull/scene.gltf"></a-asset-item>
-      <a-asset-item id="blade_trap" src="assets/blade_trap/scene.gltf"></a-asset-item>
-      <a-asset-item id="loot_box" src="assets/lootbox/scene.gltf"></a-asset-item>
-      <audio id="sonArme" src="assets/pistol.mp3" preload="auto"></audio>
-      <audio id="sonTeleportation" src="assets/teleport_sound.mp3" preload="auto"></audio>
-      <audio id="musique" src="assets/ambiance_sound.mp3"></audio>
-      <audio id="countdown" src="sounds/countdown.mp3"></audio>
-      <img id="logoUCA" src="assets/logo_UCA.jpg">
-      <img id="bullet" src="assets/bullets.png">
-      <img id="start-menu" crossorigin="anonymous" src="assets/start-menu.jpg">
-      <img id="restart-menu" crossorigin="anonymous" src="assets/restart-menu.jpg">
+      <img id="ground" src="assets/images/sol.jpg" />
+      <img id="wall" src="assets/images/wall.jpg" />
+      <!-- <img id="plafond" src="assets/images/wall.jpg" /> -->
+      <img id="start" src="assets/images/start.jpg" />
+      <img id="finish" src="assets/images/finish.jpg" />
+      <img id="texteBombe" src="assets/images/textebombe.png">
+      <img id="texteInterrupteur" src="assets/images/texteInterrupteur.png">
+      <img id="texteTeleportation" src="assets/images/textetp.png">
+      <img id="timeout-text" src="assets/images/timeout-text.png">
+      <img id="trap-text" src="assets/images/trap-text.png">
+      <img id="ghost-text" src="assets/images/ghost-text.png">
+      <img id="logoUCA" src="assets/images/logo_UCA.jpg">
+      <img id="bullet" src="assets/images/bullets.png">
+      <img id="start-menu" crossorigin="anonymous" src="assets/images/start-menu.jpg">
+      <img id="restart-menu" crossorigin="anonymous" src="assets/images/restart-menu.jpg">
+      <a-asset-item id="interrupteur" src="assets/models/light_switch/scene.gltf"></a-asset-item>
+      <a-asset-item id="ghost" src="assets/models/fantasma_ghost_phantom/scene.gltf"></a-asset-item>
+      <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
+      <a-asset-item id="gun" src="assets/models/sci-fi_revolver/scene.gltf"></a-asset-item>
+      <a-asset-item id="bomb" src="assets/models/atomic_bomb/scene.gltf"></a-asset-item>
+      <a-asset-item id="skull" src="assets/models/demon_skull/scene.gltf"></a-asset-item>
+      <a-asset-item id="blade_trap" src="assets/models/blade_trap/scene.gltf"></a-asset-item>
+      <a-asset-item id="loot_box" src="assets/models/lootbox/scene.gltf"></a-asset-item>
+      <audio id="sonArme" src="assets/sounds/pistol.mp3" preload="auto"></audio>
+      <audio id="sonTeleportation" src="assets/sounds/teleport_sound.mp3" preload="auto"></audio>
+      <audio id="musique" src="assets/sounds/ambiance_sound.mp3"></audio>
+      <audio id="countdown" src="assets/sounds/countdown.mp3"></audio>
       <audio id="click-sound" crossorigin="anonymous"
         src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
     </a-assets>
