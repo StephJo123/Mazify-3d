@@ -54,11 +54,24 @@
       <a-asset-item id="camp" src="assets/models/camp_fire/scene.gltf"></a-asset-item>
       <a-asset-item id="spike_trap" src="assets/models/spike_trap/scene.gltf"></a-asset-item>
       <a-asset-item id="voiture" src="assets/models/peugeot206/scene.gltf"></a-asset-item>
+      <a-asset-item id="rein" src="assets/models/right_kidney/scene.gltf"></a-asset-item>
     </a-assets>
 
     <!-- Environment -->
     <a-light type="ambient" color="#fff" intensity="0.8"></a-light>
     <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="100" width="100"></a-plane>
+
+    <!-- messages de mort -->
+    <a-image id="trap-msg" width="4" height="0.4" src="#trap-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
+    <a-image id="badanswer-msg" width="4" height="0.4" src="#badanswer-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
+
+    <!-- dead/restart menu -->
+    <a-entity id="restart" layout="type: line; margin: 1.5" visible="false" look-at="#camera">
+      <a-entity template="src: #link" data-thumb="#restart-menu" link="href: niveau1.html;">
+      </a-entity>
+    </a-entity>
 
     <!-- Question 1 -->
     <a-image src="#texteQ1" id="Q1" position="0 1.4 13.6" rotation="0 0 0" height="3" width="2"></a-image>
@@ -137,8 +150,6 @@
         </a-cursor>
         <a-entity id="texteBonus" text="value: Bonne reponse !; color: yellow;" position="0.165 0.03 -0.3"
           scale="0.5 0.5 0.5" visible="false"></a-entity>
-        <a-entity id="texteErreur" text="value: Mauvaise reponse !; color: yellow;" position="0.165 0.03 -0.3"
-          scale="0.5 0.5 0.5" visible="false"></a-entity>
       </a-entity>
       <!-- Main gauche -->
       <a-entity oculus-touch-controls="hand: left" hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
@@ -150,12 +161,13 @@
       </a-entity>
     </a-entity>
 
-
-    <a-entity gltf-model="#bunny" id="bunny2" scale="0.06 0.06 0.06" position="-18 0 -16" look-at="#player">
+    <a-entity gltf-model="#bunny" id="bunny2" scale="0.06 0.06 0.06" position="-21.7612 0 6.07092" look-at="#player">
     </a-entity>
     <a-entity gltf-model="#camp" id="camp2" scale="0.2 0.2 0.2" position="-18 0 17.6">
     </a-entity>
-    <a-entity gltf-model="#voiture" id="peugeot" scale="2.5 2.5 2.5" position="18 0 16.7" rotation="0 180 0">
+    <a-entity gltf-model="#voiture" id="peugeot" scale="0.5 0.5 0.5" position="18 0 17.5" rotation="0 180 0">
+    </a-entity>
+    <a-entity gltf-model="#rein" id="rein" scale="0.02 0.02 0.02" position="19.8 1.6 -15">
     </a-entity>
 
     <!-- Maze -->
