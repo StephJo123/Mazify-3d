@@ -5,7 +5,7 @@ AFRAME.registerComponent('startgame', {
     this.el.addEventListener('mouseleave', changeBack);
 
     this.el.addEventListener('click', () => {
-      document.querySelector('a-scene').enterVR();
+      // document.querySelector('a-scene').enterVR();
       $('scene').setAttribute('fog', 'color: #444');
       $('player').setAttribute("movement-controls", "enabled: true");
       $('ghost-model').setAttribute("ghost-follow", "");
