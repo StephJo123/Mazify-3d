@@ -33,6 +33,7 @@
       <a-asset-item id="gun" src="assets/models/sci-fi_revolver/scene.gltf"></a-asset-item>
       <a-asset-item id="bunny" src="assets/models/bunny/scene.gltf"></a-asset-item>
       <img id="bullet" src="assets/images/bullets.png">
+      <audio id="collect_sound" src="assets/sounds/collect.wav"></audio>
     </a-assets>
 
     <!-- Environment -->
@@ -48,8 +49,7 @@
     </a-entity>
 
     <!-- Caméra Rig -->
-    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true; enabled:true"
-      collision_piege_niveau2>
+    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true; enabled:true">
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
         <a-cursor id="cursor" color="white;" position="0 0 -0.2" scale="0.25 0.25 0.25"

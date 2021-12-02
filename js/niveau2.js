@@ -18,6 +18,9 @@ AFRAME.registerComponent("collect-bunny", {
           nbLapins++;
           document.getElementById('collectedBunnies').setAttribute('visible', true);
           document.getElementById('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
+          let audio = $('collect_sound');
+          audio.play();
+          audio.currentTime = 0;
           el.remove();
         }, {
           once: true,
@@ -25,15 +28,4 @@ AFRAME.registerComponent("collect-bunny", {
       );
     }
   },
-});
-
-/* Son du lapin à sa collecte */
-AFRAME.registerComponent('collect_sound', {
-  init: function () {
-    document.body.addEventListener('click', () => {
-      let audio = $('collect');
-      audio.play();
-      audio.currentTime = 0;
-    });
-  }
 });
