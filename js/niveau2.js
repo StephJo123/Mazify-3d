@@ -66,7 +66,7 @@ AFRAME.registerComponent("collect-bunny", {
           nbLapins++;
           $('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
           el.remove();
-          if (nbLapins == 13) {
+          if (nbLapins == 1) {
             clearBunnies();
             win();
           }
@@ -80,6 +80,15 @@ AFRAME.registerComponent("collect-bunny", {
 
 function win() {
   dialogEvenement("finish_game", "blue");
+
+  let currentFinishPos = $('finish_game').object3D.position;
+  $('confetti_animation').setAttribute('position', {
+    x: currentFinishPos.x,
+    y: currentFinishPos.y,
+    z: currentFinishPos.z + 1
+  });
+
+  $('confetti_animation').setAttribute('visible', true);
 }
 
 function die() {
@@ -93,7 +102,6 @@ function die() {
     z: currentRestartPos.z
   });
 
-  $('restart').setAttribute('visible', true);
   $('timeout-msg').setAttribute('visible', true);
 }
 
