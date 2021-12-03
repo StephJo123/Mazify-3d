@@ -1,10 +1,6 @@
-var boxx = -24;
-var boxz = 18;
-var boxx2 = 22;
-
-function $(v) {
-  return document.getElementById(v);
-}
+var boxx = -24
+var boxz = 18
+var boxx2 = 22
 
 AFRAME.registerComponent("sallboss", {
   init: function () {
@@ -88,7 +84,7 @@ AFRAME.registerComponent("sallboss", {
 
 AFRAME.registerComponent("auto-enter-vr", {
   init: function () {
-    $('player').addEventListener('click', function () {
+    document.getElementById('player').addEventListener('click', function (evt) {
       document.querySelector('a-scene').enterVR()
     });
   }
@@ -96,25 +92,23 @@ AFRAME.registerComponent("auto-enter-vr", {
 
 AFRAME.registerComponent('shoot-ennemy-boss', {
   init: function () {
-    shootEnnemy(1800);
+    let enemy = this.el;
+    setInterval(function () {
+      enemy.emit('shoot');
+    }, 1800);
   }
 });
 
 AFRAME.registerComponent('shoot-ennemy-rafale', {
   init: function () {
-    shootEnnemy(2500);
+    let enemy = this.el;
+    setInterval(function () {
+      enemy.emit('shoot');
+    }, 2500);
   }
 });
 
-function shootEnnemy(duration) {
-  let enemy = this.el;
-  setInterval(function () {
-    enemy.emit('shoot');
-  }, duration);
-}
-
-
-AFRAME.registerComponent("hit-handler", {
+AFRAME.registerComponent("e", {
 
   dependencies: ["material"],
 
@@ -126,7 +120,10 @@ AFRAME.registerComponent("hit-handler", {
     });
     var el = this.el;
 
-    el.addEventListener("hit", () => {});
+    el.addEventListener("hit", () => {
+      document.getElementById("finishDialog").style.display = "block";
+      console.log("ok");
+    });
 
     el.addEventListener("die", () => {
       var position = el.getAttribute("position");
@@ -148,38 +145,57 @@ AFRAME.registerComponent('hit-handler-boss', {
       z: 0
     };
     var el = this.el;
+    var missile = document.getElementById('missile2')
+    var sphere1 = document.getElementById('sphere1');
+    var sphere2 = document.getElementById('sphere2');
+    var sphere3 = document.getElementById('sphere3');
+    var sphere4 = document.getElementById('sphere4');
+    var sphere5 = document.getElementById('sphere5');
+    var sphere6 = document.getElementById('sphere6');
+    var sphere7 = document.getElementById('sphere7');
+    var sphere8 = document.getElementById('sphere8');
+    var sphere9 = document.getElementById('sphere9');
+    var sphere10 = document.getElementById('sphere10');
+    var sphere11 = document.getElementById('sphere11');
+    var sphere12 = document.getElementById('sphere12');
 
     el.addEventListener('hit', () => {
-      $('bosslife').setAttribute('geometry', {
+      document.getElementById('bosslife').setAttribute('geometry', {
         width: vie
       });
       if (vie < 10) {
-        $('bosslife').setAttribute('material', 'color:orange')
-        $('missile2').setAttribute('visible', 'true')
-        $('missile2').setAttribute('animation', {
+        document.getElementById('bosslife').setAttribute('material', 'color:orange')
+        missile.setAttribute('visible', 'true')
+        missile.setAttribute('animation', {
           property: 'position',
           to: '0 0 -1',
           dur: 3000
         });
 
+
       }
       if (vie < 5) {
-
-        $('bosslife').setAttribute('material', 'color:red');
-
-        for (i = 5; i <= 12; i++) {
-          $('sphere' + i).setAttribute('shoot-ennemy-rafale', null);
-        }
+        document.getElementById('bosslife').setAttribute('material', 'color:red')
+        sphere5.setAttribute('shoot-ennemy-rafale', null)
+        sphere6.setAttribute('shoot-ennemy-rafale', null)
+        sphere7.setAttribute('shoot-ennemy-rafale', null)
+        sphere8.setAttribute('shoot-ennemy-rafale', null)
+        sphere9.setAttribute('shoot-ennemy-rafale', null)
+        sphere10.setAttribute('shoot-ennemy-rafale', null)
+        sphere11.setAttribute('shoot-ennemy-rafale', null)
+        sphere12.setAttribute('shoot-ennemy-rafale', null)
       }
-
       if (vie < 0) {
         el.parentNode.remove(el);
+        sphere1.removeAttribute('shooter');
+        sphere2.removeAttribute('shooter');
+        sphere3.removeAttribute('shooter');
+        sphere4.removeAttribute('shooter');
 
-        for (j = 1; j <= 4; j++) {
-          $('sphere' + j).removeAttribute('shooter');
-        }
       }
-      vie -= 0.06;
+      vie = vie - 0.06
+
+
     });
 
     el.addEventListener('die', () => {
@@ -196,7 +212,7 @@ AFRAME.registerComponent('hit-handler-boss', {
 AFRAME.registerComponent('monster-roar', {
   init: function () {
     setInterval(function () {
-      $('roar').play();
+      document.getElementById('roar').play();
     }, 20000);
   }
 });
