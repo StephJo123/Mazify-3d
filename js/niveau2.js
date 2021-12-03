@@ -16,7 +16,7 @@ AFRAME.registerComponent('startgame', {
     toggleCursorColor(this.el);
 
     this.el.addEventListener('click', () => {
-      startTimer(60, $("time2"));
+      startTimer(60);
       $('compteur').setAttribute('visible', true);
       $('scene').setAttribute('fog', 'color: #444');
       $('player').setAttribute("movement-controls", "enabled: true");
@@ -25,10 +25,8 @@ AFRAME.registerComponent('startgame', {
   }
 });
 
-const startTimer = (duration, display) => {
-  var timer = duration,
-    minutes,
-    seconds;
+const startTimer = (duration) => {
+  var timer = duration;
   monInter = setInterval(function () {
     if (document.body.contains($('compteur')))
       $("compteur").setAttribute("text", "value: " + timer + ";");
