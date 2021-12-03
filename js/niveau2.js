@@ -40,7 +40,7 @@ const startTimer = (duration, display) => {
 
     display.textContent = minutes + ":" + seconds;
 
-    if (--timer < 0) {
+    if (--timer < 0 && nbLapins != 13) {
       clearInterval(monInter);
       clearBunnies();
       die();
@@ -66,7 +66,7 @@ AFRAME.registerComponent("collect-bunny", {
           nbLapins++;
           $('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
           el.remove();
-          if (nbLapins == 1) {
+          if (nbLapins == 13) {
             clearBunnies();
             win();
           }
@@ -79,11 +79,11 @@ AFRAME.registerComponent("collect-bunny", {
 });
 
 function win() {
-  factorisation("finish_game", "blue");
+  dialogEvenement("finish_game", "blue");
 }
 
 function die() {
-  factorisation("restart", "red");
+  dialogEvenement("restart", "red");
 
   let currentRestartPos = $('restart').object3D.position;
   let newYpos = $('restart').object3D.position.y + 0.75;
@@ -97,7 +97,7 @@ function die() {
   $('timeout-msg').setAttribute('visible', true);
 }
 
-function factorisation(state, color) {
+function dialogEvenement(state, color) {
   $('scene').setAttribute('background', 'color: ' + color);
 
   if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible')) {
