@@ -1,8 +1,8 @@
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
   init: function () {
-    toggleCursorColor(this.el);
 
+    toggleCursorColor(this.el);
     this.el.addEventListener('click', () => {
       $('scene').setAttribute('fog', 'color: #444');
       $('player').setAttribute("movement-controls", "enabled: true");
