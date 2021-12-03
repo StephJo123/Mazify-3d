@@ -35,6 +35,7 @@
     <a-assets>
       <img id="start-menu" crossorigin="anonymous" src="assets/images/start-menu.jpg">
       <img id="restart-menu" crossorigin="anonymous" src="assets/images/restart-menu.jpg">
+      <img id="finish-menu" crossorigin="anonymous" src="assets/images/finish-menu.jpg">
       <img id="ground" src="assets/images/sol.jpg" />
       <img id="wall" src="assets/images/wall.jpg" />
       <img id="start" src="assets/images/start.jpg" />
@@ -57,15 +58,21 @@
       </a-entity>
     </a-entity>
 
-    <!-- messages de mort -->
-    <a-image id="timeout-msg" width="2" height="0.22" src="#timeout-text" scale="0.5 0.5 0.5" look-at="#camera"
-      visible="false"></a-image>
-
     <!-- dead/restart menu -->
     <a-entity id="restart" layout="type: line; margin: 1.5" visible="false" look-at="#camera">
       <a-entity template="src: #link" data-thumb="#restart-menu" link="href: index.html;">
       </a-entity>
     </a-entity>
+
+    <!-- finish menu -->
+    <a-entity id="finish-game" layout="type: line; margin: 1.5" visible="false" look-at="#camera">
+      <a-entity template="src: #link" data-thumb="#finish-menu" link="href: index.html;">
+      </a-entity>
+    </a-entity>
+
+    <!-- messages de mort -->
+    <a-image id="timeout-msg" width="2" height="0.22" src="#timeout-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
 
     <a-light type="ambient" color="#fff" intensity="0.8"></a-light>
     <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="100" width="100"></a-plane>
@@ -103,43 +110,40 @@
       </a-entity>
     </a-entity>
 
-    <a-entity gltf-model="#bunny" id="bunny1" collect-bunny="id: bunny1"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny1" collect-bunny="id: bunny1"
       rotation="0.07654772996417238 30.748861047722553 -0.03913703455936367" scale="0.06 0.06 0.06"
       position="-10.76961 0 -12.48648" look-at="#player"></a-entity>
-    <a-entity gltf-model="#bunny" id="bunny2" collect-bunny="id: bunny2" scale="0.06 0.06 0.06"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny2" collect-bunny="id: bunny2" scale="0.06 0.06 0.06"
       position="-21.7612 0 6.07092" look-at="#player"></a-entity>
-    <a-entity gltf-model="#bunny" id="bunny3" collect-bunny="id: bunny3" scale="0.06 0.06 0.06"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny3" collect-bunny="id: bunny3" scale="0.06 0.06 0.06"
       position="18.0328 0 -15.65935" look-at="#player"></a-entity>
-    <a-entity gltf-model="#bunny" id="bunny4" collect-bunny="id: bunny4" scale="0.06 0.06 0.06"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny4" collect-bunny="id: bunny4" scale="0.06 0.06 0.06"
       position="-18 0 -18.66943" look-at="#player"></a-entity>
-    <a-entity gltf-model="#bunny" id="bunny5" collect-bunny="id: bunny5" scale="0.06 0.06 0.06"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny5" collect-bunny="id: bunny5" scale="0.06 0.06 0.06"
       position="18.28113 0 5.7326" look-at="#player"></a-entity>
-    <a-entity gltf-model="#bunny" id="bunny6" collect-bunny="id: bunny6" scale="0.06 0.06 0.06"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny6" collect-bunny="id: bunny6" scale="0.06 0.06 0.06"
       position="-15.49653 0 13.36938" look-at="#player"></a-entity>
-    <a-entity gltf-model="#bunny" id="bunny7" collect-bunny="id: bunny7" scale="0.06 0.06 0.06"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny7" collect-bunny="id: bunny7" scale="0.06 0.06 0.06"
       position="3.71748 0 -18.26165" look-at="#player"></a-entity>
-    <a-entity gltf-model="#bunny" id="bunny8" collect-bunny="id: bunny8" scale="0.06 0.06 0.06"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny8" collect-bunny="id: bunny8" scale="0.06 0.06 0.06"
       position="24.51819 0 -16" look-at="#player"></a-entity>
-    <a-entity gltf-model="#bunny" id="bunny9" collect-bunny="id: bunny9" scale="0.06 0.06 0.06"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny9" collect-bunny="id: bunny9" scale="0.06 0.06 0.06"
       position="-18 0 -24.30888" look-at="#player"></a-entity>
-    <a-entity gltf-model="#bunny" id="bunny10" collect-bunny="id: bunny10" scale="0.06 0.06 0.06"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny10" collect-bunny="id: bunny10" scale="0.06 0.06 0.06"
       position="11.98915 0 18.58017" look-at="#player"></a-entity>
-    <a-entity gltf-model="#bunny" id="bunny11" collect-bunny="id: bunny11" scale="0.06 0.06 0.06"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny11" collect-bunny="id: bunny11" scale="0.06 0.06 0.06"
       position="-2.82849 0 21.25599" look-at="#player"></a-entity>
-    <a-entity gltf-model="#bunny" id="bunny12" collect-bunny="id: bunny12" scale="0.06 0.06 0.06"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny12" collect-bunny="id: bunny12" scale="0.06 0.06 0.06"
       position="-15.04352 0 24.56985" look-at="#player"></a-entity>
-    <a-entity gltf-model="#bunny" id="bunny13" collect-bunny="id: bunny13" scale="0.06 0.06 0.06"
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny13" collect-bunny="id: bunny13" scale="0.06 0.06 0.06"
       position="0.25443 0 -24.50998" look-at="#player"></a-entity>
 
     <!-- Maze -->
     <a-entity mazify> </a-entity>
 
-    <!-- Finish -->
-
   </a-scene>
 
   <div id="time2" style="display: block;"></div>
-
 
   <script>
     var mazeArr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1,

@@ -42,6 +42,7 @@ const startTimer = (duration, display) => {
 
     if (--timer < 0) {
       clearInterval(monInter);
+      clearBunnies();
       die();
     }
   }, 1000);
@@ -65,6 +66,10 @@ AFRAME.registerComponent("collect-bunny", {
           nbLapins++;
           $('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
           el.remove();
+          if (nbLapins == 13) {
+            clearBunnies();
+            win();
+          }
         }, {
           once: true,
         }
@@ -73,9 +78,46 @@ AFRAME.registerComponent("collect-bunny", {
   },
 });
 
-function die() {
+function win() {
+  $('scene').setAttribute('background', 'color: blue');
 
-  $('scene').setAttribute('background', 'color: red')
+  if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible')) {
+    $('compteur').remove();
+    clearInterval(monInter);
+  }
+
+  // blocage des controles du joueur
+  $('player').setAttribute("movement-controls", "enabled: false");
+
+  // inversion de couleur
+  $('body').setAttribute('style', "background-color: blue;")
+  $('scene').setAttribute('fog', 'color: blue');
+  cursor.setAttribute('material', 'color: blue');
+
+  $('finish-game').setAttribute('position', player.object3D.position);
+  $('finish-game').object3D.position.x += 2;
+
+  let posfinish = $('finish-game').object3D.position;
+
+  if (!isValidePosition(posfinish)) {
+    $('finish-game').setAttribute('position', player.object3D.position);
+    $('finish-game').object3D.position.z -= 2;
+    if (!isValidePosition(posfinish)) {
+      $('finish-game').setAttribute('position', player.object3D.position);
+      $('finish-game').object3D.position.z += 2;
+      if (!isValidePosition(posfinish)) {
+        $('finish-game').setAttribute('position', player.object3D.position);
+        $('finish-game').object3D.position.x -= 2;
+      }
+    }
+  }
+  $('finish-game').object3D.position.y += 1;
+
+  $('finish-game').setAttribute('visible', true);
+}
+
+function die() {
+  $('scene').setAttribute('background', 'color: red');
 
   if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible')) {
     $('compteur').remove();
@@ -132,6 +174,10 @@ function isValidePosition(posInit) {
     }
   })
   return bool;
+}
+
+function clearBunnies() {
+  document.querySelectorAll('.bunny').forEach(element => element.remove());
 }
 
 function changeColor() {
