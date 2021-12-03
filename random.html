@@ -75,6 +75,14 @@
       <a-entity template="src: #link" data-thumb="#start-menu">
       </a-entity>
     </a-entity>
+    
+    <!-- messages de mort -->
+    <a-image id="timeout-msg" width="4" height="0.4" src="#timeout-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
+    <a-image id="trap-msg" width="4" height="0.4" src="#trap-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
+    <a-image id="ghost-msg" width="4" height="0.4" src="#ghost-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
 
     <!-- dead/restart menu -->
     <a-entity id="restart" layout="type: line; margin: 1.5" visible="false" look-at="#camera">
@@ -192,26 +200,6 @@
 
   </a-scene>
 
-  <div id="time2" style="display: block;"></div>
-
-  <!-- Model Gagner -->
-  <div id="finishDialog" class="modal mazify" style="display: none;">
-    <!-- Modal content -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="close" onclick='closeDialog(this)'>&times;</span>
-        <h2>Terminé</h2>
-      </div>
-      <div class="modal-body">
-        <p>Félicitation</p>
-        <p id="temps"></p>
-      </div>
-      <div class="modal-footer">
-        <h3></h3>
-        <button class="button" onclick="reset()">Rejouer</button>
-      </div>
-    </div>
-  </div>
  <script src="js/randMaze.js"></script>
 
   <script>

@@ -1,9 +1,8 @@
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
     init: function () {
-      this.el.addEventListener('mouseenter', changeColor);
-      this.el.addEventListener('mouseleave', changeBack);
-  
+		toggleCursorColor(this.el);
+		
       this.el.addEventListener('click', () => {
         document.querySelector('a-scene').enterVR();
         $('scene').setAttribute('fog', 'color: #444');

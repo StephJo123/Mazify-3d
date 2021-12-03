@@ -114,16 +114,7 @@ AFRAME.registerComponent("trackball", {
           seconds;
         monInter = setInterval(function () {
           if (document.body.contains($('compteur')))
-
             $("compteur").setAttribute("text", "value: " + timer + ";");
-          minutes = parseInt(timer / 60, 10);
-          seconds = parseInt(timer % 60, 10);
-
-          minutes = minutes < 10 ? "0" + minutes : minutes;
-          seconds = seconds < 10 ? "0" + seconds : seconds;
-
-          display.textContent = minutes + ":" + seconds;
-
           if (--timer < 0) {
             $("countdown").pause();
             clearInterval(monInter);
@@ -134,9 +125,8 @@ AFRAME.registerComponent("trackball", {
       };
 
       startTimer(30, $("time2"));
-
-      $("interrupteur2").addEventListener('mouseenter', changeColor);
-      $("interrupteur2").addEventListener('mouseleave', changeBack);
+      
+      toggleCursorColor($('interrupteur2'));
 
       $("interrupteur2").addEventListener("click", function () {
         // stop le compteur pour éviter de continuer le calcul
@@ -217,7 +207,7 @@ function die(deathText) {
   deathText.setAttribute('visible', true);
 }
 
-// fonction qui ajoute un nombre de munitions de façon aléatoire
+// fonction qui ajoute un nombre de munitions donné
 function addAmmo(munitionsBonus) {
   let camera = $('camera');
   let posBalleX = 0.13 + 0.01 * camera.getElementsByTagName("a-image").length;
@@ -254,9 +244,8 @@ AFRAME.registerComponent("openlootbox", {
 
     // si une lootbox est touchée, on l'ouvre, puis la supprime...
     if (data.id) {
-      el.addEventListener('mouseenter', changeColor);
-      el.addEventListener('mouseleave', changeBack);
-      el.addEventListener(
+		toggleCursorColor(el);
+		el.addEventListener(
         "click",
         () => {
           // animation de la lootbox lors de son ouverture
@@ -292,7 +281,6 @@ AFRAME.registerComponent("openlootbox", {
     }
   },
 });
-
 // notion de génération aléatoire
 function randomIntFromInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -306,8 +294,6 @@ AFRAME.registerComponent('trackballfinish', {
     if (Math.abs(pos.x - posPiege.x) < 2) {
       if (Math.abs(pos.z - posPiege.z) < 2) {
         clearInterval(mainCounter);
-        $('finishDialog').children[0].children[1].children[0].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
-        $('finishDialog').style.display = "block";
         clearInterval(monInter);
         if (document.contains($("compteur"))) {
           $("compteur").remove();
@@ -393,10 +379,7 @@ AFRAME.registerComponent('delais', {
   }
 });
 
-function changeColor() {
-  cursor.setAttribute('material', 'color: springgreen');
-}
-
-function changeBack() {
-  cursor.setAttribute('material', 'color: white');
+function toggleCursorColor(el) {
+	el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
+	el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
 }
