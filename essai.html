@@ -1,0 +1,72 @@
+<html>
+
+<head>
+
+  <meta name="description" content="Mazify 3D" />
+  <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
+  <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <script src="js/aframe-component.js"></script>
+  <script src="js/essai.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <a-scene inspector-plugin-recast renderer="colorManagement: true;" loading-screen background="color: #444">
+    <a-assets>
+      <img id="ground" src="assets/sol.jpg" />
+      <img id="wall" src="assets/wall.jpg" />
+      <audio id="musique" src="assets/ambiance_sound.mp3"></audio>
+      <audio id="roar" src="assets/monsterRoar.mp3"></audio>
+      <a-asset-item id="boss" src="assets/boss/scene.gltf"></a-asset-item>
+      <a-asset-item id="my-nav-mesh" src="assets/navmeshBoss.gltf"></a-asset-item>
+      <a-asset-item id="missile" src="assets/missile/scene.gltf"></a-asset-item>
+      <a-asset-item id="barriere" src="assets/barriere/scene.gltf"></a-asset-item>
+      <a-asset-item id="shelter" src="assets/shelter/scene.gltf"></a-asset-item>
+      <a-asset-item id="gun" src="assets/sci-fi_revolver/scene.gltf"></a-asset-item>
+      <a-asset-item id="ghost" src="assets/fantasma_ghost_phantom/scene.gltf"></a-asset-item>
+    </a-assets>
+    <a-sky></a-sky>
+    <a-plane material="src: #ground; repeat: 25 25" position="0 0 -4" rotation="-90 0 0" width="50" height="50"
+      color="#7BC8A4"></a-plane>
+    <a-entity sallboss></a-entity>
+
+    <!-- Caméra Rig -->
+    <a-entity id="player2" collider-check raycaster="objects: .collidable" movement-controls="constrainToNavMesh: true"
+      hit-handler-player position="0 0 0">
+      <!-- Caméra -->
+      <a-entity camera position="0 1.6 0" look-controls id="camera" click-to-shoot-boss shooter>
+        <a-cursor></a-cursor>
+      </a-entity>
+
+    </a-entity>
+
+    </a-entity>
+
+    <a-entity gltf-model="#ghost" id="ghost2" scale="0.01 0.01 0.01" position="5 0 0" animation-mixer
+      animation="property: position; to: 0 0 40; loop: true; dur: 5000; dir: alternate"></a-entity>
+  </a-scene>
+  <!-- Model Gagner -->
+  <div id="finishDialog" class="modal mazify" style="display: none;">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" onclick="cont()">&times;</span>
+        <h2>Terminé</h2>
+      </div>
+      <div class="modal-body">
+        <p>Félicitation</p>
+
+        <p id="temps"></p>
+      </div>
+      <div class="modal-footer">
+        <h3></h3>
+        <button class="button" onclick="reset()">Rejouer</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

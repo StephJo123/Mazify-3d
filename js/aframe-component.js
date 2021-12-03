@@ -1,11 +1,8 @@
 var removeText, removeBox, monInter;
 var nbTirs = 0;
-var tirAutorise, isDead, existantG, existantB = true;
+var tirAutorise, isDead = true;
 var tpAutorise, bombactive = false;
 var vie = 20;
-var questionsArr = [];
-var questionsArrB = [];
-var lesmurs;
 
 function $(v) {
   return document.getElementById(v);
@@ -134,9 +131,7 @@ AFRAME.registerComponent("trackball", {
         $("tbombe").remove();
         $("countdown").pause();
         $("musique").play();
-        if (document.contains($("compteur"))) {
-          $("compteur").remove();
-        }
+        removeIfExist($("compteur"));
         $("tinterrupteur").setAttribute("visible", "true");
         tpAutorise = true;
       });
@@ -156,16 +151,24 @@ function isValidePosition(posInit) {
   return bool;
 }
 
+function removeIfExist(element) {
+  if (document.body.contains(element)) {
+    element.remove();
+  }
+}
+
 function die(deathText) {
 
-  if (document.body.contains($('ghost-model'))) {
-    $('ghost-model').remove();
-  }
+  $('scene').setAttribute('background', 'color: red')
+
+  removeIfExist($('ghost-model'));
+
   if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible')) {
     $('compteur').remove();
     clearInterval(monInter);
   }
 
+  removeIfExist($('tbombe'));
 
   // blocage des controles du joueur
   $('player').setAttribute("movement-controls", "enabled: false");
@@ -295,9 +298,7 @@ AFRAME.registerComponent('trackballfinish', {
       if (Math.abs(pos.z - posPiege.z) < 2) {
         clearInterval(mainCounter);
         clearInterval(monInter);
-        if (document.contains($("compteur"))) {
-          $("compteur").remove();
-        }
+        removeIfExist($("compteur"));
         document.querySelector('a-scene').exitVR();
       }
     }
@@ -310,7 +311,7 @@ AFRAME.registerComponent("ghost-collision-detect", {
     let ghostPos = ghost.object3D.position;
     let playerPos = $('player').object3D.position;
 
-    if (Math.abs(ghostPos.x - playerPos.x) < 0.40 && Math.abs(ghostPos.z - playerPos.z) < 0.40) {
+    if (Math.abs(ghostPos.x - playerPos.x) < 0.80 && Math.abs(ghostPos.z - playerPos.z) < 0.80) {
       die($('ghost-msg'));
     }
   }
