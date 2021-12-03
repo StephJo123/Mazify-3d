@@ -1,6 +1,10 @@
-var boxx = -24
-var boxz = 18
-var boxx2 = 22
+var boxx = -24;
+var boxz = 18;
+var boxx2 = 22;
+
+function $(v) {
+  return document.getElementById(v);
+}
 
 AFRAME.registerComponent("sallboss", {
   init: function () {
@@ -84,7 +88,7 @@ AFRAME.registerComponent("sallboss", {
 
 AFRAME.registerComponent("auto-enter-vr", {
   init: function () {
-    document.getElementById('player').addEventListener('click', function (evt) {
+    $('player').addEventListener('click', function () {
       document.querySelector('a-scene').enterVR()
     });
   }
@@ -99,16 +103,12 @@ AFRAME.registerComponent('shoot-ennemy-boss', {
   }
 });
 
-AFRAME.registerComponent('shoot-ennemy-rafale', {
-  init: function () {
-    let enemy = this.el;
-    setInterval(function () {
-      enemy.emit('shoot');
-    }, 2500);
-  }
-});
 
-AFRAME.registerComponent("e", {
+
+
+
+
+AFRAME.registerComponent("hit-handler", {
 
   dependencies: ["material"],
 
@@ -121,16 +121,10 @@ AFRAME.registerComponent("e", {
     var el = this.el;
 
     el.addEventListener("hit", () => {
-      document.getElementById("finishDialog").style.display = "block";
-      console.log("ok");
+      console.log('ok')
     });
 
     el.addEventListener("die", () => {
-      var position = el.getAttribute("position");
-      positionTmp.x = position.x + 0.1;
-      positionTmp.y = position.y - 100000;
-      positionTmp.z = position.z + 0.1;
-      el.setAttribute("position", positionTmp);
     });
   },
 });
@@ -145,57 +139,29 @@ AFRAME.registerComponent('hit-handler-boss', {
       z: 0
     };
     var el = this.el;
-    var missile = document.getElementById('missile2')
-    var sphere1 = document.getElementById('sphere1');
-    var sphere2 = document.getElementById('sphere2');
-    var sphere3 = document.getElementById('sphere3');
-    var sphere4 = document.getElementById('sphere4');
-    var sphere5 = document.getElementById('sphere5');
-    var sphere6 = document.getElementById('sphere6');
-    var sphere7 = document.getElementById('sphere7');
-    var sphere8 = document.getElementById('sphere8');
-    var sphere9 = document.getElementById('sphere9');
-    var sphere10 = document.getElementById('sphere10');
-    var sphere11 = document.getElementById('sphere11');
-    var sphere12 = document.getElementById('sphere12');
 
     el.addEventListener('hit', () => {
-      document.getElementById('bosslife').setAttribute('geometry', {
+      $('bosslife').setAttribute('geometry', {
         width: vie
       });
       if (vie < 10) {
-        document.getElementById('bosslife').setAttribute('material', 'color:orange')
-        missile.setAttribute('visible', 'true')
-        missile.setAttribute('animation', {
+        $('bosslife').setAttribute('material', 'color:orange')
+        $('missile2').setAttribute('animation', {
           property: 'position',
           to: '0 0 -1',
           dur: 3000
         });
 
-
       }
       if (vie < 5) {
-        document.getElementById('bosslife').setAttribute('material', 'color:red')
-        sphere5.setAttribute('shoot-ennemy-rafale', null)
-        sphere6.setAttribute('shoot-ennemy-rafale', null)
-        sphere7.setAttribute('shoot-ennemy-rafale', null)
-        sphere8.setAttribute('shoot-ennemy-rafale', null)
-        sphere9.setAttribute('shoot-ennemy-rafale', null)
-        sphere10.setAttribute('shoot-ennemy-rafale', null)
-        sphere11.setAttribute('shoot-ennemy-rafale', null)
-        sphere12.setAttribute('shoot-ennemy-rafale', null)
+
+        $('bosslife').setAttribute('material', 'color:red');
       }
+
       if (vie < 0) {
         el.parentNode.remove(el);
-        sphere1.removeAttribute('shooter');
-        sphere2.removeAttribute('shooter');
-        sphere3.removeAttribute('shooter');
-        sphere4.removeAttribute('shooter');
-
       }
-      vie = vie - 0.06
-
-
+      vie -= 0.06;
     });
 
     el.addEventListener('die', () => {
@@ -212,7 +178,18 @@ AFRAME.registerComponent('hit-handler-boss', {
 AFRAME.registerComponent('monster-roar', {
   init: function () {
     setInterval(function () {
-      document.getElementById('roar').play();
+      $('roar').play();
     }, 20000);
   }
+});
+
+AFRAME.registerComponent('camera-hit', {
+  tick: function () {
+    let human = this.el;
+    let humanPos = human.object3D.position;
+    let playerPos = $('player2').object3D.position;
+
+    humanPos.set(playerPos.x, playerPos.y, playerPos.z + 1);
+  }
+  
 });
