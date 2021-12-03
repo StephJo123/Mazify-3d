@@ -3,8 +3,8 @@ var questionsArr = [];
 
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
-    init: function () {
-		toggleCursorColor(this.el);
+  init: function () {
+    toggleCursorColor(this.el);
 
     this.el.addEventListener('click', () => {
       document.querySelector('a-scene').enterVR();
