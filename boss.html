@@ -21,7 +21,7 @@
       <img id="wall" src="assets/images/wall.jpg" />
       <audio id="musique" src="assets/sounds/ambiance_sound.mp3"></audio>
       <audio id="roar" src="assets/sounds/monsterRoar.mp3"></audio>
-      <a-asset-item id="boss" src="assets/models/king/scene.gltf"></a-asset-item>
+      <a-asset-item id="boss" src="assets/models/boss/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmeshBoss.gltf"></a-asset-item>
       <a-asset-item id="missile" src="assets/models/missile/scene.gltf"></a-asset-item>
       <a-asset-item id="barriere" src="assets/models/barriere/scene.gltf"></a-asset-item>
@@ -46,9 +46,8 @@
     <a-entity gltf-model="#my-nav-mesh" nav-mesh visible="false"></a-entity>
 
 
-    <a-entity gltf-model="#boss" id="boss2" scale="10 10 10" position="0 1.6 -22" rotation="33 0 0"
-    animation-mixer="timeScale:0.2"
-       target="healthPoints: 10000"
+    <a-entity gltf-model="#boss" id="boss2" scale="0.006 0.006 0.006" position="0 1.6 -22" rotation="33 0 0"
+      animation="property: position; to: -1 1.6 -16; loop: true; dur: 4000; dir: alternate" target="healthPoints: 10000"
       hit-handler-boss>
       <a-entity id="bosslife" geometry="primitive: box; width: 20; height: 0.3; depth: 0.3" material="color: green"
         position="-7.35 1330 -318.5" rotation="45 0 0" scale="100 100 100"></a-entity>

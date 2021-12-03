@@ -146,11 +146,7 @@ AFRAME.registerComponent('hit-handler-boss', {
       });
       if (vie < 10) {
         $('bosslife').setAttribute('material', 'color:orange')
-        $('missile2').setAttribute('animation', {
-          property: 'position',
-          to: '0 0 -1',
-          dur: 3000
-        });
+        
 
       }
       if (vie < 5) {
