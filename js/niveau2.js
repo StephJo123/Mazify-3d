@@ -66,7 +66,7 @@ AFRAME.registerComponent("collect-bunny", {
           nbLapins++;
           $('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
           el.remove();
-          if (nbLapins == 1) {
+          if (nbLapins == 13) {
             clearBunnies();
             win();
           }
