@@ -66,7 +66,7 @@ AFRAME.registerComponent("collect-bunny", {
           nbLapins++;
           $('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
           el.remove();
-          if (nbLapins == 13) {
+          if (nbLapins == 1) {
             clearBunnies();
             win();
           }
@@ -79,78 +79,11 @@ AFRAME.registerComponent("collect-bunny", {
 });
 
 function win() {
-  $('scene').setAttribute('background', 'color: blue');
-
-  if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible')) {
-    $('compteur').remove();
-    clearInterval(monInter);
-  }
-
-  // blocage des controles du joueur
-  $('player').setAttribute("movement-controls", "enabled: false");
-
-  // inversion de couleur
-  $('body').setAttribute('style', "background-color: blue;")
-  $('scene').setAttribute('fog', 'color: blue');
-  cursor.setAttribute('material', 'color: blue');
-
-  $('finish-game').setAttribute('position', player.object3D.position);
-  $('finish-game').object3D.position.x += 2;
-
-  let posfinish = $('finish-game').object3D.position;
-
-  if (!isValidePosition(posfinish)) {
-    $('finish-game').setAttribute('position', player.object3D.position);
-    $('finish-game').object3D.position.z -= 2;
-    if (!isValidePosition(posfinish)) {
-      $('finish-game').setAttribute('position', player.object3D.position);
-      $('finish-game').object3D.position.z += 2;
-      if (!isValidePosition(posfinish)) {
-        $('finish-game').setAttribute('position', player.object3D.position);
-        $('finish-game').object3D.position.x -= 2;
-      }
-    }
-  }
-  $('finish-game').object3D.position.y += 1;
-
-  $('finish-game').setAttribute('visible', true);
+  factorisation("finish_game", "blue");
 }
 
 function die() {
-  $('scene').setAttribute('background', 'color: red');
-
-  if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible')) {
-    $('compteur').remove();
-    clearInterval(monInter);
-  }
-
-  // blocage des controles du joueur
-  $('player').setAttribute("movement-controls", "enabled: false");
-
-  // inversion de couleur
-  $('body').setAttribute('style', "background-color: red;")
-  $('scene').setAttribute('fog', 'color: red');
-  cursor.setAttribute('material', 'color: red');
-
-  $('restart').setAttribute('position', player.object3D.position);
-  $('restart').object3D.position.x += 2;
-  $('timeout-msg').object3D.position.x += 2;
-
-  let posRestart = $('restart').object3D.position;
-
-  if (!isValidePosition(posRestart)) {
-    $('restart').setAttribute('position', player.object3D.position);
-    $('restart').object3D.position.z -= 2;
-    if (!isValidePosition(posRestart)) {
-      $('restart').setAttribute('position', player.object3D.position);
-      $('restart').object3D.position.z += 2;
-      if (!isValidePosition(posRestart)) {
-        $('restart').setAttribute('position', player.object3D.position);
-        $('restart').object3D.position.x -= 2;
-      }
-    }
-  }
-  $('restart').object3D.position.y += 1;
+  factorisation("restart", "red");
 
   let currentRestartPos = $('restart').object3D.position;
   let newYpos = $('restart').object3D.position.y + 0.75;
@@ -163,6 +96,45 @@ function die() {
   $('restart').setAttribute('visible', true);
   $('timeout-msg').setAttribute('visible', true);
 }
+
+function factorisation(state, color) {
+  $('scene').setAttribute('background', 'color: ' + color);
+
+  if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible')) {
+    $('compteur').remove();
+    clearInterval(monInter);
+  }
+
+  // blocage des controles du joueur
+  $('player').setAttribute("movement-controls", "enabled: false");
+
+  // inversion de couleur
+  $('body').setAttribute('style', "background-color: " + color)
+  $('scene').setAttribute('fog', 'color: ' + color);
+  cursor.setAttribute('material', 'color: ' + color);
+
+  $(state).setAttribute('position', player.object3D.position);
+  $(state).object3D.position.x += 2;
+
+  let posfinish = $(state).object3D.position;
+
+  if (!isValidePosition(posfinish)) {
+    $(state).setAttribute('position', player.object3D.position);
+    $(state).object3D.position.z -= 2;
+    if (!isValidePosition(posfinish)) {
+      $(state).setAttribute('position', player.object3D.position);
+      $(state).object3D.position.z += 2;
+      if (!isValidePosition(posfinish)) {
+        $(state).setAttribute('position', player.object3D.position);
+        $(state).object3D.position.x -= 2;
+      }
+    }
+  }
+  $(state).object3D.position.y += 1;
+
+  $(state).setAttribute('visible', true);
+}
+
 
 function isValidePosition(posInit) {
   let bool = true;
