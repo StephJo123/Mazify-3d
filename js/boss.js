@@ -96,22 +96,16 @@ AFRAME.registerComponent("auto-enter-vr", {
 
 AFRAME.registerComponent('shoot-ennemy-boss', {
   init: function () {
-    shootEnnemy(1800);
+    let enemy = this.el;
+    setInterval(function () {
+      enemy.emit('shoot');
+    }, 1800);
   }
 });
 
-AFRAME.registerComponent('shoot-ennemy-rafale', {
-  init: function () {
-    shootEnnemy(2500);
-  }
-});
 
-function shootEnnemy(duration) {
-  let enemy = this.el;
-  setInterval(function () {
-    enemy.emit('shoot');
-  }, duration);
-}
+
+
 
 
 AFRAME.registerComponent("hit-handler", {
@@ -166,18 +160,10 @@ AFRAME.registerComponent('hit-handler-boss', {
       if (vie < 5) {
 
         $('bosslife').setAttribute('material', 'color:red');
-
-        for (i = 5; i <= 12; i++) {
-          $('sphere' + i).setAttribute('shoot-ennemy-rafale', null);
-        }
       }
 
       if (vie < 0) {
         el.parentNode.remove(el);
-
-        for (j = 1; j <= 4; j++) {
-          $('sphere' + j).removeAttribute('shooter');
-        }
       }
       vie -= 0.06;
     });

@@ -302,23 +302,7 @@ function randomIntFromInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-AFRAME.registerComponent('trackballfinish', {
-  tick: function () {
-    let pos = this.el.object3D.position;
-    let posPiege = $('fini2').object3D.position;
 
-    if (Math.abs(pos.x - posPiege.x) < 2) {
-      if (Math.abs(pos.z - posPiege.z) < 2) {
-        clearInterval(mainCounter);
-        $('finishDialog').children[0].children[1].children[0].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
-        $('finishDialog').style.display = "block";
-        clearInterval(monInter);
-        removeIfExist($("compteur"));
-        document.querySelector('a-scene').exitVR();
-      }
-    }
-  }
-});
 
 AFRAME.registerComponent("ghost-collision-detect", {
   tick: function () {
