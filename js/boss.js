@@ -120,14 +120,11 @@ AFRAME.registerComponent("hit-handler", {
     });
     var el = this.el;
 
-    el.addEventListener("hit", () => {});
+    el.addEventListener("hit", () => {
+      console.log('ok')
+    });
 
     el.addEventListener("die", () => {
-      var position = el.getAttribute("position");
-      positionTmp.x = position.x + 0.1;
-      positionTmp.y = position.y - 100000;
-      positionTmp.z = position.z + 0.1;
-      el.setAttribute("position", positionTmp);
     });
   },
 });
@@ -149,7 +146,6 @@ AFRAME.registerComponent('hit-handler-boss', {
       });
       if (vie < 10) {
         $('bosslife').setAttribute('material', 'color:orange')
-        $('missile2').setAttribute('visible', 'true')
         $('missile2').setAttribute('animation', {
           property: 'position',
           to: '0 0 -1',
@@ -185,4 +181,15 @@ AFRAME.registerComponent('monster-roar', {
       $('roar').play();
     }, 20000);
   }
+});
+
+AFRAME.registerComponent('camera-hit', {
+  tick: function () {
+    let human = this.el;
+    let humanPos = human.object3D.position;
+    let playerPos = $('player2').object3D.position;
+
+    humanPos.set(playerPos.x, playerPos.y, playerPos.z + 1);
+  }
+  
 });
