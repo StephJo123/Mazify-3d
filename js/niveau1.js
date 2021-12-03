@@ -20,7 +20,7 @@ AFRAME.registerComponent('question_resolue', {
   init: function () {
     var goodA = document.getElementsByClassName('goodA');
     for (let i = 0; i < goodA.length; i++) {
-      goodA[i].addEventListener('click', function (evt) {
+      goodA[i].addEventListener('click', function () {
 
         for (let j = 0; j <= questionsArr.length; j++) {
           if (goodA[i].id == questionsArr[j]) {
@@ -31,16 +31,15 @@ AFRAME.registerComponent('question_resolue', {
           }
         }
 
-        if (existantG == true) {
+        if (existantG) {
           questionsArr.push(goodA[i].id);
-          var texteBonus = $("texteBonus");
 
           // affichage d'un message temporaire dans la caméra du joueur
-          texteBonus.setAttribute("visible", true);
+          $("texteBonus").setAttribute("visible", true);
           // masquage du message au bout de 2s
 
           removeText = setTimeout(function () {
-            texteBonus.setAttribute("visible", false);
+            $("texteBonus").setAttribute("visible", false);
           }, 2000);
         }
       });
@@ -54,7 +53,7 @@ AFRAME.registerComponent('question_erreur', {
   init: function () {
     var badA = document.getElementsByClassName('badA');
     for (let i = 0; i < badA.length; i++) {
-      badA[i].addEventListener('click', function (evt) {
+      badA[i].addEventListener('click', function () {
 
         for (let j = 0; j <= questionsArrB.length; j++) {
           if (badA[i].id == questionsArrB[j]) {
@@ -65,14 +64,13 @@ AFRAME.registerComponent('question_erreur', {
           }
         }
 
-        if (existantB == true) {
+        if (existantB) {
           questionsArrB.push(badA[i].id);
-          var texteErreur = $("texteErreur");
 
-          texteErreur.setAttribute("visible", true);
+          $("texteErreur").setAttribute("visible", true);
 
           removeText = setTimeout(function () {
-            texteErreur.setAttribute("visible", false);
+            $("texteErreur").setAttribute("visible", false);
           }, 2000);
         }
       });
