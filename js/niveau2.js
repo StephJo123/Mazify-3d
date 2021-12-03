@@ -5,22 +5,23 @@ function $(v) {
   return document.getElementById(v);
 }
 
+function toggleCursorColor(el) {
+  el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
+  el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
+}
+
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
   init: function () {
-    this.el.addEventListener('mouseenter', changeColor);
-    this.el.addEventListener('mouseleave', changeBack);
+    toggleCursorColor(this.el);
 
     this.el.addEventListener('click', () => {
-      // document.querySelector('a-scene').enterVR();
       startTimer(60, $("time2"));
       $('compteur').setAttribute('visible', true);
       $('scene').setAttribute('fog', 'color: #444');
       $('player').setAttribute("movement-controls", "enabled: true");
       this.el.remove();
     });
-
-    lesmurs = document.querySelectorAll('a-entity[mazify] a-box');
   }
 });
 
@@ -30,15 +31,7 @@ const startTimer = (duration, display) => {
     seconds;
   monInter = setInterval(function () {
     if (document.body.contains($('compteur')))
-
       $("compteur").setAttribute("text", "value: " + timer + ";");
-    minutes = parseInt(timer / 60, 10);
-    seconds = parseInt(timer % 60, 10);
-
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    seconds = seconds < 10 ? "0" + seconds : seconds;
-
-    display.textContent = minutes + ":" + seconds;
 
     if (--timer < 0 && nbLapins != 13) {
       clearInterval(monInter);
@@ -58,8 +51,7 @@ AFRAME.registerComponent("collect-bunny", {
     var el = this.el; // référence à l'entité du composant.
 
     if (data.id) {
-      el.addEventListener('mouseenter', changeColor);
-      el.addEventListener('mouseleave', changeBack);
+      toggleCursorColor(el);
       el.addEventListener(
         "click",
         () => {
@@ -158,12 +150,4 @@ function isValidePosition(posInit) {
 
 function clearBunnies() {
   document.querySelectorAll('.bunny').forEach(element => element.remove());
-}
-
-function changeColor() {
-  cursor.setAttribute('material', 'color: springgreen');
-}
-
-function changeBack() {
-  cursor.setAttribute('material', 'color: white');
 }
