@@ -105,10 +105,8 @@ AFRAME.registerComponent("trackball", {
       $("tbombe").setAttribute("visible", "true");
       $("compteur").setAttribute("visible", "true");
 
-      const startTimer = (duration, display) => {
-        var timer = duration,
-          minutes,
-          seconds;
+      const startTimer = (duration) => {
+        var timer = duration;
         monInter = setInterval(function () {
           if (document.body.contains($('compteur')))
             $("compteur").setAttribute("text", "value: " + timer + ";");
@@ -122,7 +120,7 @@ AFRAME.registerComponent("trackball", {
       };
 
       startTimer(30, $("time2"));
-      
+
       toggleCursorColor($('interrupteur2'));
 
       $("interrupteur2").addEventListener("click", function () {
@@ -247,8 +245,8 @@ AFRAME.registerComponent("openlootbox", {
 
     // si une lootbox est touchée, on l'ouvre, puis la supprime...
     if (data.id) {
-		toggleCursorColor(el);
-		el.addEventListener(
+      toggleCursorColor(el);
+      el.addEventListener(
         "click",
         () => {
           // animation de la lootbox lors de son ouverture
@@ -381,6 +379,6 @@ AFRAME.registerComponent('delais', {
 });
 
 function toggleCursorColor(el) {
-	el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
-	el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
+  el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
+  el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
 }

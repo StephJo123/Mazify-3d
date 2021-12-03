@@ -56,7 +56,7 @@ AFRAME.registerComponent("collect-bunny", {
           nbLapins++;
           $('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
           el.remove();
-          if (nbLapins == 13) {
+          if (nbLapins == 1) {
             clearBunnies();
             win();
           }
@@ -77,7 +77,6 @@ function win() {
     y: currentFinishPos.y,
     z: currentFinishPos.z + 1
   });
-
   $('confetti_animation').setAttribute('visible', true);
 }
 

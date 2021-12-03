@@ -1,23 +1,22 @@
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
-    init: function () {
-		toggleCursorColor(this.el);
-  
-      this.el.addEventListener('click', () => {
-        $('scene').setAttribute('fog', 'color: #444');
-        $('player').setAttribute("movement-controls", "enabled: true");
-        $('ghost-model').setAttribute("ghost-follow", "");
-        this.el.remove();
-      });
-  
-      lesmurs = document.querySelectorAll('a-entity[mazify] a-box');
-    }
-  });
+  init: function () {
+    toggleCursorColor(this.el);
+
+    this.el.addEventListener('click', () => {
+      $('scene').setAttribute('fog', 'color: #444');
+      $('player').setAttribute("movement-controls", "enabled: true");
+      $('ghost-model').setAttribute("ghost-follow", "");
+      this.el.remove();
+    });
+
+    lesmurs = document.querySelectorAll('a-entity[mazify] a-box');
+  }
+});
 
 AFRAME.registerComponent('ghost-follow', {
   init: function () {
     let ghost = this.el;
-    let nbRotate = 0;
 
     function avance(ghost, pas) {
       let rotation = ghost.object3D.rotation;
