@@ -156,6 +156,10 @@ AFRAME.registerComponent('hit-handler-boss', {
 
       if (vie < 0) {
         el.parentNode.remove(el);
+        el.parentNode.remove(el);
+        el.parentNode.remove(el);
+        el.parentNode.remove(el);
+        el.parentNode.remove(el);
       }
       vie -= 0.06;
     });

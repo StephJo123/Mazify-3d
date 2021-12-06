@@ -5,7 +5,7 @@
   <meta name="description" content="Mazify 3D" />
   <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
-  <script src="dist/aframe-super-shooter-kit.min.js"></script>
+  <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
   <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
   <script src="js/aframe-component.js"></script>
@@ -26,7 +26,6 @@
       <a-asset-item id="missile" src="assets/models/missile/scene.gltf"></a-asset-item>
       <a-asset-item id="barriere" src="assets/models/barriere/scene.gltf"></a-asset-item>
       <a-asset-item id="gun" src="assets/models/sci-fi_revolver/scene.gltf"></a-asset-item>
-      <a-asset-item id="human" src="assets/models/super_human/scene.gltf"></a-asset-item>
     </a-assets>
     <a-sky></a-sky>
     <a-plane material="src: #ground; repeat: 25 25" position="0 0 -4" rotation="-90 0 0" width="50" height="50"
@@ -34,16 +33,17 @@
     <a-entity sallboss></a-entity>
 
     <!-- Caméra Rig -->
-    <a-entity id="player2" movement-controls position="0 0 8">
+    <a-entity id="player2" movement-controls="constrainToNavMesh: true" hit-handler-player>
       <!-- Caméra -->
-      <a-entity camera position="0 1.6 0" look-controls id="camera" click-to-shoot-boss shooter >
+      <a-entity camera position="0 1.6 0" look-controls id="camera" click-to-shoot-boss shooter>
         <a-cursor></a-cursor>
       </a-entity>
+
     </a-entity>
 
-    <a-entity gltf-model="#barriere" position="0 0 0.45" scale="0.6 2.75 1" target="healthPoints: 10" hit-handler camera-hit></a-entity>
+    </a-entity>
 
-    <a-entity gltf-model="#my-nav-mesh" nav-mesh visible="false"></a-entity>
+    <a-entity gltf-model="#my-nav-mesh" nav-mesh visible="true"></a-entity>
 
 
     <a-entity gltf-model="#boss" id="boss2" scale="0.006 0.006 0.006" position="0 1.6 -22" rotation="33 0 0"
@@ -67,20 +67,19 @@
 
     <!-- <a-entity gltf-model="#lezard" position="-3 0 -3" rotation="0 230 0" animation-mixer scale="0.002 0.002 0.002"></a-entity> -->
     <a-entity id="bullet2" bullet="name: normal; speed: 20.0; poolSize:100"
-      geometry="primitive: icosahedron; radius: 0.17"
+      geometry="primitive: icosahedron; radius: 0.17;detail:1"
       material="color: red; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
 
-    
+   
     </a-entity>
-    <a-entity gltf-model="#barriere" id="barriere1" scale="1.5 0.5 1" position="-0.77 0 1.831" rotation="0 0 0">
+    <a-entity gltf-model="#barriere" id="barriere1" scale="1.5 2 1" position="-0.77 0 -4" rotation="0 0 0">
     </a-entity>
-    <a-entity gltf-model="#barriere" id="barriere2" scale="2.25 0.5 1" position="-3.26 0 5.314" rotation="0 90 0">
+    <a-entity gltf-model="#barriere" id="barriere2" scale="2.25 2 1" position="-3.26 0 -0.536" rotation="0 90 0">
     </a-entity>
-    <a-entity gltf-model="#barriere" id="barriere3" scale="2.25 0.5 1" position="1.706 0 5.314" rotation="0 90 0">
+    <a-entity gltf-model="#barriere" id="barriere3" scale="2.25 2 1" position="1.706 0 -0.536" rotation="0 90 0">
     </a-entity>
-    <a-entity gltf-model="#barriere" id="barriere4" scale="1.5 0.5 1" position="-0.77 0 8.875" rotation="0 0 0">
+    <a-entity gltf-model="#barriere" id="barriere4" scale="1.5 2 1" position="-0.77 0 2.705" rotation="0 0 0">
     </a-entity>
-
 
 
   </a-scene>
@@ -90,10 +89,10 @@
     <div class="modal-content">
       <div class="modal-header">
         <span class="close" onclick="cont()">&times;</span>
-        <h2>Perdu</h2>
+        <h2>Terminé</h2>
       </div>
       <div class="modal-body">
-        <p>Le boss a vaincu</p>
+        <p>Félicitation</p>
 
         <p id="temps"></p>
       </div>
