@@ -6,86 +6,6 @@ function $(v) {
   return document.getElementById(v);
 }
 
-AFRAME.registerComponent("sallboss", {
-  init: function () {
-    let scene = document.querySelector('a-scene');
-
-    for (var i = 0; i < 25; i++) {
-      let boxe = document.createElement('a-box');
-      scene.appendChild(boxe);
-      boxe.setAttribute('position', {
-        x: boxx,
-        y: 2,
-        z: 20
-      });
-      boxe.setAttribute('scale', {
-        x: 2,
-        y: 4,
-        z: 2
-      });
-      boxe.setAttribute('material', 'src: #wall');
-      boxe.setAttribute('color', '#336699');
-      boxx += 2;
-    }
-    for (var i = 0; i < 24; i++) {
-      let boxe = document.createElement('a-box');
-      scene.appendChild(boxe);
-      boxe.setAttribute('position', {
-        x: 24,
-        y: 2,
-        z: boxz
-      });
-      boxe.setAttribute('scale', {
-        x: 2,
-        y: 4,
-        z: 2
-      });
-      boxe.setAttribute('material', 'src: #wall');
-      boxe.setAttribute('color', '#336699');
-
-      boxz -= 2;
-
-    }
-    for (var i = 0; i < 24; i++) {
-      let boxe = document.createElement('a-box');
-      scene.appendChild(boxe);
-      boxe.setAttribute('position', {
-        x: boxx2,
-        y: 2,
-        z: -28
-      });
-      boxe.setAttribute('scale', {
-        x: 2,
-        y: 4,
-        z: 2
-      });
-      boxe.setAttribute('material', 'src: #wall');
-      boxe.setAttribute('color', '#336699');
-
-      boxx2 -= 2;
-
-    }
-    for (var i = 0; i < 25; i++) {
-      let boxe = document.createElement('a-box');
-      scene.appendChild(boxe);
-      boxe.setAttribute('position', {
-        x: -24,
-        y: 2,
-        z: boxz
-      });
-      boxe.setAttribute('scale', {
-        x: 2,
-        y: 4,
-        z: 2
-      });
-      boxe.setAttribute('material', 'src: #wall');
-      boxe.setAttribute('color', '#336699');
-
-      boxz += 2;
-    }
-  }
-});
-
 AFRAME.registerComponent("auto-enter-vr", {
   init: function () {
     $('player').addEventListener('click', function () {
@@ -102,11 +22,6 @@ AFRAME.registerComponent('shoot-ennemy-boss', {
     }, 1800);
   }
 });
-
-
-
-
-
 
 AFRAME.registerComponent("hit-handler", {
 
