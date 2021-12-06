@@ -5,15 +5,11 @@ function $(v) {
   return document.getElementById(v);
 }
 
-function toggleCursorColor(el) {
-  el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
-  el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
-}
-
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
   init: function () {
-    toggleCursorColor(this.el);
+    this.el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
+    this.el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
 
     this.el.addEventListener('click', () => {
       startTimer(60);
@@ -49,7 +45,8 @@ AFRAME.registerComponent("collect-bunny", {
     var el = this.el; // référence à l'entité du composant.
 
     if (data.id) {
-      toggleCursorColor(el);
+      this.el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
+      this.el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
       el.addEventListener(
         "click",
         () => {
