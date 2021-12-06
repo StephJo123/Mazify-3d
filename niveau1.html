@@ -53,7 +53,11 @@
       <img id="texteQ4" src="assets/images/question4.png">
       <img id="repQ4" src="assets/images/repQ4.png">
       <img id="repQ4F" src="assets/images/repQ4F.png">
+      <img id="restart-menu" crossorigin="anonymous" src="assets/images/restart-menu.jpg">
+      <img id="trap-text" src="assets/images/trap-text.png">
       <audio id="musique" src="assets/sounds/ambiance_sound.mp3"></audio>
+      <audio id="click-sound" crossorigin="anonymous"
+        src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
       <a-asset-item id="my-nav-mesh" src="assets/navmeshLevel1.gltf"></a-asset-item>
       <a-asset-item id="bunny" src="assets/models/bunny/scene.gltf"></a-asset-item>
       <a-asset-item id="camp" src="assets/models/camp_fire/scene.gltf"></a-asset-item>
@@ -73,9 +77,9 @@
     </a-entity>
 
     <!-- messages de mort -->
-    <a-image id="trap-msg" width="4" height="0.4" src="#trap-text" scale="0.5 0.5 0.5" look-at="#camera"
+    <a-image id="trap-msg" width="2" height="0.22" src="#trap-text" scale="0.5 0.5 0.5" look-at="#camera"
       visible="false"></a-image>
-    <a-image id="badanswer-msg" width="4" height="0.4" src="#badanswer-text" scale="0.5 0.5 0.5" look-at="#camera"
+    <a-image id="badanswer-msg" width="2" height="0.22" src="#badanswer-text" scale="0.5 0.5 0.5" look-at="#camera"
       visible="false"></a-image>
 
     <!-- dead/restart menu -->

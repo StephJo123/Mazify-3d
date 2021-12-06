@@ -45,7 +45,6 @@
 
     <a-entity gltf-model="#my-nav-mesh" nav-mesh visible="false"></a-entity>
 
-
     <a-entity gltf-model="#boss" id="boss2" scale="0.006 0.006 0.006" position="0 1.6 -22" rotation="33 0 0"
       animation="property: position; to: -1 1.6 -16; loop: true; dur: 4000; dir: alternate" target="healthPoints: 10000"
       hit-handler-boss>
@@ -65,7 +64,6 @@
       animation="property: position; to: 0.183 7.334 -11.98; loop: true; dur: 4000; dir: alternate" rotation="205 0 0"
       scale="0.25 0.25 0.25" shooter shoot-ennemy-boss visible="false"></a-sphere>
 
-    <!-- <a-entity gltf-model="#lezard" position="-3 0 -3" rotation="0 230 0" animation-mixer scale="0.002 0.002 0.002"></a-entity> -->
     <a-entity id="bullet2" bullet="name: normal; speed: 20.0; poolSize:100"
       geometry="primitive: icosahedron; radius: 0.17"
       material="color: red; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
@@ -87,14 +85,6 @@
       <div class="modal-body">
         <p>Le boss a vaincu</p>
 
-        <p id="temps"></p>
-      </div>
-      <div class="modal-footer">
-        <h3></h3>
-        <button class="button" onclick="reset()">Rejouer</button>
-      </div>
-    </div>
-  </div>
 </body>
 
 </html>

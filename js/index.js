@@ -1,11 +1,9 @@
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
   init: function () {
-    this.el.addEventListener('mouseenter', changeColor);
-    this.el.addEventListener('mouseleave', changeBack);
 
+    toggleCursorColor(this.el);
     this.el.addEventListener('click', () => {
-      // document.querySelector('a-scene').enterVR();
       $('scene').setAttribute('fog', 'color: #444');
       $('player').setAttribute("movement-controls", "enabled: true");
       $('ghost-model').setAttribute("ghost-follow", "");
@@ -19,7 +17,6 @@ AFRAME.registerComponent('startgame', {
 AFRAME.registerComponent('ghost-follow', {
   init: function () {
     let ghost = this.el;
-    let nbRotate = 0;
 
     function avance(ghost, pas) {
       let rotation = ghost.object3D.rotation;

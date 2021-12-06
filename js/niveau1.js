@@ -3,20 +3,17 @@ var questionsArr = [];
 
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
-    init: function () {
-      this.el.addEventListener('mouseenter', changeColor);
-      this.el.addEventListener('mouseleave', changeBack);
-  
-      this.el.addEventListener('click', () => {
-        document.querySelector('a-scene').enterVR();
-        $('scene').setAttribute('fog', 'color: #444');
-        $('player').setAttribute("movement-controls", "enabled: true");
-        this.el.remove();
-      });
-  
-      lesmurs = document.querySelectorAll('a-entity[mazify] a-box');
-    }
-  });
+  init: function () {
+    toggleCursorColor(this.el);
+
+    this.el.addEventListener('click', () => {
+      document.querySelector('a-scene').enterVR();
+      $('scene').setAttribute('fog', 'color: #444');
+      $('player').setAttribute("movement-controls", "enabled: true");
+      this.el.remove();
+    });
+  }
+});
 
   
 // Question labyrinthe
@@ -35,19 +32,18 @@ AFRAME.registerComponent('question_resolue', {
               existantG = true;
             }
         }
-        
-        if(existantG == true) {
+
+        if (existantG) {
           questionsArr.push(goodA[i].id);
-          var texteBonus = $("texteBonus"); 
 
           // affichage d'un message temporaire dans la caméra du joueur
-          texteBonus.setAttribute("visible", true);
+          $("texteBonus").setAttribute("visible", true);
           // masquage du message au bout de 2s
       
           removeText = setTimeout(function () {
-            texteBonus.setAttribute("visible", false);
-          }, 2000);    
-        }  
+            $("texteBonus").setAttribute("visible", false);
+          }, 2000);
+        }
       });
     }
   clearTimeout(removeText);
