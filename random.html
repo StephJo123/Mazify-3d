@@ -75,7 +75,7 @@
       <a-entity template="src: #link" data-thumb="#start-menu">
       </a-entity>
     </a-entity>
-    
+
     <!-- messages de mort -->
     <a-image id="timeout-msg" width="2" height="0.22" src="#timeout-text" scale="0.5 0.5 0.5" look-at="#camera"
       visible="false"></a-image>
@@ -153,7 +153,7 @@
       position="0 1.6 0" trackball trackballfinish collision collision_piege>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
-        <a-cursor id="cursor" color="white;" position="0 0 -0.2" scale="0.25 0.25 0.25"
+        <a-cursor id="cursor" color="white" position="0 0 -0.2" scale="0.25 0.25 0.25"
           animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 0.25 0.25 0.25; dur: 150">
         </a-cursor>
 
@@ -200,7 +200,7 @@
 
   </a-scene>
 
- <script src="js/randMaze.js"></script>
+  <script src="js/randMaze.js"></script>
 
   <script>
     var mazeArr = randomGeneration();

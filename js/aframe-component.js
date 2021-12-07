@@ -27,7 +27,7 @@ AFRAME.registerComponent('click-to-shoot', {
     }
     
     if (AFRAME.utils.device.checkHeadsetConnected()){
-      $('droite').addEventListener('triggerdown', tir);
+      $('handGun').addEventListener('triggerdown', tir);
     }
     else{
       document.body.addEventListener('mousedown', tir)
@@ -41,7 +41,7 @@ AFRAME.registerComponent('click-to-shoot', {
 
 AFRAME.registerComponent('click-to-shoot-boss', {
   init: function () {
-    $('droite').addEventListener('triggerdown', () => {
+    $('handGun').addEventListener('triggerdown', () => {
       this.el.emit('shoot')
     });
   }
@@ -100,6 +100,28 @@ AFRAME.registerComponent('tpsalleboss', {
     });
   }
 });
+
+AFRAME.registerComponent('reticule-position', {
+	init: function() {
+		let cs = document.querySelectorAll('a-cursor');
+		if (AFRAME.utils.device.checkHeadsetConnected()) {
+			cs[1].remove();
+			this.el.object3D.scale.set(1,1,1);
+			this.el.setAttribute('animation__click',"property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150");
+			this.el.setAttribute('look-at','#gun-model');
+		} else {
+			cs[0].remove();
+		}
+	},
+    tick: function() {
+		if (AFRAME.utils.device.checkHeadsetConnected()) {
+			const gun = $('gun-model').object3D;
+			const posGun = gun.getWorldPosition();
+			const directionGun = gun.getWorldDirection();
+			this.el.object3D.position.set(posGun.x-1*directionGun.x,posGun.y-1*directionGun.y,posGun.z-1*directionGun.z);
+		}
+    }
+}); 
 
 AFRAME.registerComponent("trackball", {
   tick: function () {
@@ -224,28 +246,36 @@ function die(deathText) {
   deathText.setAttribute('visible', true);
 }
 
-// fonction qui ajoute un nombre de munitions donné
-function addAmmo(munitionsBonus) {
-  let camera = $('camera');
-  let posBalleX = 0.13 + 0.01 * camera.getElementsByTagName("a-image").length;
+function concreteAddAmmo(nbAmmo,el,posDepart,isVR) {
+  let posBalleX = posDepart + 0.01 * el.getElementsByTagName("a-image").length;
 
-  for (var i = 0; i < munitionsBonus; i++) {
+  for (var i = 0; i < nbAmmo; i++) {
     let balle = document.createElement('a-image');
-    camera.appendChild(balle);
+    el.appendChild(balle);
     balle.setAttribute('src', '#bullet');
     balle.setAttribute('id', 'balle' + (nbTirs + i));
-    balle.object3D.position.set(posBalleX, -0.07, -0.2);
-    balle.setAttribute('scale', {
-      x: 0.005,
-      y: 0.005,
-      z: 0.005
-    });
+    if (isVR) {
+		balle.object3D.position.set(posBalleX, 0.2, -0.05);
+		balle.object3D.scale.set(0.01,0.01,0.01);
+	} else {
+		balle.object3D.position.set(posBalleX, -0.07, -0.2);
+		balle.object3D.scale.set(0.005,0.005,0.005);
+	}
     balle.setAttribute('height', '5');
     balle.setAttribute('width', '0.8');
     posBalleX += 0.01;
   }
-  nbTirs += munitionsBonus;
-};
+  nbTirs += nbAmmo;
+}
+// fonction qui ajoute un nombre de munitions donné
+function addAmmo(munitionsBonus) {
+	const isVR = AFRAME.utils.device.checkHeadsetConnected();
+  if (isVR) {
+	  concreteAddAmmo(munitionsBonus,$('handGun'),-0.1,isVR);
+  } else {
+	  concreteAddAmmo(munitionsBonus,$('camera'),0.13,isVR);
+  }
+}
 
 // fonction pour les lootboxes
 AFRAME.registerComponent("openlootbox", {
@@ -320,15 +350,14 @@ AFRAME.registerComponent("ghost-collision-detect", {
 AFRAME.registerComponent("shoot-ennemy", {
   init: function () {
     let enemy = this.el;
-    setInterval(function () {
-      enemy.emit("shoot");
-    }, 1000);
+    setInterval(() => enemy.emit("shoot"), 1000);
   },
 });
 
 AFRAME.registerComponent('munitions', {
   init: function () {
     addAmmo(5);
+    
   }
 });
 
@@ -337,7 +366,6 @@ AFRAME.registerComponent('delais', {
     setTimeout(() => {
       $('blade1').setAttribute('animation-mixer', '');
       $('blade3').setAttribute('animation-mixer', '');
-
     }, 15000);
     setTimeout(() => {
       $('piege_1').setAttribute('animation', {
@@ -401,4 +429,3 @@ function toggleCursorColor(el) {
   el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
   el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
 }
-

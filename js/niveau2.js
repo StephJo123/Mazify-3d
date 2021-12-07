@@ -27,9 +27,10 @@ AFRAME.registerComponent('startgame', {
 
 const startTimer = (duration) => {
   var timer = duration;
+  const compteur = $('compteur');
   monInter = setInterval(function () {
-    if (document.body.contains($('compteur')))
-      $("compteur").setAttribute("text", "value: " + timer + ";");
+    if (document.body.contains(compteur))
+      compteur.setAttribute("text", "value: " + timer + ";");
 
     if (--timer < 0 && nbLapins != 13) {
       clearInterval(monInter);
@@ -37,7 +38,6 @@ const startTimer = (duration) => {
       die();
     }
   }, 1000);
-
 };
 
 AFRAME.registerComponent("collect-bunny", {
