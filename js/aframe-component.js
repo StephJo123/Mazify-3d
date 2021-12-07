@@ -91,7 +91,7 @@ AFRAME.registerComponent('tpsalleboss', {
 
 AFRAME.registerComponent('reticule-position', {
 	init: function() {
-		let cs = document.querySelector('a-cursor');
+		let cs = document.querySelectorAll('a-cursor');
 		if (AFRAME.utils.device.checkHeadsetConnected()) {
 			cs[1].remove();
 			this.el.object3D.scale.set(1,1,1);
