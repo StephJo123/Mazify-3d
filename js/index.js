@@ -7,6 +7,10 @@ AFRAME.registerComponent('startgame', {
       $('scene').setAttribute('fog', 'color: #444');
       $('player').setAttribute("movement-controls", "enabled: true");
       $('ghost-model').setAttribute("ghost-follow", "");
+      $('ghost-model2').setAttribute("ghost-follow", "");
+      $('ghost-model3').setAttribute("ghost-follow", "");
+      $('ghost-model4').setAttribute("ghost-follow", "");
+      $('ghost-model5').setAttribute("ghost-follow", "");
       this.el.remove();
     });
 

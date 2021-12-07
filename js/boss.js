@@ -71,10 +71,13 @@ AFRAME.registerComponent('hit-handler-boss', {
 
       if (vie < 0) {
         el.parentNode.remove(el);
-        el.parentNode.remove(el);
-        el.parentNode.remove(el);
-        el.parentNode.remove(el);
-        el.parentNode.remove(el);
+        $('sphere1').parentNode.removeChild($('sphere1'));
+        $('sphere2').parentNode.removeChild($('sphere2'));
+        $('sphere3').parentNode.removeChild($('sphere3'));
+        $('sphere4').parentNode.removeChild($('sphere4'));
+        
+        
+
       }
       vie -= 0.06;
     });

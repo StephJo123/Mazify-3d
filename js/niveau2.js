@@ -16,7 +16,7 @@ AFRAME.registerComponent('startgame', {
     toggleCursorColor(this.el);
 
     this.el.addEventListener('click', () => {
-      startTimer(60);
+      startTimer(500);
       $('compteur').setAttribute('visible', true);
       $('scene').setAttribute('fog', 'color: #444');
       $('player').setAttribute("movement-controls", "enabled: true");
@@ -61,7 +61,7 @@ AFRAME.registerComponent("collect-bunny", {
           audio.currentTime = 0;
           $('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
           el.remove();
-          if (nbLapins == 1) {
+          if (nbLapins == 13) {
             clearBunnies();
             win();
           }
