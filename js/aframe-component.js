@@ -335,7 +335,6 @@ AFRAME.registerComponent('delais', {
     setTimeout(() => {
       $('blade1').setAttribute('animation-mixer', '');
       $('blade3').setAttribute('animation-mixer', '');
-
     }, 15000);
     setTimeout(() => {
       $('piege_1').setAttribute('animation', {

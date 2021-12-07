@@ -5,11 +5,15 @@ function $(v) {
   return document.getElementById(v);
 }
 
+function toggleCursorColor(el) {
+  el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
+  el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
+}
+
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
   init: function () {
-    this.el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
-    this.el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
+    toggleCursorColor(this.el);
 
     this.el.addEventListener('click', () => {
       startTimer(60);
@@ -23,9 +27,10 @@ AFRAME.registerComponent('startgame', {
 
 const startTimer = (duration) => {
   var timer = duration;
+  const compteur = $('compteur');
   monInter = setInterval(function () {
-    if (document.body.contains($('compteur')))
-      $("compteur").setAttribute("text", "value: " + timer + ";");
+    if (document.body.contains(compteur))
+      compteur.setAttribute("text", "value: " + timer + ";");
 
     if (--timer < 0 && nbLapins != 13) {
       clearInterval(monInter);
@@ -45,8 +50,7 @@ AFRAME.registerComponent("collect-bunny", {
     var el = this.el; // référence à l'entité du composant.
 
     if (data.id) {
-      this.el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
-      this.el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
+      toggleCursorColor(this.el);
       el.addEventListener(
         "click",
         () => {
