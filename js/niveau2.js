@@ -38,7 +38,6 @@ const startTimer = (duration) => {
       die();
     }
   }, 1000);
-
 };
 
 AFRAME.registerComponent("collect-bunny", {
@@ -50,7 +49,7 @@ AFRAME.registerComponent("collect-bunny", {
     var el = this.el; // référence à l'entité du composant.
 
     if (data.id) {
-      toggleCursorColor(this.el);
+      toggleCursorColor(el);
       el.addEventListener(
         "click",
         () => {
