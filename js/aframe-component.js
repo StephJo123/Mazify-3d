@@ -89,6 +89,25 @@ AFRAME.registerComponent('tpsalleboss', {
   }
 });
 
+AFRAME.registerComponent('reticule-position', {
+	init: function() {
+		if (AFRAME.utils.device.checkHeadsetConnected()) {
+			this.el.object3D.scale.set(1,1,1);
+			document.querySelector('a-scene').appendChild(this.el);
+			this.el.setAttribute('animation__click',"property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150");
+			this.el.setAttribute('look-at','#gun-model');
+		}
+	},
+    tick: function() {
+		if (AFRAME.utils.device.checkHeadsetConnected()) {
+			const gun = $('gun-model').object3D;
+			const posGun = gun.getWorldPosition();
+			const directionGun = gun.getWorldDirection();
+			this.el.object3D.position.set(posGun.x-1*directionGun.x,posGun.y-1*directionGun.y,posGun.z-1*directionGun.z);
+		}
+    }
+}); 
+
 AFRAME.registerComponent("trackball", {
   tick: function () {
     if (bombactive) return;
@@ -318,9 +337,7 @@ AFRAME.registerComponent("ghost-collision-detect", {
 AFRAME.registerComponent("shoot-ennemy", {
   init: function () {
     let enemy = this.el;
-    setInterval(function () {
-      enemy.emit("shoot");
-    }, 1000);
+    setInterval(() => enemy.emit("shoot"), 1000);
   },
 });
 
