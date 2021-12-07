@@ -230,28 +230,36 @@ function die(deathText) {
   deathText.setAttribute('visible', true);
 }
 
-// fonction qui ajoute un nombre de munitions donné
-function addAmmo(munitionsBonus) {
-  let camera = $('camera');
-  let posBalleX = 0.13 + 0.01 * camera.getElementsByTagName("a-image").length;
+function concreteAddAmmo(nbAmmo,el,posDepart,isVR) {
+  let posBalleX = posDepart + 0.01 * el.getElementsByTagName("a-image").length;
 
-  for (var i = 0; i < munitionsBonus; i++) {
+  for (var i = 0; i < nbAmmo; i++) {
     let balle = document.createElement('a-image');
-    camera.appendChild(balle);
+    el.appendChild(balle);
     balle.setAttribute('src', '#bullet');
     balle.setAttribute('id', 'balle' + (nbTirs + i));
-    balle.object3D.position.set(posBalleX, -0.07, -0.2);
-    balle.setAttribute('scale', {
-      x: 0.005,
-      y: 0.005,
-      z: 0.005
-    });
+    if (isVR) {
+		balle.object3D.position.set(posBalleX, 0.2, -0.05);
+		balle.object3D.scale.set(0.01,0.01,0.01);
+	} else {
+		balle.object3D.position.set(posBalleX, -0.07, -0.2);
+		balle.object3D.scale.set(0.005,0.005,0.005);
+	}
     balle.setAttribute('height', '5');
     balle.setAttribute('width', '0.8');
     posBalleX += 0.01;
   }
-  nbTirs += munitionsBonus;
-};
+  nbTirs += nbAmmo;
+}
+// fonction qui ajoute un nombre de munitions donné
+function addAmmo(munitionsBonus) {
+	const isVR = AFRAME.utils.device.checkHeadsetConnected();
+  if (isVR) {
+	  concreteAddAmmo(munitionsBonus,$('handGun'),-0.1,isVR);
+  } else {
+	  concreteAddAmmo(munitionsBonus,$('camera'),0.13,isVR);
+  }
+}
 
 // fonction pour les lootboxes
 AFRAME.registerComponent("openlootbox", {
@@ -347,6 +355,7 @@ AFRAME.registerComponent("shoot-ennemy", {
 AFRAME.registerComponent('munitions', {
   init: function () {
     addAmmo(5);
+    
   }
 });
 
