@@ -91,11 +91,14 @@ AFRAME.registerComponent('tpsalleboss', {
 
 AFRAME.registerComponent('reticule-position', {
 	init: function() {
+		let cs = document.querySelector('a-cursor');
 		if (AFRAME.utils.device.checkHeadsetConnected()) {
+			cs[1].remove();
 			this.el.object3D.scale.set(1,1,1);
-			document.querySelector('a-scene').appendChild(this.el);
 			this.el.setAttribute('animation__click',"property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150");
 			this.el.setAttribute('look-at','#gun-model');
+		} else {
+			cs[0].remove();
 		}
 	},
     tick: function() {
