@@ -1,5 +1,7 @@
+var removeText;
 var existantG = true;
 var questionsArr = [];
+var removeText;
 
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
@@ -55,23 +57,17 @@ AFRAME.registerComponent('question_erreur', {
     for (let i = 0; i < badA.length; i++) {
       badA[i].addEventListener('click', function () {
 
-        for (let j = 0; j <= questionsArrB.length; j++) {
-          if (badA[i].id == questionsArrB[j]) {
+        for (let j = 0; j <= questionsArr.length; j++) {
+          if (badA[i].id == questionsArr[j]) {
             existantB = false;
             break;
-          } else if (j == questionsArrB.length) {
+          } else if (j == questionsArr.length) {
             existantB = true;
           }
         }
 
         if (existantB) {
-          questionsArrB.push(badA[i].id);
-
-          $("texteErreur").setAttribute("visible", true);
-
-          removeText = setTimeout(function () {
-            $("texteErreur").setAttribute("visible", false);
-          }, 2000);
+          questionsArr.push(badA[i].id);
         }
       });
     }
