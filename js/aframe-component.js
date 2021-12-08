@@ -3,6 +3,7 @@ var nbTirs = 0;
 var tirAutorise, isDead = true;
 var tpAutorise, bombactive = false;
 var vie = 20;
+var vieGhost = 3;
 
 function $(v) {
   return document.getElementById(v);
@@ -10,18 +11,28 @@ function $(v) {
 
 /* Permet de tirer */
 AFRAME.registerComponent('click-to-shoot', {
+
   init: function () {
-    document.body.addEventListener('mousedown', () => {
+    var el = this.el;
+
+    function tir() {
       if (nbTirs != 0 && tirAutorise) {
         tirAutorise = false;
-        this.el.emit('shoot');
+        el.emit('shoot');
         $('balle' + (nbTirs - 1)).remove();
         let audio = $('sonArme');
         audio.play();
         audio.currentTime = 0;
         nbTirs -= 1;
       }
-    });
+    }
+
+    if (AFRAME.utils.device.checkHeadsetConnected()) {
+      $('handGun').addEventListener('triggerdown', tir);
+    } else {
+      document.body.addEventListener('mousedown', tir)
+    }
+
     document.body.addEventListener('mouseup', () => {
       tirAutorise = true;
     });
@@ -30,7 +41,7 @@ AFRAME.registerComponent('click-to-shoot', {
 
 AFRAME.registerComponent('click-to-shoot-boss', {
   init: function () {
-    document.body.addEventListener('mousedown', () => {
+    $('handGun').addEventListener('triggerdown', () => {
       this.el.emit('shoot')
     });
   }
@@ -81,12 +92,12 @@ AFRAME.registerComponent('tpsalleboss', {
     $('skull2').addEventListener('click', function () {
       $('skull2').setAttribute('animation', {
         property: 'position',
-        to: '16.312 2.2 -20.9'
+        to: '16.312 1.4 -20.9'
       });
       $('skull2').setAttribute('link', 'href:niveau1.html')
     });
   }
-}); 
+});
 
 AFRAME.registerComponent("trackball", {
   tick: function () {
@@ -118,7 +129,7 @@ AFRAME.registerComponent("trackball", {
 
       };
 
-      startTimer(30, $("time2"));
+      startTimer(90, $("time2"));
 
       toggleCursorColor($('interrupteur2'));
 
@@ -141,6 +152,10 @@ function die(deathText) {
   $('scene').setAttribute('background', 'color: red')
 
   removeIfExist($('ghost-model'));
+  removeIfExist($('ghost-model2'));
+  removeIfExist($('ghost-model3'));
+  removeIfExist($('ghost-model4'));
+  removeIfExist($('ghost-model5'));
 
   if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible')) {
     $('compteur').remove();
@@ -189,7 +204,7 @@ function die(deathText) {
   deathText.setAttribute('visible', true);
 }
 
-function concreteAddAmmo(nbAmmo,el,posDepart,isVR) {
+function concreteAddAmmo(nbAmmo, el, posDepart, isVR) {
   let posBalleX = posDepart + 0.01 * el.getElementsByTagName("a-image").length;
 
   for (var i = 0; i < nbAmmo; i++) {
@@ -198,12 +213,12 @@ function concreteAddAmmo(nbAmmo,el,posDepart,isVR) {
     balle.setAttribute('src', '#bullet');
     balle.setAttribute('id', 'balle' + (nbTirs + i));
     if (isVR) {
-		balle.object3D.position.set(posBalleX, 0.2, -0.05);
-		balle.object3D.scale.set(0.01,0.01,0.01);
-	} else {
-		balle.object3D.position.set(posBalleX, -0.07, -0.2);
-		balle.object3D.scale.set(0.005,0.005,0.005);
-	}
+      balle.object3D.position.set(posBalleX, 0.2, -0.05);
+      balle.object3D.scale.set(0.01, 0.01, 0.01);
+    } else {
+      balle.object3D.position.set(posBalleX, -0.07, -0.2);
+      balle.object3D.scale.set(0.005, 0.005, 0.005);
+    }
     balle.setAttribute('height', '5');
     balle.setAttribute('width', '0.8');
     posBalleX += 0.01;
@@ -212,11 +227,11 @@ function concreteAddAmmo(nbAmmo,el,posDepart,isVR) {
 }
 // fonction qui ajoute un nombre de munitions donné
 function addAmmo(munitionsBonus) {
-	const isVR = AFRAME.utils.device.checkHeadsetConnected();
+  const isVR = AFRAME.utils.device.checkHeadsetConnected();
   if (isVR) {
-	  concreteAddAmmo(munitionsBonus,$('handGun'),-0.1,isVR);
+    concreteAddAmmo(munitionsBonus, $('handGun'), -0.1, isVR);
   } else {
-	  concreteAddAmmo(munitionsBonus,$('camera'),0.13,isVR);
+    concreteAddAmmo(munitionsBonus, $('camera'), 0.13, isVR);
   }
 }
 
@@ -280,7 +295,7 @@ AFRAME.registerComponent("ghost-collision-detect", {
     let ghostPos = ghost.object3D.position;
     let playerPos = $('player').object3D.position;
 
-    if (Math.abs(ghostPos.x - playerPos.x) < 0.80 && Math.abs(ghostPos.z - playerPos.z) < 0.80) {
+    if (Math.abs(ghostPos.x - playerPos.x) < 1.2 && Math.abs(ghostPos.z - playerPos.z) < 1.2) {
       die($('ghost-msg'));
     }
   }
@@ -343,5 +358,22 @@ AFRAME.registerComponent('delais', {
         dir: 'alternate'
       });
     }, 14400);
+  }
+});
+
+AFRAME.registerComponent('hit-handler-ghost', {
+  dependencies: ['material'],
+
+  init: function () {
+    var el = this.el;
+
+    el.addEventListener('hit', () => {
+      if (vieGhost == 0) {
+        $('ghost-model').removeAttribute('ghost-follow');
+        $('ghost-model').removeAttribute('ghost-collision-detect');
+        el.parentNode.removeChild(el);
+      }
+      vieGhost -= 1;
+    });
   }
 });
