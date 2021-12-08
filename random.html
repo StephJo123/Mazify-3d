@@ -15,6 +15,7 @@
   <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
   <script src="js/mazify.js"></script>
   <script src="js/player.js"></script>
+  <script src="js/core.js"></script>
   <script src="js/aframe-component.js"></script>
   <script id="link" type="text/html">
     <a-entity class="link" geometry="primitive: plane; height: 1; width: 1" material="shader: flat; src: ${thumb}"
@@ -35,7 +36,6 @@
     <a-assets>
       <img id="ground" src="assets/images/sol.jpg" />
       <img id="wall" src="assets/images/wall.jpg" />
-      <!-- <img id="plafond" src="assets/images/wall.jpg" /> -->
       <img id="start" src="assets/images/start.jpg" />
       <img id="finish" src="assets/images/finish.jpg" />
       <img id="texteBombe" src="assets/images/textebombe.png">
@@ -63,12 +63,6 @@
       <audio id="click-sound" crossorigin="anonymous"
         src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
     </a-assets>
-
-    <!-- Environment -->
-
-    <!-- plafond -->
-    <!-- <a-plane material="src: #plafond; repeat: 25 25" rotation="90 0 0" position="0 3 0" height="100" width="100">
-    </a-plane> -->
 
     <!-- start menu -->
     <a-entity id="start-model" layout="type: line; margin: 1.5" position="-26.959 1.500 21.724" startgame>

@@ -27,6 +27,7 @@ AFRAME.registerComponent('click-to-shoot', {
     });
   }
 });
+
 AFRAME.registerComponent('click-to-shoot-boss', {
   init: function () {
     document.body.addEventListener('mousedown', () => {
@@ -59,7 +60,6 @@ AFRAME.registerComponent("collision", {
 });
 
 AFRAME.registerComponent('collision_piege', {
-
   tick: function () {
     let pos = this.el.object3D.position;
 
@@ -77,7 +77,6 @@ AFRAME.registerComponent('collision_piege', {
 });
 
 AFRAME.registerComponent('tpsalleboss', {
-
   tick: function () {
     $('skull2').addEventListener('click', function () {
       $('skull2').setAttribute('animation', {
@@ -87,28 +86,6 @@ AFRAME.registerComponent('tpsalleboss', {
       $('skull2').setAttribute('link', 'href:niveau1.html')
     });
   }
-});
-
-AFRAME.registerComponent('reticule-position', {
-	init: function() {
-		let cs = document.querySelectorAll('a-cursor');
-		if (AFRAME.utils.device.checkHeadsetConnected()) {
-			cs[1].remove();
-			this.el.object3D.scale.set(1,1,1);
-			this.el.setAttribute('animation__click',"property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150");
-			this.el.setAttribute('look-at','#gun-model');
-		} else {
-			cs[0].remove();
-		}
-	},
-    tick: function() {
-		if (AFRAME.utils.device.checkHeadsetConnected()) {
-			const gun = $('gun-model').object3D;
-			const posGun = gun.getWorldPosition();
-			const directionGun = gun.getWorldDirection();
-			this.el.object3D.position.set(posGun.x-1*directionGun.x,posGun.y-1*directionGun.y,posGun.z-1*directionGun.z);
-		}
-    }
 }); 
 
 AFRAME.registerComponent("trackball", {
@@ -158,24 +135,6 @@ AFRAME.registerComponent("trackball", {
     }
   },
 });
-
-function isValidePosition(posInit) {
-  let bool = true;
-  lesmurs.forEach(function (el) {
-    const posN = el.object3D.position;
-    if (Math.abs(posN.x - posInit.x) < 2 && Math.abs(posN.z - posInit.z) < 2) {
-      bool = false;
-      return;
-    }
-  })
-  return bool;
-}
-
-function removeIfExist(element) {
-  if (document.body.contains(element)) {
-    element.remove();
-  }
-}
 
 function die(deathText) {
 
@@ -312,10 +271,6 @@ AFRAME.registerComponent("openlootbox", {
     }
   },
 });
-// notion de génération aléatoire
-function randomIntFromInterval(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
 
 AFRAME.registerComponent('trackballfinish', {
   tick: function () {
@@ -355,7 +310,6 @@ AFRAME.registerComponent("shoot-ennemy", {
 AFRAME.registerComponent('munitions', {
   init: function () {
     addAmmo(5);
-    
   }
 });
 
@@ -405,8 +359,3 @@ AFRAME.registerComponent('delais', {
     }, 14400);
   }
 });
-
-function toggleCursorColor(el) {
-  el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
-  el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
-}

@@ -1,15 +1,6 @@
 var removeBunny;
 var nbLapins = 0;
 
-function $(v) {
-  return document.getElementById(v);
-}
-
-function toggleCursorColor(el) {
-  el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
-  el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
-}
-
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
   init: function () {
@@ -130,19 +121,6 @@ function dialogEvenement(state, color) {
   $(state).object3D.position.y += 1;
 
   $(state).setAttribute('visible', true);
-}
-
-
-function isValidePosition(posInit) {
-  let bool = true;
-  lesmurs.forEach(function (el) {
-    const posN = el.object3D.position;
-    if (Math.abs(posN.x - posInit.x) < 2 && Math.abs(posN.z - posInit.z) < 2) {
-      bool = false;
-      return;
-    }
-  })
-  return bool;
 }
 
 function clearBunnies() {
