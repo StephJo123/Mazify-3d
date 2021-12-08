@@ -1,3 +1,4 @@
+var lesmurs;
 AFRAME.registerComponent("mazify", {
 
     init: function () {
@@ -79,6 +80,8 @@ AFRAME.registerComponent("mazify", {
                 }
             }
         }
+
+        lesmurs = document.querySelectorAll('a-entity[mazify] a-box');
 
         setTimeout(() => {
             let loader = document.querySelector("#loader");

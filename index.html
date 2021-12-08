@@ -14,6 +14,7 @@
   <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
   <script src="js/mazify.js"></script>
   <script src="js/player.js"></script>
+  <script src="js/core.js"></script>
   <script src="js/aframe-component.js"></script>
   <script src="js/index.js"></script>
 
@@ -31,19 +32,17 @@
   <div id="loader" class="lds-dual-ring centered"></div>
   <a-scene id="scene" style="display: none;" inspector-plugin-recast
     renderer="colorManagement: true; highRefreshRate: true; antialias: true;"
-    fog="type: exponential; color: springgreen; density: 0.15"
-  >
+    fog="type: exponential; color: springgreen; density: 0.15">
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/images/sol.jpg" />
       <img id="wall" src="assets/images/wall.jpg" />
-      <!-- <img id="plafond" src="assets/images/wall.jpg" /> -->
       <img id="start" src="assets/images/start.jpg" />
       <img id="finish" src="assets/images/finish.jpg" />
       <img id="texteBombe" src="assets/images/textebombe.png">
       <img id="texteInterrupteur" src="assets/images/texteInterrupteur.png">
       <img id="texteTeleportation" src="assets/images/textetp.png">
-      <img id="timeout-text" src="assets/images/timeout-text.png">
+      <img id="temps-ecoule" src="assets/images/temps-ecoule.png">
       <img id="trap-text" src="assets/images/trap-text.png">
       <img id="ghost-text" src="assets/images/ghost-text.png">
       <img id="logoUCA" src="assets/images/logo_UCA.jpg">
@@ -58,6 +57,7 @@
       <a-asset-item id="skull" src="assets/models/demon_skull/scene.gltf"></a-asset-item>
       <a-asset-item id="blade_trap" src="assets/models/blade_trap/scene.gltf"></a-asset-item>
       <a-asset-item id="loot_box" src="assets/models/lootbox/scene.gltf"></a-asset-item>
+      <a-asset-item id="explosion" src="assets/models/explosion/scene.gltf"></a-asset-item>
       <audio id="sonArme" src="assets/sounds/pistol.mp3" preload="auto"></audio>
       <audio id="sonTeleportation" src="assets/sounds/teleport_sound.mp3" preload="auto"></audio>
       <audio id="musique" src="assets/sounds/ambiance_sound.mp3"></audio>
@@ -66,12 +66,6 @@
         src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
     </a-assets>
 
-    <!-- Environment -->
-
-    <!-- plafond -->
-    <!-- <a-plane material="src: #plafond; repeat: 25 25" rotation="90 0 0" position="0 3 0" height="100" width="100">
-    </a-plane> -->
-
     <!-- start menu -->
     <a-entity id="start" layout="type: line; margin: 1.5" position="-26.959 1.500 21.724" startgame>
       <a-entity template="src: #link" data-thumb="#start-menu">
@@ -79,11 +73,11 @@
     </a-entity>
 
     <!-- messages de mort -->
-    <a-image id="timeout-msg" width="4" height="0.4" src="#timeout-text" scale="0.5 0.5 0.5" look-at="#camera"
+    <a-image id="timeout-msg" width="2" height="0.22" src="#temps-ecoule" scale="0.5 0.5 0.5" look-at="#camera"
       visible="false"></a-image>
-    <a-image id="trap-msg" width="4" height="0.4" src="#trap-text" scale="0.5 0.5 0.5" look-at="#camera"
+    <a-image id="trap-msg" width="2" height="0.22" src="#trap-text" scale="0.5 0.5 0.5" look-at="#camera"
       visible="false"></a-image>
-    <a-image id="ghost-msg" width="4" height="0.4" src="#ghost-text" scale="0.5 0.5 0.5" look-at="#camera"
+    <a-image id="ghost-msg" width="2" height="0.22" src="#ghost-text" scale="0.5 0.5 0.5" look-at="#camera"
       visible="false"></a-image>
 
     <!-- dead/restart menu -->
@@ -150,12 +144,17 @@
     <a-entity bullet="name: normal; speed: 20.0; poolSize: 20" geometry="primitive: icosahedron; radius: 0.1;"
       material="color: #FF7; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
 
+    <a-cursor id="cursor" color="white" position="0 0 -0.2" scale="1 1 1"
+      animation__click="property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150" reticule-position>
+    </a-cursor>
+
     <!-- Caméra Rig -->
     <a-entity id="player" player listener movement-controls="constrainToNavMesh: true; enabled: false;"
-      position="0 1.6 0" trackball trackballfinish collision collision_piege>
+      position="0 1.6 0" trackball collision collision_piege>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
-        <a-cursor id="cursor" color="white;" position="0 0 -0.2" scale="0.25 0.25 0.25"
+
+        <a-cursor id="cursor" color="white" position="0 0 -0.2" scale="0.25 0.25 0.25"
           animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 0.25 0.25 0.25; dur: 150">
         </a-cursor>
 
@@ -166,15 +165,16 @@
 
       </a-entity>
       <!-- Main gauche -->
-      <a-entity oculus-touch-controls="hand: left;"
-        hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
+      <a-entity oculus-touch-controls="hand: left;" hand-controls="hand: left; handModelStyle: lowPoly; color: #B3B3B3"
+        id="gauche">
       </a-entity>
       <!-- Main droite -->
-      <a-entity oculus-touch-controls="hand: right;"
+      <a-entity id="handGun" oculus-touch-controls="hand: right;"
         hand-controls="hand: right; handModelStyle: highPoly; color: #B3B3B3;" position="0.5 -0.7 -1.2"
         class="vr-except">
         <!-- Pistolet -->
-        <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot munitions shooter>
+        <a-entity id="gun-model" gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot
+          munitions shooter>
         </a-entity>
       </a-entity>
 
@@ -189,6 +189,17 @@
     </a-entity>
 
     <a-entity gltf-model="#ghost" id="ghost-model" animation-mixer position="-1.198 0 24" scale="0.01 0.01 0.01"
+      ghost-collision-detect target="static:false" hit-handler-ghost>
+      <!-- <a-entity gltf-model="#explosion" id="dieGhost"></a-entity> -->
+    </a-entity>
+
+    <a-entity gltf-model="#ghost" id="ghost-model2" animation-mixer position="-24.470 0 0.664" scale="0.01 0.01 0.01"
+      ghost-collision-detect></a-entity>
+    <a-entity gltf-model="#ghost" id="ghost-model3" animation-mixer position="-16.820 0 -6" scale="0.01 0.01 0.01"
+      ghost-collision-detect></a-entity>
+    <a-entity gltf-model="#ghost" id="ghost-model4" animation-mixer position="-18 0 -15.735" scale="0.01 0.01 0.01"
+      ghost-collision-detect></a-entity>
+    <a-entity gltf-model="#ghost" id="ghost-model5" animation-mixer position="6 0 -17" scale="0.01 0.01 0.01"
       ghost-collision-detect></a-entity>
 
     <!-- lootboxes models -->
@@ -197,35 +208,19 @@
     <a-entity gltf-model="#loot_box" id="lootbox2" openlootbox="id: lootbox2" scale="0.07 0.07 0.07"
       position="-6.077 -0.019 -23.955" animation-mixer="timeScale: 0;" visible="true"></a-entity>
 
-     <!--Redirection vers niveau 1--> 
-    <a-entity gltf-model="#skull" id="skull2"  scale="0.5 0.5 0.5"
-      position="17 2.2 -20.9" rotation="0 90 0" tpsalleboss></a-entity>
+    <!--Redirection vers niveau 1-->
+    <a-entity gltf-model="#skull" id="skull2" scale="0.5 0.5 0.5" position="17 1.4 -20.9" rotation="0 90 0" tpsalleboss>
+    </a-entity>
 
+    <a-entity position="16.55 2.3 -20.9" rotation="0 90 0" geometry="primitive: box; width: 0.9; height: 0.2; depth: 0.05"
+      material="color: #5A3314">
+      <a-entity text="value: Appuyez 2 fois sur le crane \n pour aller au niveau suivant !" position="0.15 0 0.025"></a-entity>
+    </a-entity>
     <!-- Maze -->
     <a-entity id="mazify" mazify> </a-entity>
 
   </a-scene>
 
-  <div id="time2" style="display: block;"></div>
-
-  <!-- Model Gagner -->
-  <div id="finishDialog" class="modal mazify" style="display: none;">
-    <!-- Modal content -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="close" onclick='closeDialog(this)'>&times;</span>
-        <h2>Terminé</h2>
-      </div>
-      <div class="modal-body">
-        <p>Félicitation</p>
-        <p id="temps"></p>
-      </div>
-      <div class="modal-footer">
-        <h3></h3>
-        <button class="button" onclick="reset()">Rejouer</button>
-      </div>
-    </div>
-  </div>
   <script>
     var mazeArr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, "f", 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, "s", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
     // compteur principal

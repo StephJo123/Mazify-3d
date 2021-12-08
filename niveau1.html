@@ -11,7 +11,7 @@
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
   <script src="js/mazify.js"></script>
   <script src="js/player.js"></script>
-  <script src="js/aframe-component.js"></script>
+  <script src="js/core.js"></script>
   <script src="js/niveau1.js"></script>
   <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet" />
@@ -29,32 +29,40 @@
   <div id="loader" class="lds-dual-ring centered"></div>
   <a-scene id="scene" style="display: none;" inspector-plugin-recast
   renderer="colorManagement: true; highRefreshRate: true; antialias: true;"
-  fog="type: exponential; color: springgreen; density: 0.15">    
+  >    
     <!-- Assets -->
     <a-assets>
       <img id="ground" src="assets/images/sol.jpg" />
       <img id="wall" src="assets/images/wall.jpg" />
       <img id="start" position="-0.46899 0.9698 -3.13406" src="assets/images/start.jpg" />
       <img id="start-menu" crossorigin="anonymous" src="assets/images/start-menu.jpg">
+      <img id="restart-menu" crossorigin="anonymous" src="assets/images/restart-menu.jpg">
+      <img id="trap-text" src="assets/images/trap-text.png">
+      <img id="badanswer-text" src="assets/images/badanswer-text.png">
       <img id="finish" src="assets/images/finish.jpg" />
-      <img id="texteQ1" src="assets/images/question1.png">
+      <img id="texteQ1" src="assets/images/question1.jpg">
       <img id="repQ1" src="assets/images/repQ1.png">
       <img id="repQ1F" src="assets/images/repQ1F.png">
-      <img id="texteQ2" src="assets/images/question2.png">
+      <img id="texteQ2" src="assets/images/question2.jpg">
       <img id="repQ2" src="assets/images/repQ2.png">
       <img id="repQ2F" src="assets/images/reqQ2F.png">
-      <img id="texteQ3" src="assets/images/question3.png">
+      <img id="texteQ3" src="assets/images/question3.jpg">
       <img id="repQ3" src="assets/images/repQ3.png">
       <img id="repQ3F" src="assets/images/repQ3F.png">
-      <img id="texteQ4" src="assets/images/question4.png">
+      <img id="texteQ4" src="assets/images/question4.jpg">
       <img id="repQ4" src="assets/images/repQ4.png">
       <img id="repQ4F" src="assets/images/repQ4F.png">
+      <img id="restart-menu" crossorigin="anonymous" src="assets/images/restart-menu.jpg">
+      <img id="trap-text" src="assets/images/trap-text.png">
       <audio id="musique" src="assets/sounds/ambiance_sound.mp3"></audio>
+      <audio id="click-sound" crossorigin="anonymous"
+        src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
       <a-asset-item id="my-nav-mesh" src="assets/navmeshLevel1.gltf"></a-asset-item>
       <a-asset-item id="bunny" src="assets/models/bunny/scene.gltf"></a-asset-item>
       <a-asset-item id="camp" src="assets/models/camp_fire/scene.gltf"></a-asset-item>
       <a-asset-item id="spike_trap" src="assets/models/spike_trap/scene.gltf"></a-asset-item>
       <a-asset-item id="voiture" src="assets/models/peugeot206/scene.gltf"></a-asset-item>
+      <a-asset-item id="rein" src="assets/models/right_kidney/scene.gltf"></a-asset-item>
     </a-assets>
 
     <!-- Environment -->
@@ -64,6 +72,18 @@
     <!-- start menu -->
     <a-entity id="start" layout="type: line; margin: 1.5" position="0 1.500 -2" startgame>
       <a-entity template="src: #link" data-thumb="#start-menu">
+      </a-entity>
+    </a-entity>
+
+    <!-- messages de mort -->
+    <a-image id="trap-msg" width="2" height="0.22" src="#trap-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
+    <a-image id="badanswer-msg" width="2" height="0.22" src="#badanswer-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
+
+    <!-- dead/restart menu -->
+    <a-entity id="restart" layout="type: line; margin: 1.5" visible="false" look-at="#camera">
+      <a-entity template="src: #link" data-thumb="#restart-menu" link="href: niveau1.html;">
       </a-entity>
     </a-entity>
 
@@ -133,35 +153,38 @@
 
     <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
     </a-entity>
+    
+    <a-cursor id="cursor" color="white" position="0 0 -0.2" scale="1 1 1"
+      animation__click="property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150" reticule-position>
+    </a-cursor>
 
     <!-- Caméra Rig -->
     <a-entity id="player" player listener movement-controls="constrainToNavMesh: true; enabled:false" collision_piege_niveau2>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
-        <a-cursor id="cursor" color="white;" position="0 0 -0.2" scale="0.25 0.25 0.25"
+        <a-cursor id="cursor" color="white" position="0 0 -0.2" scale="0.25 0.25 0.25"
           animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 0.25 0.25 0.25; dur: 150">
         </a-cursor>
         <a-entity id="texteBonus" text="value: Bonne reponse !; color: yellow;" position="0.165 0.03 -0.3"
-          scale="0.5 0.5 0.5" visible="false"></a-entity>
-        <a-entity id="texteErreur" text="value: Mauvaise reponse !; color: yellow;" position="0.165 0.03 -0.3"
           scale="0.5 0.5 0.5" visible="false"></a-entity>
       </a-entity>
       <!-- Main gauche -->
       <a-entity oculus-touch-controls="hand: left" hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
       </a-entity>
       <!-- Main droite -->
-      <a-entity oculus-touch-controls="hand: right"
+      <a-entity id="handGun" oculus-touch-controls="hand: right"
         hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3" position="0.5 -0.7 -1.2"
         class="vr-except">
       </a-entity>
     </a-entity>
 
-
-    <a-entity gltf-model="#bunny" id="bunny2" scale="0.06 0.06 0.06" position="-18 0 -16" look-at="#player">
+    <a-entity gltf-model="#bunny" id="bunny2" scale="0.08 0.08 0.08" position="-17.68 0 -18.4" look-at="#player">
     </a-entity>
     <a-entity gltf-model="#camp" id="camp2" scale="0.2 0.2 0.2" position="-18 0 17.6" >
     </a-entity>
-    <a-entity gltf-model="#voiture" id="peugeot" scale="2.5 2.5 2.5" position="18 0 16.7" rotation="0 180 0">
+    <a-entity gltf-model="#voiture" id="peugeot" scale="0.5 0.5 0.5" position="18 0 17.5" rotation="0 180 0">
+    </a-entity>
+    <a-entity gltf-model="#rein" id="rein" scale="0.008 0.008 0.008" position="18.723 0.85 -16.821">
     </a-entity>
     
     <!-- Maze -->

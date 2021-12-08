@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Mazify - 3D</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="description" content="Mazify 3D" />
+  <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <!--<script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>-->
+  <script src="js/aframe-inspector-plugin-recast.js"></script>
+  <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-event-set-component@4.1.2/dist/aframe-event-set-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
+  <script src="js/mazify.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/aframe-component.js"></script>
+  <script id="link" type="text/html">
+    <a-entity class="link" geometry="primitive: plane; height: 1; width: 1" material="shader: flat; src: ${thumb}"
+      event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1"
+      sound="on: click; src: #click-sound"></a-entity>
+  </script>
+  <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="assets/images/maze.png" />
+</head>
+
+<body id="body" style="background-color: #444">
+  <div id="loader" class="lds-dual-ring centered"></div>
+  <a-scene id="scene" style="display: none;" inspector-plugin-recast
+    renderer="colorManagement: true; highRefreshRate: true; antialias: true;"
+    fog="type: exponential; color: springgreen; density: 0.15">
+    <!-- Assets -->
+    <a-assets>
+      <img id="ground" src="assets/images/sol.jpg" />
+      <img id="wall" src="assets/images/wall.jpg" />
+      <img id="start" src="assets/images/start.jpg" />
+      <img id="finish" src="assets/images/finish.jpg" />
+      <img id="texteBombe" src="assets/images/textebombe.png">
+      <img id="texteInterrupteur" src="assets/images/texteInterrupteur.png">
+      <img id="texteTeleportation" src="assets/images/textetp.png">
+      <img id="timeout-text" src="assets/images/timeout-text.png">
+      <img id="trap-text" src="assets/images/trap-text.png">
+      <img id="ghost-text" src="assets/images/ghost-text.png">
+      <img id="logoUCA" src="assets/images/logo_UCA.jpg">
+      <img id="bullet" src="assets/images/bullets.png">
+      <img id="start-menu" crossorigin="anonymous" src="assets/images/start-menu.jpg">
+      <img id="restart-menu" crossorigin="anonymous" src="assets/images/restart-menu.jpg">
+      <a-asset-item id="interrupteur" src="assets/models/light_switch/scene.gltf"></a-asset-item>
+      <a-asset-item id="ghost" src="assets/models/fantasma_ghost_phantom/scene.gltf"></a-asset-item>
+      <a-asset-item id="my-nav-mesh" src="assets/navmesh.gltf"></a-asset-item>
+      <a-asset-item id="gun" src="assets/models/sci-fi_revolver/scene.gltf"></a-asset-item>
+      <a-asset-item id="bomb" src="assets/models/atomic_bomb/scene.gltf"></a-asset-item>
+      <a-asset-item id="skull" src="assets/models/demon_skull/scene.gltf"></a-asset-item>
+      <a-asset-item id="blade_trap" src="assets/models/blade_trap/scene.gltf"></a-asset-item>
+      <a-asset-item id="loot_box" src="assets/models/lootbox/scene.gltf"></a-asset-item>
+      <audio id="sonArme" src="assets/sounds/pistol.mp3" preload="auto"></audio>
+      <audio id="sonTeleportation" src="assets/sounds/teleport_sound.mp3" preload="auto"></audio>
+      <audio id="musique" src="assets/sounds/ambiance_sound.mp3"></audio>
+      <audio id="countdown" src="assets/sounds/countdown.mp3"></audio>
+      <audio id="click-sound" crossorigin="anonymous"
+        src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
+    </a-assets>
+
+    <!-- start menu -->
+    <a-entity id="start-model" layout="type: line; margin: 1.5" position="-26.959 1.500 21.724" startgame>
+      <a-entity template="src: #link" data-thumb="#start-menu">
+      </a-entity>
+    </a-entity>
+
+    <!-- messages de mort -->
+    <a-image id="timeout-msg" width="2" height="0.22" src="#timeout-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
+    <a-image id="trap-msg" width="2" height="0.22" src="#trap-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
+    <a-image id="ghost-msg" width="2" height="0.22" src="#ghost-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
+
+    <!-- dead/restart menu -->
+    <a-entity id="restart" layout="type: line; margin: 1.5" visible="false" look-at="#camera">
+      <a-entity template="src: #link" data-thumb="#restart-menu" link="href: index.html;">
+      </a-entity>
+    </a-entity>
+
+    <a-light type="ambient" color="#fff" intensity="0.8"></a-light>
+    <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="150" width="150"></a-plane>
+
+    <!-- Logo UCA -->
+    <a-image src="#logoUCA" id="logo" position="-27 1.4 16.55" rotation="0 0 0" scale="0.09 0.13 0.09" height="8"
+      width="20"></a-image>
+
+    <!--Interrupteur-->
+    <a-entity gltf-model="#interrupteur" id="interrupteur2" onclick="" trackball scale="15 15 15"
+      position="-22.35 1.576 -21">
+    </a-entity>
+    <a-image src="#texteInterrupteur" id="tinterrupteur" position="-21.0 1.845 -21.8" rotation="0 45 0"
+      scale="0.09 0.09 0.09" height="8" width="20" visible="false"
+      animation="property: position; to: -21.0 2.1 -21.8; loop: true; dur: 4000; dir: alternate"></a-image>
+
+    <!--Bombe-->
+    <a-entity gltf-model="#bomb" id="bombe" scale="0.02 0.02 0.02" position="-2.942 1.759 -4.410" rotation="270 0 0">
+    </a-entity>
+    <a-cone id="fini2" position="18.6 1 -21.14" scale="0.002 0.002 0.002" radius="0.25" color="#EF2D5E" dynamic-body>
+    </a-cone>
+
+    <!--Blade trap-->
+    <a-entity delais gltf-model="#blade_trap" id="blade" scale="0.8 0.7 0.8" position="-3.79382 0.4 -11"
+      rotation="0 0 0">
+    </a-entity>
+    <a-box id="piege_0" delais position="-5.1 1 -11" scale="1.1 0 0"></a-box>
+
+    <!--Blade trap1-->
+    <a-entity gltf-model="#blade_trap" id="blade1" scale="0.8 0.7 0.8" position="-3.79382 0.4 -14.4" rotation="0 0 0">
+    </a-entity>
+    <a-box id="piege_1" position="-5.1 1 -14.44684" scale="1.1 0 0"></a-box>
+
+    <!--Blade trap2-->
+    <a-entity gltf-model="#blade_trap" id="blade2" scale="0.8 0.7 0.8" position="-3.79382 0.4 -17" rotation="0 0 0">
+    </a-entity>
+    <a-box id="piege_2" position="-5.1 1 -17" scale="1.1 0 0"></a-box>
+
+    <!--Blade trap3-->
+    <a-entity gltf-model="#blade_trap" id="blade3" scale="0.8 0.7 0.8" position="-3.79382 0.4 -20" rotation="0 0 0">
+    </a-entity>
+    <a-box id="piege_3" position="-5.1 1 -20" scale="1.1 0 0"></a-box>
+
+    <!-- texte bombe -->
+    <a-image src="#texteBombe" id="tbombe" position="-0.711 2.387 -4.168" rotation="0 -45 0" scale="0.09 0.09 0.09"
+      height="8" width="20" visible="false"
+      animation="property: position; to: -0.711 2.6 -4.168; loop: true; dur: 4000; dir: alternate"></a-image>
+
+    <a-cone id="fini2" position="18.6 1 -21.14" scale="0.002 0.002 0.002" radius="0.25" color="#EF2D5E" dynamic-body>
+    </a-cone>
+
+    <!-- Tracking des mains -->
+    <a-entity id="leftHand" hand-tracking-controls="hand: left;"></a-entity>
+    <a-entity id="rightHand" hand-tracking-controls="hand: right;"></a-entity>
+
+    <!-- Gestion des balles -->
+    <a-entity bullet="name: normal; speed: 20.0; poolSize: 20" geometry="primitive: icosahedron; radius: 0.1;"
+      material="color: #FF7; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
+
+    <!-- Caméra Rig -->
+    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true; enabled: true;"
+      position="0 1.6 0" trackball trackballfinish collision collision_piege>
+      <!-- Caméra -->
+      <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
+        <a-cursor id="cursor" color="white" position="0 0 -0.2" scale="0.25 0.25 0.25"
+          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 0.25 0.25 0.25; dur: 150">
+        </a-cursor>
+
+        <a-entity id="compteur" text="value: ;" position="0.12 -0.07 -0.2" scale="0.4 0.4 0" visible="true"></a-entity>
+
+        <a-entity id="texteBonus" text="value: Munitions bonus !; color: yellow;" position="0.165 0.03 -0.3"
+          scale="0.5 0.5 0.5" visible="false"></a-entity>
+
+      </a-entity>
+      <!-- Main gauche -->
+      <a-entity oculus-touch-controls="hand: left;"
+        hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3">
+      </a-entity>
+      <!-- Main droite -->
+      <a-entity oculus-touch-controls="hand: right;"
+        hand-controls="hand: right; handModelStyle: highPoly; color: #B3B3B3;" position="0.5 -0.7 -1.2"
+        class="vr-except">
+        <!-- Pistolet -->
+        <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot munitions shooter>
+        </a-entity>
+      </a-entity>
+
+    </a-entity>
+
+    <a-circle id="boxTp" material="color: black; opacity: 0.5; transparent: true" position="-2.9 1.2 -26"></a-circle>
+    <a-image src="#texteTeleportation" id="txttp" position="-2.9 2.6 -26" rotation="0 0 0" scale="0.09 0.09 0.09"
+      height="8" width="20" visible="true"></a-image>
+    </a-entity>
+
+    <a-entity nav-mesh position="0 -0.1 0" visible="false">
+    </a-entity>
+
+    <a-entity gltf-model="#ghost" id="ghost-model" animation-mixer position="-1.198 0 24" scale="0.01 0.01 0.01"
+      ghost-collision-detect></a-entity>
+
+    <!-- lootboxes models -->
+    <a-entity gltf-model="#loot_box" id="lootbox1" openlootbox="id: lootbox1" scale="0.07 0.07 0.07"
+      position="0.077 -0.019 -23.955" animation-mixer="timeScale: 0;" visible="true"></a-entity>
+    <a-entity gltf-model="#loot_box" id="lootbox2" openlootbox="id: lootbox2" scale="0.07 0.07 0.07"
+      position="-6.077 -0.019 -23.955" animation-mixer="timeScale: 0;" visible="true"></a-entity>
+
+    <!-- Maze -->
+    <a-entity mazify> </a-entity>
+
+  </a-scene>
+
+  <script src="js/randMaze.js"></script>
+
+  <script>
+    var mazeArr = randomGeneration();
+    // compteur principal
+    const departMinutes = 0.01
+    let temps = departMinutes * 60
+    var secondes = 0;
+    var mainCounter = setInterval(() => {
+      let minutes = parseInt(temps / 60, 10)
+      minutes = minutes < 10 ? "0" + minutes : minutes
+      secondes = secondes < 10 ? "0" + secondes : secondes
+      temps = temps <= 0 ? 0 : temps + 1
+    }, 1000)
+  </script>
+</body>
+
+</html>

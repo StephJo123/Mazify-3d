@@ -1,11 +1,9 @@
 var removeText, removeBox, monInter;
 var nbTirs = 0;
-var tirAutorise, isDead, existantG, existantB = true;
+var tirAutorise, isDead = true;
 var tpAutorise, bombactive = false;
 var vie = 20;
-var questionsArr = [];
-var questionsArrB = [];
-var lesmurs;
+var vieGhost = 3;
 
 function $(v) {
   return document.getElementById(v);
@@ -13,26 +11,37 @@ function $(v) {
 
 /* Permet de tirer */
 AFRAME.registerComponent('click-to-shoot', {
+
   init: function () {
-    document.body.addEventListener('mousedown', () => {
+    var el = this.el;
+
+    function tir() {
       if (nbTirs != 0 && tirAutorise) {
         tirAutorise = false;
-        this.el.emit('shoot');
+        el.emit('shoot');
         $('balle' + (nbTirs - 1)).remove();
         let audio = $('sonArme');
         audio.play();
         audio.currentTime = 0;
         nbTirs -= 1;
       }
-    });
+    }
+
+    if (AFRAME.utils.device.checkHeadsetConnected()) {
+      $('handGun').addEventListener('triggerdown', tir);
+    } else {
+      document.body.addEventListener('mousedown', tir)
+    }
+
     document.body.addEventListener('mouseup', () => {
       tirAutorise = true;
     });
   }
 });
+
 AFRAME.registerComponent('click-to-shoot-boss', {
   init: function () {
-    document.body.addEventListener('mousedown', () => {
+    $('handGun').addEventListener('triggerdown', () => {
       this.el.emit('shoot')
     });
   }
@@ -62,7 +71,6 @@ AFRAME.registerComponent("collision", {
 });
 
 AFRAME.registerComponent('collision_piege', {
-
   tick: function () {
     let pos = this.el.object3D.position;
 
@@ -80,12 +88,11 @@ AFRAME.registerComponent('collision_piege', {
 });
 
 AFRAME.registerComponent('tpsalleboss', {
-
   tick: function () {
     $('skull2').addEventListener('click', function () {
       $('skull2').setAttribute('animation', {
         property: 'position',
-        to: '16.312 2.2 -20.9'
+        to: '16.312 1.4 -20.9'
       });
       $('skull2').setAttribute('link', 'href:niveau1.html')
     });
@@ -108,22 +115,11 @@ AFRAME.registerComponent("trackball", {
       $("tbombe").setAttribute("visible", "true");
       $("compteur").setAttribute("visible", "true");
 
-      const startTimer = (duration, display) => {
-        var timer = duration,
-          minutes,
-          seconds;
+      const startTimer = (duration) => {
+        var timer = duration;
         monInter = setInterval(function () {
           if (document.body.contains($('compteur')))
-
             $("compteur").setAttribute("text", "value: " + timer + ";");
-          minutes = parseInt(timer / 60, 10);
-          seconds = parseInt(timer % 60, 10);
-
-          minutes = minutes < 10 ? "0" + minutes : minutes;
-          seconds = seconds < 10 ? "0" + seconds : seconds;
-
-          display.textContent = minutes + ":" + seconds;
-
           if (--timer < 0) {
             $("countdown").pause();
             clearInterval(monInter);
@@ -133,10 +129,9 @@ AFRAME.registerComponent("trackball", {
 
       };
 
-      startTimer(30, $("time2"));
+      startTimer(90, $("time2"));
 
-      $("interrupteur2").addEventListener('mouseenter', changeColor);
-      $("interrupteur2").addEventListener('mouseleave', changeBack);
+      toggleCursorColor($('interrupteur2'));
 
       $("interrupteur2").addEventListener("click", function () {
         // stop le compteur pour éviter de continuer le calcul
@@ -144,9 +139,7 @@ AFRAME.registerComponent("trackball", {
         $("tbombe").remove();
         $("countdown").pause();
         $("musique").play();
-        if (document.contains($("compteur"))) {
-          $("compteur").remove();
-        }
+        removeIfExist($("compteur"));
         $("tinterrupteur").setAttribute("visible", "true");
         tpAutorise = true;
       });
@@ -154,28 +147,22 @@ AFRAME.registerComponent("trackball", {
   },
 });
 
-function isValidePosition(posInit) {
-  let bool = true;
-  lesmurs.forEach(function (el) {
-    const posN = el.object3D.position;
-    if (Math.abs(posN.x - posInit.x) < 2 && Math.abs(posN.z - posInit.z) < 2) {
-      bool = false;
-      return;
-    }
-  })
-  return bool;
-}
-
 function die(deathText) {
 
-  if (document.body.contains($('ghost-model'))) {
-    $('ghost-model').remove();
-  }
+  $('scene').setAttribute('background', 'color: red')
+
+  removeIfExist($('ghost-model'));
+  removeIfExist($('ghost-model2'));
+  removeIfExist($('ghost-model3'));
+  removeIfExist($('ghost-model4'));
+  removeIfExist($('ghost-model5'));
+
   if (document.body.contains($('compteur')) && $('compteur').getAttribute('visible')) {
     $('compteur').remove();
     clearInterval(monInter);
   }
 
+  removeIfExist($('tbombe'));
 
   // blocage des controles du joueur
   $('player').setAttribute("movement-controls", "enabled: false");
@@ -217,28 +204,36 @@ function die(deathText) {
   deathText.setAttribute('visible', true);
 }
 
-// fonction qui ajoute un nombre de munitions de façon aléatoire
-function addAmmo(munitionsBonus) {
-  let camera = $('camera');
-  let posBalleX = 0.13 + 0.01 * camera.getElementsByTagName("a-image").length;
+function concreteAddAmmo(nbAmmo, el, posDepart, isVR) {
+  let posBalleX = posDepart + 0.01 * el.getElementsByTagName("a-image").length;
 
-  for (var i = 0; i < munitionsBonus; i++) {
+  for (var i = 0; i < nbAmmo; i++) {
     let balle = document.createElement('a-image');
-    camera.appendChild(balle);
+    el.appendChild(balle);
     balle.setAttribute('src', '#bullet');
     balle.setAttribute('id', 'balle' + (nbTirs + i));
-    balle.object3D.position.set(posBalleX, -0.07, -0.2);
-    balle.setAttribute('scale', {
-      x: 0.005,
-      y: 0.005,
-      z: 0.005
-    });
+    if (isVR) {
+      balle.object3D.position.set(posBalleX, 0.2, -0.05);
+      balle.object3D.scale.set(0.01, 0.01, 0.01);
+    } else {
+      balle.object3D.position.set(posBalleX, -0.07, -0.2);
+      balle.object3D.scale.set(0.005, 0.005, 0.005);
+    }
     balle.setAttribute('height', '5');
     balle.setAttribute('width', '0.8');
     posBalleX += 0.01;
   }
-  nbTirs += munitionsBonus;
-};
+  nbTirs += nbAmmo;
+}
+// fonction qui ajoute un nombre de munitions donné
+function addAmmo(munitionsBonus) {
+  const isVR = AFRAME.utils.device.checkHeadsetConnected();
+  if (isVR) {
+    concreteAddAmmo(munitionsBonus, $('handGun'), -0.1, isVR);
+  } else {
+    concreteAddAmmo(munitionsBonus, $('camera'), 0.13, isVR);
+  }
+}
 
 // fonction pour les lootboxes
 AFRAME.registerComponent("openlootbox", {
@@ -254,8 +249,7 @@ AFRAME.registerComponent("openlootbox", {
 
     // si une lootbox est touchée, on l'ouvre, puis la supprime...
     if (data.id) {
-      el.addEventListener('mouseenter', changeColor);
-      el.addEventListener('mouseleave', changeBack);
+      toggleCursorColor(el);
       el.addEventListener(
         "click",
         () => {
@@ -293,30 +287,7 @@ AFRAME.registerComponent("openlootbox", {
   },
 });
 
-// notion de génération aléatoire
-function randomIntFromInterval(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
 
-AFRAME.registerComponent('trackballfinish', {
-  tick: function () {
-    let pos = this.el.object3D.position;
-    let posPiege = $('fini2').object3D.position;
-
-    if (Math.abs(pos.x - posPiege.x) < 2) {
-      if (Math.abs(pos.z - posPiege.z) < 2) {
-        clearInterval(mainCounter);
-        $('finishDialog').children[0].children[1].children[0].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
-        $('finishDialog').style.display = "block";
-        clearInterval(monInter);
-        if (document.contains($("compteur"))) {
-          $("compteur").remove();
-        }
-        document.querySelector('a-scene').exitVR();
-      }
-    }
-  }
-});
 
 AFRAME.registerComponent("ghost-collision-detect", {
   tick: function () {
@@ -324,7 +295,7 @@ AFRAME.registerComponent("ghost-collision-detect", {
     let ghostPos = ghost.object3D.position;
     let playerPos = $('player').object3D.position;
 
-    if (Math.abs(ghostPos.x - playerPos.x) < 0.40 && Math.abs(ghostPos.z - playerPos.z) < 0.40) {
+    if (Math.abs(ghostPos.x - playerPos.x) < 1.2 && Math.abs(ghostPos.z - playerPos.z) < 1.2) {
       die($('ghost-msg'));
     }
   }
@@ -333,9 +304,7 @@ AFRAME.registerComponent("ghost-collision-detect", {
 AFRAME.registerComponent("shoot-ennemy", {
   init: function () {
     let enemy = this.el;
-    setInterval(function () {
-      enemy.emit("shoot");
-    }, 1000);
+    setInterval(() => enemy.emit("shoot"), 1000);
   },
 });
 
@@ -350,7 +319,6 @@ AFRAME.registerComponent('delais', {
     setTimeout(() => {
       $('blade1').setAttribute('animation-mixer', '');
       $('blade3').setAttribute('animation-mixer', '');
-
     }, 15000);
     setTimeout(() => {
       $('piege_1').setAttribute('animation', {
@@ -393,10 +361,19 @@ AFRAME.registerComponent('delais', {
   }
 });
 
-function changeColor() {
-  cursor.setAttribute('material', 'color: springgreen');
-}
+AFRAME.registerComponent('hit-handler-ghost', {
+  dependencies: ['material'],
 
-function changeBack() {
-  cursor.setAttribute('material', 'color: white');
-}
+  init: function () {
+    var el = this.el;
+
+    el.addEventListener('hit', () => {
+      if (vieGhost == 0) {
+        $('ghost-model').removeAttribute('ghost-follow');
+        $('ghost-model').removeAttribute('ghost-collision-detect');
+        el.parentNode.removeChild(el);
+      }
+      vieGhost -= 1;
+    });
+  }
+});
