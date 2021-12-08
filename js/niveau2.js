@@ -45,6 +45,11 @@ AFRAME.registerComponent("collect-bunny", {
         "click",
         () => {
           nbLapins++;
+          document.getElementById('collectedBunnies').setAttribute('visible', true);
+          document.getElementById('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
+          let audio = $('collect_sound');
+          audio.play();
+          audio.currentTime = 0;
           $('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
           el.remove();
           if (nbLapins == 1) {
