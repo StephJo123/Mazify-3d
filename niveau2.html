@@ -86,7 +86,11 @@
 
     <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
     </a-entity>
-
+    
+    <a-cursor id="cursor" color="white" position="0 0 -0.2" scale="1 1 1"
+      animation__click="property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150" reticule-position>
+    </a-cursor>
+    
     <!-- Caméra Rig -->
     <a-entity id="player" player listener movement-controls="constrainToNavMesh: true; enabled: false;"
       collision_piege_niveau2>
@@ -107,7 +111,7 @@
         hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3;">
       </a-entity>
       <!-- Main droite -->
-      <a-entity oculus-touch-controls="hand: right"
+      <a-entity id="handGun" oculus-touch-controls="hand: right"
         hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3" position="0.5 -0.7 -1.2"
         class="vr-except">
       </a-entity>
