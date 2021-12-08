@@ -41,7 +41,7 @@ AFRAME.registerComponent('click-to-shoot', {
 
 AFRAME.registerComponent('click-to-shoot-boss', {
   init: function () {
-    $('handGun').addEventListener('triggerdown', () => {
+   this.el.addEventListener('mousedown', () => {
       this.el.emit('shoot')
     });
   }
@@ -371,9 +371,10 @@ AFRAME.registerComponent('hit-handler-ghost', {
       if (vieGhost == 0) {
         $('ghost-model').removeAttribute('ghost-follow');
         $('ghost-model').removeAttribute('ghost-collision-detect');
-        el.parentNode.removeChild(el);
+        $('ghost-model').parentNode.removeChild($('ghost-model'));
       }
       vieGhost -= 1;
+      console.log(vieGhost);
     });
   }
 });

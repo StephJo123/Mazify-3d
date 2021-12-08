@@ -1,6 +1,7 @@
 var boxx = -24;
 var boxz = 18;
 var boxx2 = 22;
+var vie = 20;
 
 function $(v) {
   return document.getElementById(v);
@@ -75,11 +76,12 @@ AFRAME.registerComponent('hit-handler-boss', {
         $('sphere2').parentNode.removeChild($('sphere2'));
         $('sphere3').parentNode.removeChild($('sphere3'));
         $('sphere4').parentNode.removeChild($('sphere4'));
+        document.querySelector('bullet').remove(document.querySelector('bullet'));
         
         
 
       }
-      vie -= 0.06;
+      vie -= 0.5;
     });
 
     el.addEventListener('die', () => {

@@ -25,7 +25,6 @@
       <audio id="roar" src="assets/sounds/monsterRoar.mp3"></audio>
       <a-asset-item id="boss" src="assets/models/boss/scene.gltf"></a-asset-item>
       <a-asset-item id="my-nav-mesh" src="assets/navmeshBoss.gltf"></a-asset-item>
-      <a-asset-item id="missile" src="assets/models/missile/scene.gltf"></a-asset-item>
       <a-asset-item id="barriere" src="assets/models/barriere/scene.gltf"></a-asset-item>
       <a-asset-item id="gun" src="assets/models/sci-fi_revolver/scene.gltf"></a-asset-item>
       <a-asset-item id="limit" src="assets/models/limit/scene.gltf"></a-asset-item>
@@ -37,24 +36,12 @@
     <!-- Caméra Rig -->
     <a-entity id="player2" movement-controls="constrainToNavMesh: true">
       <!-- Caméra -->
-      <a-entity camera position="0 1.6 0" look-controls id="camera">
+      <a-entity camera position="0 1.6 0" look-controls id="camera" click-to-shoot-boss shooter >
         <a-cursor></a-cursor>
-      </a-entity>
-      <!-- Main gauche -->
-      <a-entity oculus-touch-controls="hand: left;"
-        hand-controls="hand: left; handModelStyle: lowPoly; color: #B3B3B3" id="gauche">
-      </a-entity>
-      <!-- Main droite -->
-      <a-entity oculus-touch-controls="hand: right;"
-        hand-controls="hand: right; handModelStyle: lowPoly; color: #B3B3B3;" position="0.5 -0.7 -1.2"
-        class="vr-except" id="droite">
-        <!-- Pistolet -->
-        <a-entity gltf-model="#gun" scale="0.012 0.012 0.012" position="0 0.05 -0.12" click-to-shoot-boss shooter>
-        </a-entity>
       </a-entity>
     </a-entity>
 
-    <a-entity gltf-model="#barriere" position="0 0 0.45" scale="0.6 2.75 1" target="healthPoints: 10" hit-handler camera-hit></a-entity>
+    <a-entity gltf-model="#barriere" position="0 0 0.45" scale="0.6 2.75 1" visible="false" target="healthPoints: 10" hit-handler camera-hit></a-entity>
 
     <a-entity gltf-model="#my-nav-mesh" nav-mesh visible="false"></a-entity>
 
