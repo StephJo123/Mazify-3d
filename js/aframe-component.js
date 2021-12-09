@@ -14,8 +14,7 @@ AFRAME.registerComponent('click-to-shoot', {
 
   init: function () {
     var el = this.el;
-
-    function tir() {
+    function tir(){
       if (nbTirs != 0 && tirAutorise) {
         tirAutorise = false;
         el.emit('shoot');
@@ -26,10 +25,11 @@ AFRAME.registerComponent('click-to-shoot', {
         nbTirs -= 1;
       }
     }
-
-    if (AFRAME.utils.device.checkHeadsetConnected()) {
+    
+    if (AFRAME.utils.device.checkHeadsetConnected()){
       $('handGun').addEventListener('triggerdown', tir);
-    } else {
+    }
+    else{
       document.body.addEventListener('mousedown', tir)
     }
 
@@ -41,7 +41,7 @@ AFRAME.registerComponent('click-to-shoot', {
 
 AFRAME.registerComponent('click-to-shoot-boss', {
   init: function () {
-   this.el.addEventListener('mousedown', () => {
+    $('handGun').addEventListener('triggerdown', () => {
       this.el.emit('shoot')
     });
   }
@@ -71,6 +71,7 @@ AFRAME.registerComponent("collision", {
 });
 
 AFRAME.registerComponent('collision_piege', {
+
   tick: function () {
     let pos = this.el.object3D.position;
 
@@ -88,6 +89,7 @@ AFRAME.registerComponent('collision_piege', {
 });
 
 AFRAME.registerComponent('tpsalleboss', {
+
   tick: function () {
     $('skull2').addEventListener('click', function () {
       $('skull2').setAttribute('animation', {
@@ -98,6 +100,28 @@ AFRAME.registerComponent('tpsalleboss', {
     });
   }
 });
+
+AFRAME.registerComponent('reticule-position', {
+	init: function() {
+		let cs = document.querySelectorAll('a-cursor');
+		if (AFRAME.utils.device.checkHeadsetConnected()) {
+			cs[1].remove();
+			this.el.object3D.scale.set(1,1,1);
+			this.el.setAttribute('animation__click',"property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150");
+			this.el.setAttribute('look-at','#gun-model');
+		} else {
+			cs[0].remove();
+		}
+	},
+    tick: function() {
+		if (AFRAME.utils.device.checkHeadsetConnected()) {
+			const gun = $('gun-model').object3D;
+			const posGun = gun.getWorldPosition();
+			const directionGun = gun.getWorldDirection();
+			this.el.object3D.position.set(posGun.x-1*directionGun.x,posGun.y-1*directionGun.y,posGun.z-1*directionGun.z);
+		}
+    }
+}); 
 
 AFRAME.registerComponent("trackball", {
   tick: function () {
@@ -134,6 +158,10 @@ AFRAME.registerComponent("trackball", {
       toggleCursorColor($('interrupteur2'));
 
       $("interrupteur2").addEventListener("click", function () {
+        $("interrupteur2").setAttribute("animation-mixer",{
+          timeScale: "0.3",
+          loop: "once"
+        });
         // stop le compteur pour éviter de continuer le calcul
         clearInterval(monInter);
         $("tbombe").remove();
@@ -146,6 +174,24 @@ AFRAME.registerComponent("trackball", {
     }
   },
 });
+
+function isValidePosition(posInit) {
+  let bool = true;
+  lesmurs.forEach(function (el) {
+    const posN = el.object3D.position;
+    if (Math.abs(posN.x - posInit.x) < 2 && Math.abs(posN.z - posInit.z) < 2) {
+      bool = false;
+      return;
+    }
+  })
+  return bool;
+}
+
+function removeIfExist(element) {
+  if (document.body.contains(element)) {
+    element.remove();
+  }
+}
 
 function die(deathText) {
 
@@ -204,7 +250,7 @@ function die(deathText) {
   deathText.setAttribute('visible', true);
 }
 
-function concreteAddAmmo(nbAmmo, el, posDepart, isVR) {
+function concreteAddAmmo(nbAmmo,el,posDepart,isVR) {
   let posBalleX = posDepart + 0.01 * el.getElementsByTagName("a-image").length;
 
   for (var i = 0; i < nbAmmo; i++) {
@@ -213,12 +259,12 @@ function concreteAddAmmo(nbAmmo, el, posDepart, isVR) {
     balle.setAttribute('src', '#bullet');
     balle.setAttribute('id', 'balle' + (nbTirs + i));
     if (isVR) {
-      balle.object3D.position.set(posBalleX, 0.2, -0.05);
-      balle.object3D.scale.set(0.01, 0.01, 0.01);
-    } else {
-      balle.object3D.position.set(posBalleX, -0.07, -0.2);
-      balle.object3D.scale.set(0.005, 0.005, 0.005);
-    }
+		balle.object3D.position.set(posBalleX, 0.2, -0.05);
+		balle.object3D.scale.set(0.01,0.01,0.01);
+	} else {
+		balle.object3D.position.set(posBalleX, -0.07, -0.2);
+		balle.object3D.scale.set(0.005,0.005,0.005);
+	}
     balle.setAttribute('height', '5');
     balle.setAttribute('width', '0.8');
     posBalleX += 0.01;
@@ -227,11 +273,11 @@ function concreteAddAmmo(nbAmmo, el, posDepart, isVR) {
 }
 // fonction qui ajoute un nombre de munitions donné
 function addAmmo(munitionsBonus) {
-  const isVR = AFRAME.utils.device.checkHeadsetConnected();
+	const isVR = AFRAME.utils.device.checkHeadsetConnected();
   if (isVR) {
-    concreteAddAmmo(munitionsBonus, $('handGun'), -0.1, isVR);
+	  concreteAddAmmo(munitionsBonus,$('handGun'),-0.1,isVR);
   } else {
-    concreteAddAmmo(munitionsBonus, $('camera'), 0.13, isVR);
+	  concreteAddAmmo(munitionsBonus,$('camera'),0.13,isVR);
   }
 }
 
@@ -286,6 +332,10 @@ AFRAME.registerComponent("openlootbox", {
     }
   },
 });
+// notion de génération aléatoire
+function randomIntFromInterval(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 
 
@@ -311,6 +361,7 @@ AFRAME.registerComponent("shoot-ennemy", {
 AFRAME.registerComponent('munitions', {
   init: function () {
     addAmmo(5);
+    
   }
 });
 
@@ -371,10 +422,14 @@ AFRAME.registerComponent('hit-handler-ghost', {
       if (vieGhost == 0) {
         $('ghost-model').removeAttribute('ghost-follow');
         $('ghost-model').removeAttribute('ghost-collision-detect');
-        $('ghost-model').parentNode.removeChild($('ghost-model'));
+        el.parentNode.removeChild(el);
       }
       vieGhost -= 1;
-      console.log(vieGhost);
     });
   }
 });
+
+function toggleCursorColor(el) {
+  el.addEventListener('mouseenter', () => cursor.setAttribute('material', 'color: springgreen'));
+  el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
+}
