@@ -29,24 +29,32 @@ var toggleCursorColor = function(el) {
   el.addEventListener('mouseleave', () => cursor.setAttribute('material', 'color: white'));
 }
 
+var removeIfVrOrNot = function(target) {
+	let cs = document.querySelectorAll(target);
+	if (cs.length == 2) {
+		(AFRAME.utils.device.checkHeadsetConnected()) ? cs[1].remove() : cs[0].remove();
+	}
+}
+
 AFRAME.registerComponent('reticule-position', {
 	init: function() {
-		let cs = document.querySelectorAll('a-cursor');
-		if (AFRAME.utils.device.checkHeadsetConnected()) {
-			cs[1].remove();
-			this.el.object3D.scale.set(1,1,1);
-			this.el.setAttribute('animation__click',"property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150");
-			this.el.setAttribute('look-at','#handGun');
-		} else {
-			cs[0].remove();
-		}
+		removeIfVrOrNot('a-cursor');
+		removeIfVrOrNot('a-entity.compteur');
+		document.querySelector('a-entity.compteur').setAttribute('id','compteur');
 	},
     tick: function() {
 		if (AFRAME.utils.device.checkHeadsetConnected()) {
-			const gun = $('handGun').object3D;
+			const ogun = $('gun-model');
+			const gun = (ogun) ? ogun.object3D : $('handGun').object3D;
 			const posGun = gun.getWorldPosition();
 			const directionGun = gun.getWorldDirection();
 			this.el.object3D.position.set(posGun.x-1*directionGun.x,posGun.y-1*directionGun.y,posGun.z-1*directionGun.z);
+		}
+		const acomp = $('compteur');
+		if (AFRAME.utils.device.checkHeadsetConnected() && acomp != null){
+			const handLeft = $('gauche').object3D;
+			const posHand = handLeft.getWorldPosition();
+			acomp.object3D.position.set(posHand.x,posHand.y+0.2,posHand.z);
 		}
     }
 });

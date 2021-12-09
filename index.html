@@ -144,9 +144,12 @@
     <a-entity bullet="name: normal; speed: 20.0; poolSize: 20" geometry="primitive: icosahedron; radius: 0.1;"
       material="color: #FF7; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
 
-    <a-cursor id="cursor" color="white" position="0 0 -0.2" scale="1 1 1"
-      animation__click="property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150" reticule-position>
+    <a-cursor id="cursor" color="white" scale="1 1 1"
+      animation__click="property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150" reticule-position
+      look-at="#gun-model">
     </a-cursor>
+    
+    <a-entity class="compteur" text="value: ;" scale="0.5 0.5 0.5" visible="false"></a-entity>
 
     <!-- Caméra Rig -->
     <a-entity id="player" player listener movement-controls="constrainToNavMesh: true; enabled: false;"
@@ -158,7 +161,7 @@
           animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 0.25 0.25 0.25; dur: 150">
         </a-cursor>
 
-        <a-entity id="compteur" text="value: ;" position="0.12 -0.07 -0.2" scale="0.4 0.4 0" visible="false"></a-entity>
+        <a-entity class="compteur" text="value: ;" position="0.12 -0.07 -0.2" scale="0.4 0.4 0" visible="false"></a-entity>
 
         <a-entity id="texteBonus" text="value: Munitions bonus !; color: yellow;" position="0.165 0.03 -0.3"
           scale="0.5 0.5 0.5" visible="false"></a-entity>
