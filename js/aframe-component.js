@@ -41,9 +41,7 @@ AFRAME.registerComponent('click-to-shoot', {
 
 AFRAME.registerComponent('click-to-shoot-boss', {
   init: function () {
-    $('handGun').addEventListener('triggerdown', () => {
-      this.el.emit('shoot')
-    });
+    $('handGun').addEventListener('triggerdown', () => this.el.emit('shoot'));
   }
 });
 
@@ -88,7 +86,7 @@ AFRAME.registerComponent('collision_piege', {
 });
 
 AFRAME.registerComponent('tpsalleboss', {
-  tick: function () {
+  init: function () {
     $('skull2').addEventListener('click', function () {
       $('skull2').setAttribute('animation', {
         property: 'position',
@@ -117,7 +115,7 @@ AFRAME.registerComponent("trackball", {
 
       const startTimer = (duration) => {
         var timer = duration;
-        monInter = setInterval(function () {
+        monInter = setInterval(() => {
           if (document.body.contains($('compteur')))
             $("compteur").setAttribute("text", "value: " + timer + ";");
           if (--timer < 0) {
@@ -133,10 +131,10 @@ AFRAME.registerComponent("trackball", {
 
       toggleCursorColor($('interrupteur2'));
 
-      $("interrupteur2").addEventListener("click", function () {
+      $("interrupteur2").addEventListener("click",() => {
         // stop le compteur pour éviter de continuer le calcul
         clearInterval(monInter);
-        $("tbombe").remove();
+        removeIfExist($('tbombe'));
         $("countdown").pause();
         $("musique").play();
         removeIfExist($("compteur"));
@@ -268,14 +266,10 @@ AFRAME.registerComponent("openlootbox", {
           addAmmo(munitionsBonus);
 
           // masquage du message au bout de 4s
-          removeText = setTimeout(function () {
-            texteBonus.setAttribute("visible", false);
-          }, 4000);
+          removeText = setTimeout(() => texteBonus.setAttribute("visible", false), 4000);
 
           // suppression de la lootbox au bout de 0.8s
-          removeBox = setTimeout(function () {
-            el.remove();
-          }, 800);
+          removeBox = setTimeout(() => el.remove(), 800);
         }, {
           once: true,
         }
@@ -286,8 +280,6 @@ AFRAME.registerComponent("openlootbox", {
     }
   },
 });
-
-
 
 AFRAME.registerComponent("ghost-collision-detect", {
   tick: function () {
