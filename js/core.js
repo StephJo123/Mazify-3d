@@ -53,7 +53,9 @@ AFRAME.registerComponent('reticule-position', {
 		const acomp = $('compteur');
 		if (AFRAME.utils.device.checkHeadsetConnected() && acomp != null){
 			const handLeft = $('gauche').object3D;
-			const posHand = handLeft.getWorldPosition();
+			let t = new THREE.Vector3();
+			const posHand = handLeft.getWorldPosition(t);
+			handLeft.getWorldDirection(t);
 			acomp.object3D.position.set(posHand.x,posHand.y+0.2,posHand.z);
 		}
     }
