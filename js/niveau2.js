@@ -1,5 +1,52 @@
 var removeBunny;
 var nbLapins = 0;
+AFRAME.registerComponent('last-component', {
+  init: function () {
+    // apparament obligé de faire comme ça si on veut attendre que la mazification soit faite
+    setTimeout(() => {
+      const start = $('start-tile');
+
+      $('startMenu').setAttribute('position', start.object3D.position);
+      $('startMenu').object3D.position.x += 2;
+
+      let posfinish = $('startMenu').object3D.position;
+
+      if (!isValidePosition(posfinish)) {
+        $('startMenu').setAttribute('position', start.object3D.position);
+        $('startMenu').object3D.position.z -= 2;
+        if (!isValidePosition(posfinish)) {
+          $('startMenu').setAttribute('position', start.object3D.position);
+          $('startMenu').object3D.position.z += 2;
+          if (!isValidePosition(posfinish)) {
+            $('startMenu').setAttribute('position', start.object3D.position);
+            $('startMenu').object3D.position.x -= 2;
+          }
+        }
+      }
+      $('startMenu').object3D.position.y += 1;
+      $('startMenu').setAttribute('visible', 'true');
+
+      // partage les lapins à travers le labyrinthe
+      let lapins = Array.from(document.querySelectorAll('.bunny'));
+      const pas = Math.floor((400 - lesmurs.length) / lapins.length);
+      let numVide = 0;
+      for (let x = 0; x < 20; ++x) {
+        for (let y = 0; y < 20; ++y) {
+          const i = (y * 20) + x;
+
+          if (mazeArr[i] == 0) {
+            numVide++;
+            if (numVide == pas) {
+              numVide = 0;
+              const l = lapins.shift();
+              l.object3D.position.set((x - 10) * 3, 0, (y - 10) * 3);
+            }
+          }
+        }
+      }
+    }, 500);
+  }
+});
 
 /* début du jeu */
 AFRAME.registerComponent('startgame', {
@@ -32,62 +79,44 @@ const startTimer = (duration) => {
 };
 
 AFRAME.registerComponent("collect-bunny", {
-  schema: {
-    id: {},
-  },
   init: function () {
-    var data = this.data; // valeurs des propriétés des composants.
     var el = this.el; // référence à l'entité du composant.
-
-    if (data.id) {
-      toggleCursorColor(el);
-      el.addEventListener(
-        "click",
-        () => {
-          nbLapins++;
-          document.getElementById('collectedBunnies').setAttribute('visible', true);
-          document.getElementById('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
-          let audio = $('collect_sound');
-          audio.play();
-          audio.currentTime = 0;
-          $('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
-          el.remove();
-          if (nbLapins == 13) {
-            clearBunnies();
-            win();
-          }
-        }, {
-          once: true,
+    toggleCursorColor(el);
+    el.addEventListener(
+      "click",
+      () => {
+        nbLapins++;
+        document.getElementById('collectedBunnies').setAttribute('visible', true);
+        document.getElementById('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
+        let audio = $('collect_sound');
+        audio.play();
+        audio.currentTime = 0;
+        $('collectedBunnies').setAttribute('text', 'value: ' + nbLapins + "/13");
+        el.remove();
+        if (nbLapins == 13) {
+          clearBunnies();
+          win();
         }
-      );
-    }
-  },
+      }, {
+        once: true,
+      }
+    );
+  }
 });
 
 function win() {
   dialogEvenement("finish_game", "blue");
-
-  let currentFinishPos = $('finish_game').object3D.position;
-  $('confetti_animation').setAttribute('position', {
-    x: currentFinishPos.x,
-    y: currentFinishPos.y,
-    z: currentFinishPos.z + 1
-  });
-  $('confetti_animation').setAttribute('visible', true);
+  const confetti = $('confetti_animation');
+  confetti.setAttribute('position', $('finish_game').object3D.position);
+  confetti.setAttribute('visible', true);
 }
 
 function die() {
   dialogEvenement("restart", "red");
-
-  let currentRestartPos = $('restart').object3D.position;
-  let newYpos = $('restart').object3D.position.y + 0.75;
-  $('timeout-msg').setAttribute('position', {
-    x: currentRestartPos.x,
-    y: newYpos,
-    z: currentRestartPos.z
-  });
-
-  $('timeout-msg').setAttribute('visible', true);
+  const timeout = $('timeout-msg');
+  timeout.setAttribute('position', $('restart').object3D.position);
+  timeout.object3D.position.y += 0.75;
+  timeout.setAttribute('visible', true);
 }
 
 function dialogEvenement(state, color) {
@@ -99,7 +128,8 @@ function dialogEvenement(state, color) {
   }
 
   // blocage des controles du joueur
-  $('player').setAttribute("movement-controls", "enabled: false");
+  const player = $('player');
+  player.setAttribute("movement-controls", "enabled: false");
 
   // inversion de couleur
   $('body').setAttribute('style', "background-color: " + color)

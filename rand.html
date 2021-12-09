@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Mazify 3D</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="description" content="Mazify 3D" />
+  <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="js/aframe-inspector-plugin-recast.js"></script>
+  <script src="https://unpkg.com/aframe-super-shooter-kit/dist/aframe-super-shooter-kit.min.js"></script>
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-event-set-component@4.1.2/dist/aframe-event-set-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
+  <script src="js/mazify.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/niveau2.js"></script>
+  <script id="link" type="text/html">
+    <a-entity class="link" geometry="primitive: plane; height: 1; width: 1" material="shader: flat; src: ${thumb}"
+      event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1"
+      sound="on: click; src: #click-sound"></a-entity>
+  </script>
+  <link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="assets/images/maze.png" />
+</head>
+
+<body id="body" style="background-color: #444">
+  <div id="loader" class="lds-dual-ring centered"></div>
+  <a-scene id="scene" style="display: none;" inspector-plugin-recast
+    renderer="colorManagement: true; highRefreshRate: true; antialias: true;" background="color: #444"
+    fog="type: exponential; color: springgreen; density: 0.15">
+    <!-- Assets -->
+    <a-assets>
+      <img id="start-menu" crossorigin="anonymous" src="assets/images/start-menu.jpg">
+      <img id="restart-menu" crossorigin="anonymous" src="assets/images/restart-menu.jpg">
+      <img id="finish-menu" crossorigin="anonymous" src="assets/images/finish-menu.jpg">
+      <img id="ground" src="assets/images/sol.jpg" />
+      <img id="wall" src="assets/images/wall.jpg" />
+      <img id="start" src="assets/images/start.jpg" />
+      <img id="timeout-text" src="assets/images/temps-ecoule.png">
+      <img id="finish" src="assets/images/finish.jpg" />
+      <img id="bunny-assets" src="assets/images/bunny.png" />
+      <a-asset-item id="my-nav-mesh" src="assets/navmesh-lvl2.gltf"></a-asset-item>
+      <a-asset-item id="gun" src="assets/models/sci-fi_revolver/scene.gltf"></a-asset-item>
+      <a-asset-item id="bunny" src="assets/models/bunny/scene.gltf"></a-asset-item>
+      <a-asset-item id="confetti" src="assets/models/confetti/scene.gltf"></a-asset-item>
+      <img id="bullet" src="assets/images/bullets.png">
+      <audio id="collect_sound" src="assets/sounds/collect.wav"></audio>
+      <audio id="click-sound" crossorigin="anonymous"
+        src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
+    </a-assets>
+
+    <!-- start menu -->
+    <a-entity id="startMenu" layout="type: line; margin: 1.5" startgame look-at="#camera">
+      <a-entity template="src: #link" data-thumb="#start-menu">
+      </a-entity>
+    </a-entity>
+
+    <!-- dead/restart menu -->
+    <a-entity id="restart" layout="type: line; margin: 1.5" visible="false" look-at="#camera">
+      <a-entity template="src: #link" data-thumb="#restart-menu" link="href: index.html;">
+      </a-entity>
+    </a-entity>
+
+    <!-- finish menu -->
+    <a-entity id="finish_game" layout="type: line; margin: 1.5" visible="false" look-at="#camera">
+      <a-entity template="src: #link" data-thumb="#finish-menu" link="href: index.html;">
+      </a-entity>
+    </a-entity>
+
+    <!-- confetti -->
+    <a-entity gltf-model="#confetti" id="confetti_animation" scale="0.001 0.001 0.001" animation-mixer visible="false">
+    </a-entity>
+
+    <!-- messages de mort -->
+    <a-image id="timeout-msg" width="2" height="0.22" src="#timeout-text" scale="0.5 0.5 0.5" look-at="#camera"
+      visible="false"></a-image>
+
+    <a-light type="ambient" color="#fff" intensity="0.8"></a-light>
+    <a-plane material="src: #ground; repeat: 25 25" rotation="-90 0 0" height="100" width="100"></a-plane>
+
+    <!-- Gestion des balles -->
+    <a-entity bullet="name: normal; speed: 20.0; poolSize: 20" geometry="primitive: icosahedron; radius: 0.1;"
+      material="color: #FF7; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
+
+    <a-entity gltf-model="#my-nav-mesh" nav-mesh position="0 -0.1 0" visible="false">
+    </a-entity>
+
+    <a-cursor id="cursor" color="white" position="0 0 -0.2" scale="1 1 1"
+      animation__click="property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150" reticule-position>
+    </a-cursor>
+
+    <!-- Caméra Rig -->
+    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true; enabled: false;"
+      collision_piege_niveau2>
+      <!-- Caméra -->
+      <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
+        <a-cursor id="cursor" color="white" position="0 0 -0.2" scale="0.25 0.25 0.25"
+          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 0.25 0.25 0.25; dur: 150">
+        </a-cursor>
+        <a-entity id="collectedBunnies" text="value: 0/13; color: yellow;" position="0.205 -0.022 -0.1"
+          scale="0.25 0.25 0.25" visible="true"></a-entity>
+        <a-image id="bunny-img" width="1.75" height="1.75" src="#bunny-assets" scale="0.015 0.015 0.015"
+          position="0.120 -0.020 -0.1" visible="true"></a-image>
+        <a-entity id="compteur" text="value: ;" position="0.12 -0.07 -0.2" scale="0.4 0.4 0" visible="false"></a-entity>
+
+      </a-entity>
+      <!-- Main gauche -->
+      <a-entity oculus-touch-controls="hand: left"
+        hand-controls="hand: left; handModelStyle: highPoly; color: #B3B3B3;">
+      </a-entity>
+      <!-- Main droite -->
+      <a-entity id="handGun" oculus-touch-controls="hand: right"
+        hand-controls="hand: right; handModelStyle: highPoly ; color: #B3B3B3" position="0.5 -0.7 -1.2"
+        class="vr-except">
+      </a-entity>
+    </a-entity>
+
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny1" collect-bunny position="-10.76961 0 -12.48648"
+      look-at="#player"></a-entity>
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny2" collect-bunny position="-21.7612 0 6.07092"
+      look-at="#player"></a-entity>
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny3" collect-bunny position="18.0328 0 -15.65935"
+      look-at="#player"></a-entity>
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny4" collect-bunny position="-18 0 -18.66943" look-at="#player">
+    </a-entity>
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny5" collect-bunny position="18.28113 0 5.7326"
+      look-at="#player"></a-entity>
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny6" collect-bunny position="-15.49653 0 13.36938"
+      look-at="#player"></a-entity>
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny7" collect-bunny position="3.71748 0 -18.26165"
+      look-at="#player"></a-entity>
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny8" collect-bunny position="24.51819 0 -16" look-at="#player">
+    </a-entity>
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny9" collect-bunny position="-18 0 -24.30888" look-at="#player">
+    </a-entity>
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny10" collect-bunny position="11.98915 0 18.58017"
+      look-at="#player"></a-entity>
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny11" collect-bunny position="-2.82849 0 21.25599"
+      look-at="#player"></a-entity>
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny12" collect-bunny position="-15.04352 0 24.56985"
+      look-at="#player"></a-entity>
+    <a-entity class="bunny" gltf-model="#bunny" id="bunny13" collect-bunny position="0.25443 0 -24.50998"
+      look-at="#player"></a-entity>
+
+    <!-- Maze -->
+    <a-entity mazify last-component> </a-entity>
+
+  </a-scene>
+  <script src="js/randMaze.js"></script>
+  <script>
+    var mazeArr = randomGeneration();
+    document.querySelectorAll('a-entity.bunny').forEach((el) => {
+      el.object3D.scale.set(0.06, 0.06, 0.06);
+    })
+  </script>
+
+</body>
+
+</html>
