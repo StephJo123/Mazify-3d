@@ -144,13 +144,17 @@
     <a-entity bullet="name: normal; speed: 20.0; poolSize: 20" geometry="primitive: icosahedron; radius: 0.1;"
       material="color: #FF7; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
 
-    <a-cursor id="cursor" color="white" position="0 0 -0.2" scale="1 1 1"
-      animation__click="property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150" reticule-position>
+    <a-cursor id="cursor" color="white" scale="1 1 1" raycaster="objects: [data-raycastable]"
+      animation__click="property: scale; startEvents: click; from: 0.5 0.5 0.5; to: 1 1 1; dur: 150"
+      look-at="#gun-model">
     </a-cursor>
 
+    <a-entity class="compteur" text="value: ;" scale="0.5 0.5 0.5" visible="false" id-compteur-vr></a-entity>
+
     <!-- Caméra Rig -->
-    <a-entity id="player" player listener movement-controls="constrainToNavMesh: true; enabled: false;"
-      position="0 1.6 0" trackball collision collision_piege>
+    <a-entity id="player" reticule-position player listener
+      movement-controls="constrainToNavMesh: true; enabled: false;" position="0 1.6 0" trackball collision
+      collision_piege>
       <!-- Caméra -->
       <a-entity position="0 1.6 0" look-controls id="camera" camera="userHeight: 1.6" listener>
 
@@ -158,7 +162,8 @@
           animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 0.25 0.25 0.25; dur: 150">
         </a-cursor>
 
-        <a-entity id="compteur" text="value: ;" position="0.12 -0.07 -0.2" scale="0.4 0.4 0" visible="false"></a-entity>
+        <a-entity class="compteur" text="value: ;" position="0.12 -0.07 -0.2" scale="0.4 0.4 0" visible="false">
+        </a-entity>
 
         <a-entity id="texteBonus" text="value: Munitions bonus !; color: yellow;" position="0.165 0.03 -0.3"
           scale="0.5 0.5 0.5" visible="false"></a-entity>
@@ -212,9 +217,10 @@
     <a-entity gltf-model="#skull" id="skull2" scale="0.5 0.5 0.5" position="17 1.4 -20.9" rotation="0 90 0" tpsalleboss>
     </a-entity>
 
-    <a-entity position="16.55 2.3 -20.9" rotation="0 90 0" geometry="primitive: box; width: 0.9; height: 0.2; depth: 0.05"
-      material="color: #5A3314">
-      <a-entity text="value: Appuyez 2 fois sur le crane \n pour aller au niveau suivant !" position="0.15 0 0.025"></a-entity>
+    <a-entity position="16.55 2.3 -20.9" rotation="0 90 0"
+      geometry="primitive: box; width: 0.9; height: 0.2; depth: 0.05" material="color: #5A3314">
+      <a-entity text="value: Appuyez 2 fois sur le crane \n pour aller au niveau suivant !" position="0.15 0 0.025">
+      </a-entity>
     </a-entity>
     <!-- Maze -->
     <a-entity id="mazify" mazify> </a-entity>
@@ -222,7 +228,18 @@
   </a-scene>
 
   <script>
-    var mazeArr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, "f", 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, "s", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+    var mazeArr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1,
+      0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1,
+      1, 0, 1, 0, 1, "f", 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+      1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0,
+      0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0,
+      1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0,
+      1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0,
+      0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0,
+      1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0,
+      0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, "s", 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ];
     // compteur principal
     const departMinutes = 0.01
     let temps = departMinutes * 60
