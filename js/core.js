@@ -47,7 +47,18 @@ AFRAME.registerComponent('reticule-position', {
       const directionGun = gun.getWorldDirection();
       $('cursor').object3D.position.set(posGun.x - 1 * directionGun.x, posGun.y - 1 * directionGun.y, posGun.z - 1 * directionGun.z);
     }
-    const acomp = $('compteur');
+  }
+});
+// ATTENTION POUR L'UTILISER VOUS DEVEZ AVOIR DEUX a-entity avec la classe 'compteur'
+AFRAME.registerComponent('id-compteur-vr', {
+  init: function () {
+	let c = document.querySelectorAll('a-entity.compteur');
+    if (c && c.legth == 2) {
+			c[(AFRAME.utils.device.checkHeadsetConnected()) ? 0 : 1].setAttribute('id', 'compteur');
+	}
+  },
+  tick: function() {
+	const acomp = $('compteur');
     if (AFRAME.utils.device.checkHeadsetConnected() && acomp != null) {
       const handLeft = $('gauche').object3D;
       let t = new THREE.Vector3();
@@ -55,11 +66,5 @@ AFRAME.registerComponent('reticule-position', {
       handLeft.getWorldDirection(t);
       acomp.object3D.position.set(posHand.x, posHand.y + 0.2, posHand.z);
     }
-  }
-});
-// ATTENTION POUR L'UTILISER VOUS DEVEZ AVOIR DEUX a-entity avec la classe 'compteur'
-AFRAME.registerComponent('id-compteur-vr', {
-  init: function () {
-    document.querySelectorAll('a-entity.compteur')[(AFRAME.utils.device.checkHeadsetConnected()) ? 0 : 1].setAttribute('id', 'compteur');
   }
 });
