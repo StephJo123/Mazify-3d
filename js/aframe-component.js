@@ -1,49 +1,10 @@
 var removeText, removeBox, monInter;
-var nbTirs = 0;
-var tirAutorise, isDead = true;
+var isDead = true;
 var tpAutorise, bombactive = false;
-var vie = 20;
-var vieGhost = 3;
 
 function $(v) {
   return document.getElementById(v);
 }
-
-/* Permet de tirer */
-AFRAME.registerComponent('click-to-shoot', {
-
-  init: function () {
-    var el = this.el;
-
-    function tir() {
-      if (nbTirs != 0 && tirAutorise) {
-        tirAutorise = false;
-        el.emit('shoot');
-        $('balle' + (nbTirs - 1)).remove();
-        let audio = $('sonArme');
-        audio.play();
-        audio.currentTime = 0;
-        nbTirs -= 1;
-      }
-    }
-
-    if (AFRAME.utils.device.checkHeadsetConnected()) {
-      $('handGun').addEventListener('triggerdown', tir);
-    } else {
-      document.body.addEventListener('mousedown', tir)
-    }
-
-    document.body.addEventListener('mouseup', () => {
-      tirAutorise = true;
-    });
-  }
-});
-
-AFRAME.registerComponent('click-to-shoot-boss', {
-  init: function () {
-    $('handGun').addEventListener('triggerdown', () => this.el.emit('shoot'));
-  }
-});
 
 /* Joue la musique d'ambiance */
 document.addEventListener("click", musicPlay);
@@ -85,7 +46,7 @@ AFRAME.registerComponent('collision_piege', {
   }
 });
 
-AFRAME.registerComponent('tpsalleboss', {
+AFRAME.registerComponent('tpsalleniveau1', {
   init: function () {
     $('skull2').addEventListener('click', function () {
       $('skull2').setAttribute('animation', {
@@ -202,85 +163,6 @@ function die(deathText) {
   deathText.setAttribute('visible', true);
 }
 
-function concreteAddAmmo(nbAmmo, el, posDepart, isVR) {
-  let posBalleX = posDepart + 0.01 * el.getElementsByTagName("a-image").length;
-
-  for (var i = 0; i < nbAmmo; i++) {
-    let balle = document.createElement('a-image');
-    el.appendChild(balle);
-    balle.setAttribute('src', '#bullet');
-    balle.setAttribute('id', 'balle' + (nbTirs + i));
-    if (isVR) {
-      balle.object3D.position.set(posBalleX, 0.2, -0.05);
-      balle.object3D.scale.set(0.01, 0.01, 0.01);
-    } else {
-      balle.object3D.position.set(posBalleX, -0.07, -0.2);
-      balle.object3D.scale.set(0.005, 0.005, 0.005);
-    }
-    balle.setAttribute('height', '5');
-    balle.setAttribute('width', '0.8');
-    posBalleX += 0.01;
-  }
-  nbTirs += nbAmmo;
-}
-// fonction qui ajoute un nombre de munitions donné
-function addAmmo(munitionsBonus) {
-  const isVR = AFRAME.utils.device.checkHeadsetConnected();
-  if (isVR) {
-    concreteAddAmmo(munitionsBonus, $('handGun'), -0.1, isVR);
-  } else {
-    concreteAddAmmo(munitionsBonus, $('camera'), 0.13, isVR);
-  }
-}
-
-// fonction pour les lootboxes
-AFRAME.registerComponent("openlootbox", {
-  // récupération de l'id de notre lootbox
-  schema: {
-    id: {},
-  },
-  init: function () {
-    var data = this.data; // valeurs des propriétés des composants.
-    var el = this.el; // référence à l'entité du composant.
-    var texteBonus = $("texteBonus");
-    const munitionsBonus = randomIntFromInterval(1, 6); // génération du nombre de munitions offert
-
-    // si une lootbox est touchée, on l'ouvre, puis la supprime...
-    if (data.id) {
-      toggleCursorColor(el);
-      el.addEventListener(
-        "click",
-        () => {
-          // animation de la lootbox lors de son ouverture
-          el.setAttribute("animation-mixer", "timeScale: 1;");
-          el.setAttribute("animation-mixer", {
-            clip: "*",
-            loop: "repeat",
-            repetitions: 1,
-          });
-
-          // affichage d'un message temporaire dans la caméra du joueur
-          texteBonus.setAttribute("visible", true);
-
-          // appel de notre fonction qui ajoute un nombre de munitions aléatoire
-          addAmmo(munitionsBonus);
-
-          // masquage du message au bout de 4s
-          removeText = setTimeout(() => texteBonus.setAttribute("visible", false), 4000);
-
-          // suppression de la lootbox au bout de 0.8s
-          removeBox = setTimeout(() => el.remove(), 800);
-        }, {
-          once: true,
-        }
-      );
-      // once: true pour que le listener soit automatiquement supprimé après son appel.
-      clearTimeout(removeText);
-      clearTimeout(removeBox);
-    }
-  },
-});
-
 AFRAME.registerComponent("ghost-collision-detect", {
   tick: function () {
     let ghost = this.el;
@@ -293,18 +175,6 @@ AFRAME.registerComponent("ghost-collision-detect", {
   }
 });
 
-AFRAME.registerComponent("shoot-ennemy", {
-  init: function () {
-    let enemy = this.el;
-    setInterval(() => enemy.emit("shoot"), 1000);
-  },
-});
-
-AFRAME.registerComponent('munitions', {
-  init: function () {
-    addAmmo(5);
-  }
-});
 
 AFRAME.registerComponent('delais', {
   init: function () {
@@ -350,22 +220,5 @@ AFRAME.registerComponent('delais', {
         dir: 'alternate'
       });
     }, 14400);
-  }
-});
-
-AFRAME.registerComponent('hit-handler-ghost', {
-  dependencies: ['material'],
-
-  init: function () {
-    var el = this.el;
-
-    el.addEventListener('hit', () => {
-      if (vieGhost == 0) {
-        $('ghost-model').removeAttribute('ghost-follow');
-        $('ghost-model').removeAttribute('ghost-collision-detect');
-        el.parentNode.removeChild(el);
-      }
-      vieGhost -= 1;
-    });
   }
 });
