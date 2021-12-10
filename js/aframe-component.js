@@ -49,10 +49,6 @@ AFRAME.registerComponent('collision_piege', {
 AFRAME.registerComponent('tpsalleniveau1', {
   init: function () {
     $('skull2').addEventListener('click', function () {
-      $('skull2').setAttribute('animation', {
-        property: 'position',
-        to: '16.312 1.4 -20.9'
-      });
       $('skull2').setAttribute('link', 'href:niveau1.html')
     });
   }
