@@ -1,5 +1,7 @@
 # Mazify-3d
 
+<img src="/assets/images/logo_UCA.jpg" alt="Réalisé par des étudiants de l'IUT d'aubière" align="right" width="150" height="150">
+
 Games in 3D mazes, and one using a random maze using A-Frame and Vue.js
 
 Games are in french
