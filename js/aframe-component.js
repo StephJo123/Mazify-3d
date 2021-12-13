@@ -46,13 +46,6 @@ AFRAME.registerComponent('collision_piege', {
   }
 });
 
-AFRAME.registerComponent('tpsalleniveau1', {
-  init: function () {
-    $('skull2').addEventListener('click', function () {
-      $('skull2').setAttribute('link', 'href:niveau1.html')
-    });
-  }
-});
 
 AFRAME.registerComponent("trackball", {
   tick: function () {
@@ -89,6 +82,10 @@ AFRAME.registerComponent("trackball", {
       toggleCursorColor($('interrupteur2'));
 
       $("interrupteur2").addEventListener("click",() => {
+        $("interrupteur2").setAttribute('animation-mixer',{
+          timeScale: 0.2,
+          loop: 'once'
+        });
         // stop le compteur pour éviter de continuer le calcul
         clearInterval(monInter);
         removeIfExist($('tbombe'));
@@ -216,5 +213,25 @@ AFRAME.registerComponent('delais', {
         dir: 'alternate'
       });
     }, 14400);
+  }
+});
+
+AFRAME.registerComponent('trackballfinish', {
+  tick: function () {
+    let pos = this.el.getAttribute("position");
+    let posSphere = $('fini2').getAttribute("position");
+
+    if (Math.abs(pos.x - posSphere.x) < 2) {
+      if (Math.abs(pos.z - posSphere.z) < 2) {
+        clearInterval(mainCounter);
+        $('finishDialog').children[0].children[1].children[0].innerHTML = "Félicitation, vous avez terminé le labyrinthe en " + Math.round(temps) + "s";
+        $('finishDialog').style.display = "block";
+        clearInterval(monInter);
+        if (document.contains($("compteur"))) {
+          $("compteur").remove();
+        }
+        document.querySelector('a-scene').exitVR();
+      }
+    }
   }
 });

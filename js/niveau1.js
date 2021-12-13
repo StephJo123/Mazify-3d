@@ -21,6 +21,7 @@ AFRAME.registerComponent('startgame', {
 // Question labyrinthe
 AFRAME.registerComponent('question_resolue', {
   init: function () {
+    var bonnereponse=0;
     var goodA = document.getElementsByClassName('goodA');
     for(let i = 0; i < goodA.length; i++) {
       goodA[i].addEventListener('click', function(evt) {
@@ -46,6 +47,10 @@ AFRAME.registerComponent('question_resolue', {
             $("texteBonus").setAttribute("visible", false);
           }, 2000);
         }
+        if(bonnereponse==3){
+          console.log('youhou');
+        }
+        bonnereponse+=1;
       });
     }
   clearTimeout(removeText);
@@ -75,13 +80,13 @@ AFRAME.registerComponent('collision_piege_niveau2', {
     let posTrap4 = $("spike4").getAttribute("position");
 
     if (
-      (Math.abs(pos.x - posTrap.x) < 0.4) && (Math.abs(pos.z - posTrap.z) < 0.1)
+      (Math.abs(pos.x - posTrap.x) < 0.2) && (Math.abs(pos.z - posTrap.z) < 0.1)
       ||
-      (Math.abs(pos.x - posTrap2.x) < 0.4) && (Math.abs(pos.z - posTrap2.z) < 0.1)
+      (Math.abs(pos.x - posTrap2.x) < 0.2) && (Math.abs(pos.z - posTrap2.z) < 0.1)
       ||
-      (Math.abs(pos.x - posTrap3.x) < 0.4) && (Math.abs(pos.z - posTrap3.z) < 0.1) 
+      (Math.abs(pos.x - posTrap3.x) < 0.2) && (Math.abs(pos.z - posTrap3.z) < 0.1) 
       ||
-      (Math.abs(pos.x - posTrap4.x) < 0.4) && (Math.abs(pos.z - posTrap4.z) < 0.1)
+      (Math.abs(pos.x - posTrap4.x) < 0.2) && (Math.abs(pos.z - posTrap4.z) < 0.1)
     ) {
       //$('scene').setAttribute('fog', 'color: red');
       dieNiveau2($('trap-msg'));
