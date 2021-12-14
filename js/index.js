@@ -6,6 +6,7 @@ AFRAME.registerComponent('startgame', {
     this.el.addEventListener('click', () => {
       $('scene').setAttribute('fog', 'color: #444');
       $('player').setAttribute("movement-controls", "enabled: true");
+      $('tinstruction').remove();
       $('ghost-model').setAttribute("ghost-follow", "");
       $('ghost-model2').setAttribute("ghost-follow", "");
       $('ghost-model3').setAttribute("ghost-follow", "");

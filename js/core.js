@@ -52,13 +52,13 @@ AFRAME.registerComponent('reticule-position', {
 // ATTENTION POUR L'UTILISER VOUS DEVEZ AVOIR DEUX a-entity avec la classe 'compteur'
 AFRAME.registerComponent('id-compteur-vr', {
   init: function () {
-	let c = document.querySelectorAll('a-entity.compteur');
-    if (c && c.legth == 2) {
-			c[(AFRAME.utils.device.checkHeadsetConnected()) ? 0 : 1].setAttribute('id', 'compteur');
-	}
+    let c = document.querySelectorAll('a-entity.compteur');
+    if (c.length == 2) {
+      c[(AFRAME.utils.device.checkHeadsetConnected()) ? 0 : 1].setAttribute('id', 'compteur');
+    }
   },
-  tick: function() {
-	const acomp = $('compteur');
+  tick: function () {
+    const acomp = $('compteur');
     if (AFRAME.utils.device.checkHeadsetConnected() && acomp != null) {
       const handLeft = $('gauche').object3D;
       let t = new THREE.Vector3();
