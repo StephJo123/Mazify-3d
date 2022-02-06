@@ -11,7 +11,7 @@ var randomGeneration = function () {
 		}
 		arrVoisin.push(index - 18);
 		arrVoisin.push(index + 18);
-		// ne garde que les valeurs possible
+		// only keep acceptable values
 		return arrVoisin.filter(value => value >= 0 && value < initialArr.length);;
 	}
 
@@ -21,7 +21,7 @@ var randomGeneration = function () {
 
 	const indexStart = Math.floor(Math.random() * initialArr.length) + 1;
 	initialArr[indexStart] = 0;
-	let arrVoisin, indexFin, arrBifurc = [indexStart];
+	let arrVoisin, arrBifurc = [indexStart];
 
 	while (arrBifurc.length != 0) {
 		arrVoisin = getArrVoisinDindex(arrBifurc.pop());
@@ -36,11 +36,8 @@ var randomGeneration = function () {
 				arrVoisin = arrVoisin.filter(item => item !== voisinIndex);
 			}
 		}
-		if (indexFin === undefined)
-			indexFin = arrBifurc[arrBifurc.length - 1];
 	}
 
-	initialArr[indexFin] = "f";
 	initialArr[indexStart] = "s";
 
 	for (let k = 0; k < 18; ++k) {
