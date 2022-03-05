@@ -8,17 +8,13 @@ Games are in french
 
 ### Installation
 
-First make sure you have [Node installed](https://nodejs.org/en/download/).
-
-To install the Node dependencies:
-
-    npm install
+Install [PHP binary](https://windows.php.net/downloads/releases/php-7.4.28-nts-Win32-vc15-x64.zip) to have the possibilities to create a server
 
 ### Local Development
 
-To serve the site from a simple Node development server:
+Go in the good directory where the project are, and run php executable
 
-    npm run serve
+    php -S localhost:8080
 
 Then launch the site in the browser:
 
