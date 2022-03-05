@@ -10,6 +10,12 @@ Games are in french
 
 Install [PHP binary](https://windows.php.net/downloads/releases/php-7.4.28-nts-Win32-vc15-x64.zip) to have the possibilities to create a server
 
+Si les serveurs de PHP sont down, prenez [Symfony](https://github.com/symfony-cli/symfony-cli/releases/download/v5.4.1/symfony-cli_windows_amd64.zip)
+Déplacez le binaire dans le dossier du projet
+puis lancer dans un terminal windows les instructions suivantes (en étant dans le projet où il y a l'éxécutable):
+
+    symfony server:start
+
 ### Local Development
 
 Go in the good directory where the project are, and run php executable
